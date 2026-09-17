@@ -18,6 +18,15 @@
  */
 
 function doPost(e) {
+  var lock = LockService.getScriptLock();
+  // ລໍຖ້າ lock ສູງສຸດ 30 ວິນາທີ ເພື່ອປ້ອງກັນການຂຽນຊ້ອນກັນ
+  try {
+    lock.waitLock(30000);
+  } catch (t) {
+    return ContentService.createTextOutput(JSON.stringify({result: "error", message: "Server busy, could not acquire lock"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
@@ -55,7 +64,7 @@ function doPost(e) {
     }
     
     var timestamp = data.timestamp || Utilities.formatDate(new Date(), "Asia/Vientiane", "yyyy-MM-dd HH:mm:ss");
-    var orderCode = data.order_code || "";
+    var orderCode = String(data.order_code || "").trim();
     var customerName = data.customer_name || "";
     var phone = data.customer_phone || "";
     var items = data.items_summary || "";
@@ -84,25 +93,33 @@ function doPost(e) {
       slipFormula = "ບໍ່ມີໃບບິນ";
     }
     
-    // ກວດສອບວ່າອໍເດີນີ້ມີໃນຕາຕະລາງແລ້ວຫຼືບໍ່ (ຖ້າມີແລ້ວໃຫ້ອັບເດດສະຖານະ)
-    var dataRange = sheet.getDataRange();
-    var values = dataRange.getValues();
+    // ກວດສອບວ່າອໍເດີນີ້ມີໃນຕາຕະລາງແລ້ວຫຼືບໍ່ (ຖ້າມີແລ້ວໃຫ້ອັບເດດສະຖານະໃນແຖວເດີມ)
     var foundRow = -1;
-    for (var i = 1; i < values.length; i++) {
-      if (values[i][1] == orderCode) {
-        foundRow = i + 1;
-        break;
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1 && orderCode) {
+      // ອ່ານສະເພາະຄໍລຳ B (Order Code) ທັງໝົດ
+      var codeValues = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+      var cleanTargetCode = orderCode.toUpperCase();
+      for (var i = 0; i < codeValues.length; i++) {
+        var rowCode = String(codeValues[i][0] || "").trim().toUpperCase();
+        if (rowCode === cleanTargetCode) {
+          foundRow = i + 2; // +2 ເພາະເລີ່ມຈາກແຖວ 2 (ແຖວ 1 ຄື header)
+          break;
+        }
       }
     }
     
     if (foundRow > 0) {
-      // ອັບເດດສະຖານະ ແລະ ໝາຍເຫດ
+      // ອັບເດດສະຖານະ ແລະ ໝາຍເຫດ ໃນແຖວເດີມ (ບໍ່ເພີ່ມແຖວໃໝ່)
       sheet.getRange(foundRow, 10).setValue(status);
-      if (note) sheet.getRange(foundRow, 11).setValue(note);
-      return ContentService.createTextOutput(JSON.stringify({result: "success", action: "updated", row: foundRow}))
+      sheet.getRange(foundRow, 10).setHorizontalAlignment("center");
+      if (note) {
+        sheet.getRange(foundRow, 11).setValue(note);
+      }
+      return ContentService.createTextOutput(JSON.stringify({result: "success", action: "updated", row: foundRow, order_code: orderCode, status: status}))
         .setMimeType(ContentService.MimeType.JSON);
     } else {
-      // ເພີ່ມອໍເດີໃໝ່ລົງແຖວລຸ່ມສຸດ
+      // ເພີ່ມອໍເດີໃໝ່ລົງແຖວລຸ່ມສຸດ (ສະເພາະອໍເດີທີ່ຍັງບໍ່ເຄີຍມີເທົ່ານັ້ນ)
       sheet.appendRow([
         timestamp,
         orderCode,
@@ -118,19 +135,22 @@ function doPost(e) {
       ]);
       
       // ຈັດຕຳແໜ່ງໃຫ້ອ່ານງ່າຍ
-      var lastRow = sheet.getLastRow();
-      sheet.getRange(lastRow, 1).setHorizontalAlignment("center"); // Timestamp
-      sheet.getRange(lastRow, 2).setHorizontalAlignment("center"); // Order Code
-      sheet.getRange(lastRow, 4).setHorizontalAlignment("center"); // Phone
-      sheet.getRange(lastRow, 6).setNumberFormat("#,##0");         // Total Kip
-      sheet.getRange(lastRow, 10).setHorizontalAlignment("center"); // Status
+      var newLastRow = sheet.getLastRow();
+      sheet.getRange(newLastRow, 1).setHorizontalAlignment("center"); // Timestamp
+      sheet.getRange(newLastRow, 2).setHorizontalAlignment("center"); // Order Code
+      sheet.getRange(newLastRow, 4).setHorizontalAlignment("center"); // Phone
+      sheet.getRange(newLastRow, 6).setNumberFormat("#,##0");         // Total Kip
+      sheet.getRange(newLastRow, 10).setHorizontalAlignment("center"); // Status
       
-      return ContentService.createTextOutput(JSON.stringify({result: "success", action: "inserted", row: lastRow}))
+      return ContentService.createTextOutput(JSON.stringify({result: "success", action: "inserted", row: newLastRow, order_code: orderCode}))
         .setMimeType(ContentService.MimeType.JSON);
     }
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({result: "error", message: error.toString()}))
       .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    // ປົດລັອກສະເໝີ
+    lock.releaseLock();
   }
 }
 
