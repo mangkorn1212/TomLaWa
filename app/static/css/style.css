@@ -79,6 +79,7 @@
 
 :root {
   --font-main: 'Noto Sans Lao', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Plus Jakarta Sans', 'Noto Sans Lao', monospace;
   
   /* Pilot Cyber Neon Palette */
   --purple-50: #faf5ff;
@@ -106,6 +107,13 @@ html, body, button, input, select, textarea, optgroup {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Ensure font-mono elements (prices, codes, timestamps) smoothly pair modern Lao glyphs */
+.font-mono, font-mono, code, pre {
+  font-family: var(--font-mono) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html {

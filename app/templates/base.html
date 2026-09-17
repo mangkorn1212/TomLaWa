@@ -36,17 +36,23 @@
           },
           fontFamily: {
             sans: ['"Noto Sans Lao"', '"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"Plus Jakarta Sans"', '"Noto Sans Lao"', 'monospace'],
           }
         }
       }
     }
   </script>
 
+  <!-- Google Fonts Preconnect & High Priority Fonts Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap">
+
   <!-- Font Awesome 6.5 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Modern Style with Lao typography (versioned for instant cache bust) -->
-  <link rel="stylesheet" href="/static/css/style.css?v=2.2.0">
+  <link rel="stylesheet" href="/static/css/style.css?v=2.3.0">
   {% block head_extra %}{% endblock %}
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-[#08050e] text-slate-100 selection:bg-purple-600 selection:text-white pb-28 md:pb-16" style="background-color: #08050e !important;">
