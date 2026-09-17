@@ -95,6 +95,15 @@
         </div>
       </div>
 
+      <!-- Remember Me Checkbox -->
+      <div class="flex items-center justify-between pt-1 pb-1">
+        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" id="admin_remember" checked class="w-4 h-4 rounded bg-[#0e081c] border border-purple-800 text-purple-600 focus:ring-purple-500 focus:ring-offset-0 transition cursor-pointer" />
+          <span class="text-xs font-semibold text-purple-200 hover:text-white transition">ຈື່ຂ້ອຍໄວ້ໃນລະບົບ (Remember me)</span>
+        </label>
+        <span class="text-[11px] text-purple-400/60 font-medium">30 ວັນ</span>
+      </div>
+
       <!-- Submit Button -->
       <div class="pt-2">
         <button type="submit" id="login-btn" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 active:scale-98 text-slate-950 font-black text-sm shadow-xl shadow-purple-600/30 hover:shadow-2xl transition-all flex items-center justify-center gap-2">
@@ -116,6 +125,16 @@
   </div>
 
   <script>
+  // Auto-fill remembered username if saved previously
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedUser = localStorage.getItem("tom_saved_username");
+    if (savedUser) {
+      const uInput = document.getElementById("admin_username");
+      uInput.value = savedUser;
+      document.getElementById("admin_password").focus();
+    }
+  });
+
   function togglePasswordVisibility() {
     const pwdInput = document.getElementById("admin_password");
     const eyeIcon = document.getElementById("pwd-eye-icon");
@@ -132,6 +151,7 @@
     e.preventDefault();
     const u = document.getElementById("admin_username").value.trim();
     const p = document.getElementById("admin_password").value.trim();
+    const remember = document.getElementById("admin_remember").checked;
     const btn = document.getElementById("login-btn");
     const errorBox = document.getElementById("login-error-box");
     const errorMsg = document.getElementById("login-error-msg");
@@ -144,7 +164,7 @@
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: u, password: p })
+        body: JSON.stringify({ username: u, password: p, remember: remember })
       });
 
       const data = await res.json();
@@ -152,6 +172,11 @@
       btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span>ເຂົ້າສູ່ລະບົບ (Login)</span>`;
 
       if (res.ok && data.success) {
+        if (remember) {
+          localStorage.setItem("tom_saved_username", u);
+        } else {
+          localStorage.removeItem("tom_saved_username");
+        }
         window.location.href = "/admin";
       } else {
         errorBox.classList.remove("hidden");

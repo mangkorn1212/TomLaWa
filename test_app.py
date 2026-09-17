@@ -88,6 +88,13 @@ def run_tests():
     assert r6_auth_page.status_code == 200
     assert "Admin" in r6_auth_page.text
 
+    # 6.5 Test Server Restart Resilience: clear ACTIVE_SESSIONS cache and verify cookie still keeps admin logged in
+    from app.main import ACTIVE_SESSIONS
+    ACTIVE_SESSIONS.clear()  # Simulate complete Render restart / app reload
+    r6_restart_page = client.get('/admin')
+    assert r6_restart_page.status_code == 200, "Signed session cookie should keep user logged in even after server restart"
+    print("Test 6.5 Passed: Session persisted across simulated server restart / wipe of in-memory cache")
+
     r6_auth_api = client.get('/api/admin/orders')
     assert r6_auth_api.status_code == 200
     orders = r6_auth_api.json()

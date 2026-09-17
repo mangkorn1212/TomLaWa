@@ -19,7 +19,7 @@ from app.database import engine, Base, get_db, SessionLocal
 from app.models import Product, Order, OrderItem, User
 from app.init_db import init_database
 from app.sheets import sync_order_to_google_sheet
-from app.auth import hash_password, verify_password
+from app.auth import hash_password, verify_password, create_session_token, verify_session_token
 
 # Create uploads directory if not exists
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -36,13 +36,21 @@ TEMPLATES_DIR = BASE_DIR / "app" / "templates"
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-# Admin Session Authentication Store: token -> user dict
+# Admin Session Authentication Store: token -> user dict (in-memory cache)
 ACTIVE_SESSIONS = {}
 
 def get_current_user(request: Request) -> Optional[dict]:
     token = request.cookies.get("admin_session")
-    if token and token in ACTIVE_SESSIONS:
+    if not token:
+        return None
+    # 1. Check in-memory fast cache
+    if token in ACTIVE_SESSIONS:
         return ACTIVE_SESSIONS[token]
+    # 2. Check signed token (persists across server restarts and browser closures for 30 days)
+    user_data = verify_session_token(token)
+    if user_data:
+        ACTIVE_SESSIONS[token] = user_data  # Populate cache
+        return user_data
     return None
 
 def is_admin_logged_in(request: Request) -> bool:
@@ -352,11 +360,22 @@ def lookup_orders(query: str = "", db: Session = Depends(get_db)):
 async def api_admin_login(body: dict, db: Session = Depends(get_db)):
     username = body.get("username", "").strip()
     password = body.get("password", "").strip()
+    remember = body.get("remember", True)  # Default remember me = True
+
+    # 30 days if remember me is checked, else 1 day session
+    max_age_days = 30 if remember else 1
+    max_age_seconds = max_age_days * 86400
 
     # 1. Check User in database
     user = db.query(User).filter(User.username == username, User.is_active == True).first()
     if user and verify_password(password, user.password_hash):
-        token = secrets.token_hex(24)
+        token = create_session_token(
+            user_id=user.id,
+            username=user.username,
+            role=user.role,
+            display_name=user.display_name,
+            max_age_days=max_age_days
+        )
         ACTIVE_SESSIONS[token] = {
             "user_id": user.id,
             "username": user.username,
@@ -372,7 +391,13 @@ async def api_admin_login(body: dict, db: Session = Depends(get_db)):
                 "role": user.role
             }
         })
-        res.set_cookie(key="admin_session", value=token, httponly=True, samesite="lax", max_age=86400 * 7)
+        res.set_cookie(
+            key="admin_session",
+            value=token,
+            httponly=True,
+            samesite="lax",
+            max_age=max_age_seconds
+        )
         return res
 
     # 2. Fallback check for settings default admin
@@ -385,7 +410,7 @@ async def api_admin_login(body: dict, db: Session = Depends(get_db)):
             new_u = User(
                 username=username,
                 password_hash=hash_password(password),
-                display_name="ຜູ້ດູແລລະບົບ (Super Admin)",
+                display_name="suzu (Super Admin)",
                 role="admin",
                 is_active=True
             )
@@ -393,18 +418,32 @@ async def api_admin_login(body: dict, db: Session = Depends(get_db)):
             db.commit()
             db.refresh(new_u)
             u_id = new_u.id
+            u_name = new_u.display_name
         else:
             u_id = existing.id
+            u_name = existing.display_name
 
-        token = secrets.token_hex(24)
+        token = create_session_token(
+            user_id=u_id,
+            username=username,
+            role="admin",
+            display_name=u_name,
+            max_age_days=max_age_days
+        )
         ACTIVE_SESSIONS[token] = {
             "user_id": u_id,
             "username": username,
-            "display_name": "ຜູ້ດູແລລະບົບ (Super Admin)",
+            "display_name": u_name,
             "role": "admin"
         }
         res = JSONResponse(content={"success": True, "message": "ເຂົ້າສູ່ລະບົບສຳເລັດ"})
-        res.set_cookie(key="admin_session", value=token, httponly=True, samesite="lax", max_age=86400 * 7)
+        res.set_cookie(
+            key="admin_session",
+            value=token,
+            httponly=True,
+            samesite="lax",
+            max_age=max_age_seconds
+        )
         return res
 
     return JSONResponse(status_code=401, content={"success": False, "message": "ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"})
