@@ -109,6 +109,25 @@ function doPost(e) {
       }
     }
     
+    // ກວດສອບກໍລະນີສັ່ງລຶບອໍເດີ (Delete Order ຈາກລະບົບເວັບ)
+    if (data.action === "delete" || data.action === "remove") {
+      if (foundRow > 0) {
+        sheet.deleteRow(foundRow);
+        return ContentService.createTextOutput(JSON.stringify({
+          result: "success", 
+          action: "deleted", 
+          row: foundRow, 
+          order_code: orderCode
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({
+          result: "not_found", 
+          message: "Order not found in sheet to delete", 
+          order_code: orderCode
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     if (foundRow > 0) {
       // ອັບເດດສະຖານະ ແລະ ໝາຍເຫດ ໃນແຖວເດີມ (ບໍ່ເພີ່ມແຖວໃໝ່)
       sheet.getRange(foundRow, 10).setValue(status);

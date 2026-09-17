@@ -302,7 +302,69 @@ def run_tests():
     assert any(o["order_code"] == order_code_8digit for o in orders_found)
     print(f"Test 11.6 Passed: Lookup with only 8 digits (99887766) successfully found order")
 
-    print("\nALL 11 AUTOMATED VERIFICATION TESTS PASSED SUCCESSFULLY!")
+    # 13. Test Order Deletion & BCEL One Removal
+    # 13.0 Log in as admin
+    r13_login = client.post('/api/admin/login', json={"username": "suzu", "password": "admin123"})
+    assert r13_login.status_code == 200
+
+    # 13.1 Test Single Order Deletion API
+    dummy_img3 = io.BytesIO(b"slip for delete test")
+    r13_create = client.post('/api/order', data={
+        "customer_name": "ທົດສອບ ລຶບອໍເດີ",
+        "customer_phone": "020 7711 2233",
+        "address_note": "ບ້ານ ທົ່ງຂັນຄຳ",
+        "cart_json": json.dumps([{"id": 1, "name": "ນ້ຳກະທ່ອມຕຸກ 1.5L", "price": 30000, "quantity": 1}])
+    }, files={"slip_file": ("slip.jpg", dummy_img3, "image/jpeg")})
+    assert r13_create.status_code == 200
+    order_to_delete_code = r13_create.json()["order_code"]
+    order_info = client.get(f'/api/orders/lookup?query={order_to_delete_code}').json()[0]
+    order_to_delete_id = order_info["id"]
+
+    r13_del = client.delete(f'/api/admin/orders/{order_to_delete_id}')
+    assert r13_del.status_code == 200
+    assert r13_del.json()["success"] is True
+    print(f"Test 13.1 Passed: DELETE /api/admin/orders/{order_to_delete_id} deleted successfully ({order_to_delete_code})")
+
+    # Verify order is gone from DB
+    r13_check = client.get(f'/api/order/{order_to_delete_code}')
+    assert r13_check.status_code == 404, "Deleted order should return 404"
+
+    # 13.2 Test Batch Order Deletion API
+    batch_ids = []
+    for i in range(2):
+        d_img = io.BytesIO(f"batch slip {i}".encode())
+        rc = client.post('/api/order', data={
+            "customer_name": f"ທົດສອບ Batch {i}",
+            "customer_phone": f"020 7711 223{i}",
+            "address_note": "ບ້ານ ທົ່ງຂັນຄຳ",
+            "cart_json": json.dumps([{"id": 1, "name": "ນ້ຳກະທ່ອມຕຸກ 1.5L", "price": 30000, "quantity": 1}])
+        }, files={"slip_file": ("slip.jpg", d_img, "image/jpeg")})
+        assert rc.status_code == 200
+        b_code = rc.json()["order_code"]
+        b_info = client.get(f'/api/orders/lookup?query={b_code}').json()[0]
+        batch_ids.append(b_info["id"])
+
+    r13_batch = client.post('/api/admin/orders/batch-delete', json={"order_ids": batch_ids})
+    assert r13_batch.status_code == 200
+    assert r13_batch.json()["deleted_count"] == 2
+    print(f"Test 13.2 Passed: POST /api/admin/orders/batch-delete deleted 2 orders: {batch_ids}")
+
+    # 13.3 Test Unauthorized deletion blocked
+    client_unauth = TestClient(app)
+    r13_unauth_del = client_unauth.delete(f'/api/admin/orders/999')
+    assert r13_unauth_del.status_code == 401
+    print("Test 13.3 Passed: Unauthorized order deletion blocked (401)")
+
+    # 13.4 Verify "BCEL One" is completely gone from all public pages
+    r_home = client.get('/')
+    assert "BCEL One" not in r_home.text
+    r_checkout = client.get('/checkout')
+    assert "BCEL One" not in r_checkout.text
+    r_admin = client.get('/admin')
+    assert "BCEL One" not in r_admin.text
+    print("Test 13.4 Passed: Verified 'BCEL One' is completely removed from Home, Checkout, and Admin pages")
+
+    print("\nALL AUTOMATED VERIFICATION TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == "__main__":
     run_tests()

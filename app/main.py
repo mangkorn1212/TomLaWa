@@ -18,7 +18,7 @@ from app.config import load_settings, save_settings, UPLOAD_DIR, BASE_DIR
 from app.database import engine, Base, get_db, SessionLocal
 from app.models import Product, Order, OrderItem, User
 from app.init_db import init_database
-from app.sheets import sync_order_to_google_sheet
+from app.sheets import sync_order_to_google_sheet, delete_order_from_google_sheet
 from app.auth import hash_password, verify_password, create_session_token, verify_session_token
 
 # Create uploads directory if not exists
@@ -833,6 +833,67 @@ async def update_order_status(
     asyncio.create_task(sync_order_to_google_sheet(order_dict, base_url=base_url))
 
     return {"success": True, "status": new_status}
+
+@app.delete("/api/admin/orders/{order_id}")
+async def delete_order(order_id: int, request: Request, db: Session = Depends(get_db)):
+    if not is_admin_logged_in(request):
+        raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="ບໍ່ພົບອໍເດີນີ້")
+
+    order_code = order.order_code
+
+    # Delete related items first
+    db.query(OrderItem).filter(OrderItem.order_id == order_id).delete()
+    db.delete(order)
+    db.commit()
+
+    # Asynchronously delete row from Google Sheet
+    if order_code:
+        asyncio.create_task(delete_order_from_google_sheet(order_code))
+
+    return {
+        "success": True, 
+        "message": f"ລຶບອໍເດີ {order_code} ຮຽບຮ້ອຍແລ້ວ!", 
+        "order_code": order_code
+    }
+
+@app.post("/api/admin/orders/batch-delete")
+async def batch_delete_orders(body: dict, request: Request, db: Session = Depends(get_db)):
+    if not is_admin_logged_in(request):
+        raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    order_ids = body.get("order_ids", [])
+    if not order_ids or not isinstance(order_ids, list):
+        raise HTTPException(status_code=400, detail="ກະລຸນາເລືອກອໍເດີທີ່ຕ້ອງການລຶບ")
+
+    orders = db.query(Order).filter(Order.id.in_(order_ids)).all()
+    if not orders:
+        return {"success": True, "deleted_count": 0, "message": "ບໍ່ມີອໍເດີທີ່ກົງກັບລາຍການ"}
+
+    order_codes = [o.order_code for o in orders if o.order_code]
+
+    # Delete related items and orders
+    db.query(OrderItem).filter(OrderItem.order_id.in_(order_ids)).delete(synchronize_session=False)
+    for o in orders:
+        db.delete(o)
+    db.commit()
+
+    # Asynchronously delete each order from Google Sheet
+    async def bg_delete_all(codes):
+        for code in codes:
+            try:
+                await delete_order_from_google_sheet(code)
+            except Exception as e:
+                logger.error(f"Error in batch delete sheet sync for {code}: {e}")
+
+    asyncio.create_task(bg_delete_all(order_codes))
+
+    return {
+        "success": True,
+        "deleted_count": len(orders),
+        "message": f"ລຶບ {len(orders)} ອໍເດີຮຽບຮ້ອຍແລ້ວ!"
+    }
 
 @app.post("/api/admin/settings")
 def update_settings(payload: dict, request: Request, db: Session = Depends(get_db)):

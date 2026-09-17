@@ -53,3 +53,31 @@ async def sync_order_to_google_sheet(order_data: dict, base_url: str = "") -> bo
     except Exception as e:
         logger.error(f"Error syncing order to Google Sheet: {e}")
         return False
+
+async def delete_order_from_google_sheet(order_code: str) -> bool:
+    """
+    Sends delete request for an order to Google Sheet Webhook to delete its row.
+    """
+    settings = load_settings()
+    webhook_url = settings.get("google_sheet_webhook_url", "").strip()
+
+    if not webhook_url or not order_code:
+        return False
+
+    payload = {
+        "action": "delete",
+        "order_code": str(order_code).strip()
+    }
+
+    try:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=12.0) as client:
+            response = await client.post(webhook_url, json=payload)
+            if response.status_code == 200:
+                logger.info(f"Successfully sent delete request for order {order_code} to Google Sheet")
+                return True
+            else:
+                logger.warning(f"Google Sheet delete response error {response.status_code}: {response.text}")
+                return False
+    except Exception as e:
+        logger.error(f"Error sending delete request to Google Sheet for order {order_code}: {e}")
+        return False

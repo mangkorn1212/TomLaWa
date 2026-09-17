@@ -10,7 +10,7 @@ DEFAULT_SETTINGS = {
     "store_name": "ຮ້ານນ້ຳດື່ມ ສົດຊື່ນ (Fresh Water Delivery)",
     "store_phone": "020 9988 7766",
     "store_address": "ນະຄອນຫຼວງວຽງຈັນ, ສປປ ລາວ",
-    "bank_name": "ທະນາຄານການຄ້າຕ່າງປະເທດລາວ (BCEL One)",
+    "bank_name": "ບັນຊີທະນາຄານ / QR Code",
     "account_name": "ຮ້ານນ້ຳດື່ມ ສົດຊື່ນ",
     "account_number": "010-12-00-08889999-001",
     "qr_image_url": "/static/img/demo_qr.png",

@@ -498,6 +498,37 @@
       </div>
     </div>
 
+    <!-- Order Selection & Batch Action Toolbar -->
+    <div id="batch-action-bar" class="bg-[#140d24] px-5 py-3.5 rounded-2xl border border-purple-900/50 shadow-md flex flex-wrap items-center justify-between gap-3 text-xs text-white">
+      <div class="flex items-center gap-3">
+        <label class="flex items-center gap-2 cursor-pointer font-bold select-none text-purple-200 hover:text-white">
+          <input 
+            type="checkbox" 
+            id="chk-select-all" 
+            onchange="toggleSelectAllOrders(this.checked)" 
+            class="w-4 h-4 rounded border-purple-800 bg-[#0e081c] text-purple-600 focus:ring-purple-500 cursor-pointer accent-purple-600"
+          />
+          <span>ເລືອກທັງໝົດ (Select All)</span>
+        </label>
+        <span id="batch-selected-count-badge" class="hidden px-2.5 py-1 rounded-xl bg-purple-950 text-amber-400 font-black border border-purple-800/60 font-mono text-xs">
+          ເລືອກແລ້ວ 0 ອໍເດີ
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button 
+          id="btn-batch-delete" 
+          onclick="batchDeleteOrders()" 
+          disabled
+          class="px-4 py-2 rounded-xl bg-rose-950/60 text-rose-400 border border-rose-900/60 font-black text-xs flex items-center gap-1.5 transition opacity-40 cursor-not-allowed active:scale-95"
+          title="ລຶບອໍເດີທີ່ເລືອກ"
+        >
+          <i class="fa-solid fa-trash-can text-rose-400"></i>
+          <span>ລຶບອໍເດີທີ່ເລືອກ</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Orders Container List -->
     <div id="orders-container" class="space-y-4">
       <div class="p-16 text-center text-purple-400/60 bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl">
@@ -740,7 +771,7 @@
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block font-bold text-purple-200 mb-1">ທະນາຄານ (BCEL One)</label>
+          <label class="block font-bold text-purple-200 mb-1">ຊື່ບັນຊີ / ທະນາຄານ</label>
           <input type="text" id="setting_bank_name" value="{{ settings.bank_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
         </div>
         <div>
@@ -1266,19 +1297,36 @@ function renderOrders() {
     }
 
     return `
-      <div class="bg-[#140d24] rounded-3xl p-5 sm:p-6 border border-purple-900/50 hover:border-purple-500/60 shadow-xl transition-all flex flex-col lg:flex-row gap-6 justify-between text-white">
+      <div id="order-card-${order.id}" class="bg-[#140d24] rounded-3xl p-5 sm:p-6 border border-purple-900/50 hover:border-purple-500/60 shadow-xl transition-all flex flex-col lg:flex-row gap-6 justify-between text-white">
         
         <!-- Left Side: Customer & Order Details -->
         <div class="flex-1 space-y-3.5">
           
-          <!-- Top Row: Code, Status Badge, Sheet Badge, Timestamp -->
+          <!-- Top Row: Checkbox, Code, Status Badge, Sheet Badge, Timestamp & Delete Button -->
           <div class="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-purple-900/40">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2.5">
+              <input 
+                type="checkbox" 
+                class="order-select-chk w-4 h-4 rounded border-purple-800 bg-[#0e081c] text-purple-600 focus:ring-purple-500 cursor-pointer accent-purple-600" 
+                value="${order.id}" 
+                data-code="${order.order_code}"
+                onchange="updateBatchBar()"
+              />
               <span class="font-black text-white font-mono text-sm sm:text-base">${order.order_code}</span>
               <span class="badge-status ${statusBadgeClass}">${statusText}</span>
               ${order.sheet_synced ? `<span class="text-[10px] text-purple-300 font-black bg-purple-950 px-2 py-0.5 rounded-full flex items-center gap-1 border border-purple-800/60" title="ບັນທຶກລົງ Google Sheet ແລ້ວ"><i class="fa-solid fa-circle-check text-amber-400"></i> Sheet</span>` : ''}
             </div>
-            <span class="text-xs text-purple-400 font-medium">${order.created_at_str || ''}</span>
+            <div class="flex items-center gap-2.5">
+              <span class="text-xs text-purple-400 font-medium">${order.created_at_str || ''}</span>
+              <button 
+                onclick="deleteSingleOrder(${order.id}, '${order.order_code}')" 
+                class="px-2.5 py-1 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow-2xs hover:scale-105" 
+                title="ລຶບອໍເດີນີ້ (Delete Order)"
+              >
+                <i class="fa-solid fa-trash-can text-rose-400 text-[11px]"></i>
+                <span class="text-[11px]">ລຶບ</span>
+              </button>
+            </div>
           </div>
 
           <!-- Customer Info & Action Chips -->
@@ -1358,6 +1406,10 @@ function renderOrders() {
       </div>
     `;
   }).join("");
+
+  const masterChk = document.getElementById("chk-select-all");
+  if (masterChk) masterChk.checked = false;
+  if (typeof updateBatchBar === 'function') updateBatchBar();
 }
 
 async function updateOrderStatus(orderId, newStatus) {
@@ -1468,6 +1520,117 @@ function switchTab(tab) {
     if (tabProducts) tabProducts.className = activeTabClass;
     if (secProducts) secProducts.classList.remove("hidden");
     fetchAdminProducts();
+  }
+}
+
+// --------------------------------------------------------------------------
+// Order Deletion & Batch Selection Functions
+// --------------------------------------------------------------------------
+async function deleteSingleOrder(orderId, orderCode) {
+  if (!confirm(`ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບອໍເດີ "${orderCode}" ນີ້?\nເມື່ອລຶບແລ້ວ ຂໍ້ມູນໃນລະບົບ ແລະ ໃນ Google Sheet ຈະຖືກລຶບອອກໄປພ້ອມກັນ!`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/orders/${orderId}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || `ລຶບອໍເດີ ${orderCode} ສຳເລັດແລ້ວ!`, "success");
+      allOrders = allOrders.filter(o => o.id !== orderId);
+      updateCounters();
+      renderOrders();
+      renderDashboard();
+    } else {
+      showToast(data.message || "ເກີດຂໍ້ຜິດພາດໃນການລຶບອໍເດີ", "error");
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+function toggleSelectAllOrders(checked) {
+  const checkboxes = document.querySelectorAll(".order-select-chk");
+  checkboxes.forEach(chk => {
+    chk.checked = checked;
+  });
+  updateBatchBar();
+}
+
+function updateBatchBar() {
+  const checkboxes = document.querySelectorAll(".order-select-chk:checked");
+  const count = checkboxes.length;
+  const countBadge = document.getElementById("batch-selected-count-badge");
+  const deleteBtn = document.getElementById("btn-batch-delete");
+  const masterChk = document.getElementById("chk-select-all");
+  const allChks = document.querySelectorAll(".order-select-chk");
+
+  if (masterChk) {
+    masterChk.checked = (allChks.length > 0 && count === allChks.length);
+  }
+
+  if (count > 0) {
+    if (countBadge) {
+      countBadge.textContent = `ເລືອກແລ້ວ ${count} ອໍເດີ`;
+      countBadge.classList.remove("hidden");
+    }
+    if (deleteBtn) {
+      deleteBtn.disabled = false;
+      deleteBtn.className = "px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs flex items-center gap-1.5 transition shadow-lg shadow-rose-600/30 cursor-pointer active:scale-95";
+      deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i><span>ລຶບອໍເດີທີ່ເລືອກ (${count})</span>`;
+    }
+  } else {
+    if (countBadge) {
+      countBadge.classList.add("hidden");
+    }
+    if (deleteBtn) {
+      deleteBtn.disabled = true;
+      deleteBtn.className = "px-4 py-2 rounded-xl bg-rose-950/60 text-rose-400 border border-rose-900/60 font-black text-xs flex items-center gap-1.5 transition opacity-40 cursor-not-allowed";
+      deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can text-rose-400"></i><span>ລຶບອໍເດີທີ່ເລືອກ</span>`;
+    }
+  }
+}
+
+async function batchDeleteOrders() {
+  const checkedBoxes = Array.from(document.querySelectorAll(".order-select-chk:checked"));
+  const orderIds = checkedBoxes.map(chk => parseInt(chk.value, 10)).filter(id => !isNaN(id));
+
+  if (orderIds.length === 0) {
+    showToast("ກະລຸນາເລືອກອໍເດີກ່ອນ!", "info");
+    return;
+  }
+
+  if (!confirm(`ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບ ${orderIds.length} ອໍເດີທີ່ເລືອກ?\nຂໍ້ມູນທັງໝົດໃນເວັບ ແລະ ໃນ Google Sheet ຈະຖືກລຶບອອກໄປພ້ອມກັນ!`)) {
+    return;
+  }
+
+  const deleteBtn = document.getElementById("btn-batch-delete");
+  if (deleteBtn) {
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>ກຳລັງລຶບ...</span>`;
+  }
+
+  try {
+    const res = await fetch("/api/admin/orders/batch-delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ order_ids: orderIds })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || `ລຶບ ${orderIds.length} ອໍເດີສຳເລັດແລ້ວ!`, "success");
+      allOrders = allOrders.filter(o => !orderIds.includes(o.id));
+      updateCounters();
+      renderOrders();
+      renderDashboard();
+    } else {
+      showToast(data.message || "ເກີດຂໍ້ຜິດພາດໃນການລຶບອໍເດີ", "error");
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  } finally {
+    updateBatchBar();
   }
 }
 
@@ -1995,10 +2158,15 @@ function renderDashboardTable() {
           ${slipBtn}
         </td>
         <td class="py-3 px-4 text-center whitespace-nowrap">
-          <button onclick="jumpToOrder('${order.order_code}')" class="px-3 py-1.5 rounded-xl bg-purple-950 hover:bg-purple-900 text-purple-200 hover:text-white border border-purple-800/60 text-xs font-bold transition inline-flex items-center gap-1 shadow-2xs active:scale-95">
-            <i class="fa-solid fa-arrow-up-right-from-square text-amber-400 text-[10px]"></i>
-            <span>ຈັດການ</span>
-          </button>
+          <div class="inline-flex items-center gap-1.5">
+            <button onclick="jumpToOrder('${order.order_code}')" class="px-2.5 py-1.5 rounded-xl bg-purple-950 hover:bg-purple-900 text-purple-200 hover:text-white border border-purple-800/60 text-xs font-bold transition inline-flex items-center gap-1 shadow-2xs active:scale-95" title="ຈັດການອໍເດີ">
+              <i class="fa-solid fa-arrow-up-right-from-square text-amber-400 text-[10px]"></i>
+              <span>ຈັດການ</span>
+            </button>
+            <button onclick="deleteSingleOrder(${order.id}, '${order.order_code}')" class="p-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-xs font-bold transition inline-flex items-center justify-center active:scale-95 hover:scale-105" title="ລຶບອໍເດີ (Delete Order)">
+              <i class="fa-solid fa-trash-can text-rose-400 text-[11px]"></i>
+            </button>
+          </div>
         </td>
       </tr>
     `;
