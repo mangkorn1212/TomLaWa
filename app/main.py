@@ -88,6 +88,10 @@ async def track_page(request: Request, order_code: str, db: Session = Depends(ge
         "order": order
     })
 
+@app.get("/themes", response_class=HTMLResponse)
+async def themes_page(request: Request):
+    return templates.TemplateResponse(request=request, name="themes.html", context={})
+
 @app.get("/admin/login", response_class=HTMLResponse)
 async def admin_login_page(request: Request):
     if is_admin_logged_in(request):
