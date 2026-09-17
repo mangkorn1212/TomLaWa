@@ -61,11 +61,16 @@
     </div>
   </div>
 
-  <!-- Navigation Tabs: Orders vs Users vs Products -->
+  <!-- Navigation Tabs: Dashboard vs Orders vs Users vs Products -->
   <div class="flex items-center gap-2 border-b border-purple-900/40 pb-2 overflow-x-auto">
-    <button onclick="switchTab('orders')" id="tab-orders" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30 whitespace-nowrap">
-      <i class="fa-solid fa-box-archive"></i>
+    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30 whitespace-nowrap">
+      <i class="fa-solid fa-chart-line text-amber-400"></i>
+      <span>Dashboard ສະຫຼຸບຍອດ</span>
+    </button>
+    <button onclick="switchTab('orders')" id="tab-orders" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap">
+      <i class="fa-solid fa-box-archive text-purple-400"></i>
       <span>ລາຍການອໍເດີ (Orders)</span>
+      <span id="nav-badge-orders-count" class="px-2 py-0.5 text-[10px] rounded-full bg-purple-950 text-purple-200 font-black border border-purple-800/60">0</span>
     </button>
     <button onclick="switchTab('users')" id="tab-users" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap">
       <i class="fa-solid fa-users-gear text-purple-400"></i>
@@ -79,8 +84,324 @@
     </button>
   </div>
 
+  <!-- SECTION 0: SALES DASHBOARD & FINANCIAL SUMMARY -->
+  <div id="section-dashboard" class="space-y-6">
+
+    <!-- Dashboard Header & Time Range Filter Bar -->
+    <div class="bg-[#140d24] p-5 sm:p-6 rounded-3xl border border-purple-900/50 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-white">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30">
+            📊 Sales Analytics & KPIs
+          </span>
+          <span id="dash-date-indicator" class="text-[11px] font-mono text-purple-300/80"></span>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2.5">
+          <i class="fa-solid fa-chart-pie text-amber-400"></i>
+          <span>ສະຫຼຸບພາບລວມຍອດຂາຍ & ລາຍຮັບ (Sales Dashboard)</span>
+        </h3>
+        <p class="text-xs sm:text-sm text-purple-300/80 mt-1">
+          ລາຍງານລາຍຮັບ, ຍອດຂາຍແຍກຕາມໝວດສິນຄ້າ (ຕຸກ, ຊຸດ, Pilot) ພ້ອມຕາຕະລາງລາຍການຂາຍລະອຽດ
+        </p>
+      </div>
+
+      <!-- Time Range Selector Buttons -->
+      <div class="flex items-center gap-1.5 p-1.5 bg-[#0e081c] rounded-2xl border border-purple-900/60 shrink-0 self-start lg:self-auto overflow-x-auto max-w-full">
+        <button onclick="setDashboardTimeRange('today')" id="dash-range-today" class="dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all text-purple-300 hover:text-white hover:bg-purple-950/60 whitespace-nowrap">
+          <i class="fa-solid fa-calendar-day mr-1 text-amber-400"></i>ມື້ນີ້
+        </button>
+        <button onclick="setDashboardTimeRange('week')" id="dash-range-week" class="dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all text-purple-300 hover:text-white hover:bg-purple-950/60 whitespace-nowrap">
+          <i class="fa-solid fa-calendar-week mr-1 text-amber-400"></i>ອາທິດນີ້
+        </button>
+        <button onclick="setDashboardTimeRange('month')" id="dash-range-month" class="dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all text-purple-300 hover:text-white hover:bg-purple-950/60 whitespace-nowrap">
+          <i class="fa-solid fa-calendar-days mr-1 text-amber-400"></i>ເດືອນນີ້
+        </button>
+        <button onclick="setDashboardTimeRange('all')" id="dash-range-all" class="dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md whitespace-nowrap">
+          <i class="fa-solid fa-infinity mr-1 text-amber-300"></i>ທັງໝົດ
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Main KPI Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card 1: Total Revenue -->
+      <div class="bg-gradient-to-br from-[#19102c] to-[#140d24] p-5 rounded-3xl border border-purple-800/60 shadow-xl relative overflow-hidden group hover:border-amber-500/50 transition">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-sack-dollar text-amber-400"></i>
+            <span>ຍອດຂາຍລວມ (Total Revenue)</span>
+          </span>
+          <span class="px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 text-[10px] font-black border border-amber-500/30">
+            ສຳເລັດ/ອະນຸມັດ
+          </span>
+        </div>
+        <div id="dash-kpi-revenue" class="text-2xl sm:text-3xl font-black text-amber-400 font-mono tracking-tight">
+          0 ₭
+        </div>
+        <div class="mt-2 text-[11px] text-purple-300/80 flex items-center justify-between">
+          <span id="dash-kpi-completed-orders">0 ອໍເດີສຳເລັດ</span>
+          <span class="text-amber-400/80 font-bold"><i class="fa-solid fa-check-circle mr-1"></i>ກວດສອບແລ້ວ</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Today's Revenue -->
+      <div class="bg-gradient-to-br from-[#19102c] to-[#140d24] p-5 rounded-3xl border border-purple-800/60 shadow-xl relative overflow-hidden group hover:border-emerald-500/50 transition">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-bolt text-emerald-400"></i>
+            <span>ຍອດຂາຍມື້ນີ້ (Today's Sales)</span>
+          </span>
+          <span class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-black border border-emerald-500/30">
+            ມື້ນີ້
+          </span>
+        </div>
+        <div id="dash-kpi-today-revenue" class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono tracking-tight">
+          0 ₭
+        </div>
+        <div class="mt-2 text-[11px] text-purple-300/80 flex items-center justify-between">
+          <span id="dash-kpi-today-orders">0 ອໍເດີມື້ນີ້</span>
+          <span class="text-emerald-400/80 font-bold"><i class="fa-solid fa-clock mr-1"></i>Real-time</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Pending Review Revenue -->
+      <div onclick="switchTab('orders'); filterOrders('pending')" class="cursor-pointer bg-gradient-to-br from-[#19102c] to-[#140d24] p-5 rounded-3xl border border-purple-800/60 shadow-xl relative overflow-hidden group hover:border-yellow-400/60 transition hover:scale-[1.02]">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-hourglass-half text-yellow-400"></i>
+            <span>ລໍຖ້າກວດສອບ (Pending)</span>
+          </span>
+          <span class="px-2 py-0.5 rounded-lg bg-yellow-500/20 text-yellow-300 text-[10px] font-black border border-yellow-500/30">
+            ກົດເພື່ອຈັດການ &rarr;
+          </span>
+        </div>
+        <div id="dash-kpi-pending-revenue" class="text-2xl sm:text-3xl font-black text-yellow-300 font-mono tracking-tight">
+          0 ₭
+        </div>
+        <div class="mt-2 text-[11px] text-purple-300/80 flex items-center justify-between">
+          <span id="dash-kpi-pending-orders">0 ອໍເດີລໍຖ້າ</span>
+          <span class="text-yellow-400 font-bold underline">ກວດໃບບິນ</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Average Order Value (AOV) -->
+      <div class="bg-gradient-to-br from-[#19102c] to-[#140d24] p-5 rounded-3xl border border-purple-800/60 shadow-xl relative overflow-hidden group hover:border-fuchsia-500/50 transition">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-fuchsia-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-line text-fuchsia-400"></i>
+            <span>ສະເລ່ຍຕໍ່ອໍເດີ (Avg. Order)</span>
+          </span>
+          <span class="px-2 py-0.5 rounded-lg bg-fuchsia-500/20 text-fuchsia-300 text-[10px] font-black border border-fuchsia-500/30">
+            AOV
+          </span>
+        </div>
+        <div id="dash-kpi-aov" class="text-2xl sm:text-3xl font-black text-fuchsia-300 font-mono tracking-tight">
+          0 ₭
+        </div>
+        <div class="mt-2 text-[11px] text-purple-300/80 flex items-center justify-between">
+          <span id="dash-kpi-total-orders-count">ທັງໝົດ 0 ອໍເດີ</span>
+          <span class="text-fuchsia-400 font-bold">ສະເລ່ຍຍອດຊື້</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Category Sales Breakdown & Top Selling Products -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Left 2 Cols: 3 Category Breakdown Cards -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="flex items-center justify-between">
+          <h4 class="text-base font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-amber-400"></i>
+            <span>ຍອດຂາຍແຍກຕາມໝວດສິນຄ້າ (Sales by Category)</span>
+          </h4>
+          <span class="text-xs text-purple-400/80">ຄິດໄລ່ຈາກອໍເດີສຳເລັດ/ອະນຸມັດ</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+          <!-- Category 1: ເປັນຕຸກ (Bottles) -->
+          <div class="bg-[#140d24] p-5 rounded-3xl border border-amber-500/30 shadow-xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg border border-amber-500/30">
+                🫙
+              </div>
+              <span id="dash-cat-bottle-pct" class="px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-300 font-mono text-xs font-black border border-amber-500/30">
+                0%
+              </span>
+            </div>
+            <div class="text-xs font-bold text-purple-300">ໝວດ ເປັນຕຸກ (Bottles)</div>
+            <div id="dash-cat-bottle-rev" class="text-xl font-black text-amber-400 font-mono mt-1">0 ₭</div>
+            <div class="mt-3 flex items-center justify-between text-xs text-purple-400">
+              <span>ຈຳນວນຂາຍໄດ້:</span>
+              <span id="dash-cat-bottle-qty" class="font-bold font-mono text-white">0 ຕຸກ</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-[#0e081c] mt-2 overflow-hidden border border-purple-900/60">
+              <div id="dash-cat-bottle-bar" class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Category 2: ເປັນຊຸດ (Sets / Leaves & Syrup) -->
+          <div class="bg-[#140d24] p-5 rounded-3xl border border-emerald-500/30 shadow-xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/30">
+                📦
+              </div>
+              <span id="dash-cat-set-pct" class="px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-300 font-mono text-xs font-black border border-emerald-500/30">
+                0%
+              </span>
+            </div>
+            <div class="text-xs font-bold text-purple-300">ໝວດ ເປັນຊຸດ (Sets / ຕົ້ມ)</div>
+            <div id="dash-cat-set-rev" class="text-xl font-black text-emerald-400 font-mono mt-1">0 ₭</div>
+            <div class="mt-3 flex items-center justify-between text-xs text-purple-400">
+              <span>ຈຳນວນຂາຍໄດ້:</span>
+              <span id="dash-cat-set-qty" class="font-bold font-mono text-white">0 ຊຸດ</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-[#0e081c] mt-2 overflow-hidden border border-purple-900/60">
+              <div id="dash-cat-set-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Category 3: Pilot / ອື່ນໆ -->
+          <div class="bg-[#140d24] p-5 rounded-3xl border border-fuchsia-500/30 shadow-xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-2xl bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center text-lg border border-fuchsia-500/30">
+                🚀
+              </div>
+              <span id="dash-cat-pilot-pct" class="px-2.5 py-1 rounded-xl bg-fuchsia-500/10 text-fuchsia-300 font-mono text-xs font-black border border-fuchsia-500/30">
+                0%
+              </span>
+            </div>
+            <div class="text-xs font-bold text-purple-300">ໝວດ Pilot / ອື່ນໆ</div>
+            <div id="dash-cat-pilot-rev" class="text-xl font-black text-fuchsia-300 font-mono mt-1">0 ₭</div>
+            <div class="mt-3 flex items-center justify-between text-xs text-purple-400">
+              <span>ຈຳນວນຂາຍໄດ້:</span>
+              <span id="dash-cat-pilot-qty" class="font-bold font-mono text-white">0 ລາຍການ</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-[#0e081c] mt-2 overflow-hidden border border-purple-900/60">
+              <div id="dash-cat-pilot-bar" class="h-full bg-gradient-to-r from-fuchsia-500 to-purple-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right 1 Col: Top 5 Best Selling Products -->
+      <div class="bg-[#140d24] p-5 rounded-3xl border border-purple-900/50 shadow-xl flex flex-col justify-between">
+        <div>
+          <h4 class="text-base font-black text-white flex items-center gap-2 mb-3">
+            <i class="fa-solid fa-trophy text-amber-400"></i>
+            <span>ສິນຄ້າຂາຍດີທີ່ສຸດ (Top Sellers)</span>
+          </h4>
+          <div id="dash-top-products-list" class="space-y-2.5">
+            <div class="text-xs text-purple-400/60 py-4 text-center">ກຳລັງປະມວນຜົນ...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Detailed Sales Transaction Table with Search, Status Filter & Pagination -->
+    <div class="bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl overflow-hidden">
+      
+      <!-- Table Filter Bar -->
+      <div class="p-5 border-b border-purple-900/40 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <h4 class="text-lg font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-receipt text-amber-400"></i>
+            <span>ລາຍການຂາຍລະອຽດ (Sales Transaction Records)</span>
+          </h4>
+          <p class="text-xs text-purple-300/80 mt-0.5">ຄົ້ນຫາອໍເດີ, ກັ່ນຕອງສະຖານະ, ເບິ່ງໃບບິນ ແລະ ແບ່ງໜ້າ</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-purple-400/60 text-xs"></i>
+            <input 
+              type="text" 
+              id="dash-table-search" 
+              oninput="handleDashboardSearch(this.value)"
+              placeholder="ຄົ້ນຫາ: ລະຫັດ, ຊື່, ເບີໂທ..." 
+              class="w-full pl-9 pr-8 py-2 rounded-xl border border-purple-900/60 bg-[#0e081c] text-white placeholder-purple-400/40 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button id="dash-clear-search-btn" onclick="clearDashboardSearch()" class="hidden absolute right-2.5 top-2.5 text-purple-400 hover:text-white text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Status Filter -->
+          <select id="dash-filter-status" onchange="handleDashboardStatusFilter(this.value)" class="px-3 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-purple-200 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <option value="all">ສະຖານະ: ທັງໝົດ</option>
+            <option value="completed">✅ ສຳເລັດ (Completed)</option>
+            <option value="approved">⚡ ອະນຸມັດແລ້ວ (Approved)</option>
+            <option value="delivering">🚚 ກຳລັງສົ່ງ (Delivering)</option>
+            <option value="pending">⏳ ລໍຖ້າກວດ (Pending)</option>
+            <option value="rejected">❌ ປະຕິເສດ (Rejected)</option>
+          </select>
+
+          <!-- Category Filter -->
+          <select id="dash-filter-category" onchange="handleDashboardCategoryFilter(this.value)" class="px-3 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-purple-200 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <option value="all">ໝວດ: ທັງໝົດ</option>
+            <option value="bottle">🫙 ເປັນຕຸກ (Bottle)</option>
+            <option value="leaves_syrup">📦 ເປັນຊຸດ (Set)</option>
+            <option value="pilot">🚀 Pilot</option>
+          </select>
+
+          <!-- Page Size -->
+          <select id="dash-page-size" onchange="handleDashboardPageSize(this.value)" class="px-3 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-purple-200 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <option value="10">10 ແຖວ/ໜ້າ</option>
+            <option value="25">25 ແຖວ/ໜ້າ</option>
+            <option value="50">50 ແຖວ/ໜ້າ</option>
+            <option value="100">100 ແຖວ/ໜ້າ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-purple-200">
+          <thead class="bg-[#0e081c] text-[11px] font-black uppercase text-purple-300 border-b border-purple-900/50">
+            <tr>
+              <th class="py-3.5 px-4">ລະຫັດອໍເດີ</th>
+              <th class="py-3.5 px-4">ວັນທີ & ເວລາ</th>
+              <th class="py-3.5 px-4">ລູກຄ້າ</th>
+              <th class="py-3.5 px-4">ລາຍການສິນຄ້າ</th>
+              <th class="py-3.5 px-4 text-right">ຍອດເງິນ</th>
+              <th class="py-3.5 px-4 text-center">ສະຖານະ</th>
+              <th class="py-3.5 px-4 text-center">ໃບບິນ</th>
+              <th class="py-3.5 px-4 text-center">ຈັດການ</th>
+            </tr>
+          </thead>
+          <tbody id="dash-table-body" class="divide-y divide-purple-900/30">
+            <!-- Dynamic Sales Rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Footer Bar -->
+      <div class="p-4 bg-[#0e081c] border-t border-purple-900/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div id="dash-pagination-info" class="text-purple-400 font-medium">
+          ກຳລັງໂຫຼດຂໍ້ມູນ...
+        </div>
+        <div id="dash-pagination-controls" class="flex items-center gap-1.5">
+          <!-- Prev / Numbers / Next -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- SECTION 1: ORDERS MANAGEMENT -->
-  <div id="section-orders" class="space-y-6">
+  <div id="section-orders" class="space-y-6 hidden">
 
     <!-- Google Sheet Status Banner -->
     <div class="p-4 sm:p-5 rounded-3xl border flex items-center justify-between flex-wrap gap-3 bg-[#19102c] border-purple-900/50 text-purple-200 text-xs shadow-xs">
@@ -615,8 +936,15 @@
 <script>
 let currentFilter = 'all';
 let allOrders = [];
-let currentTab = 'orders';
+let currentTab = 'dashboard';
 let allUsers = [];
+let dashboardTimeRange = 'all'; // 'today', 'week', 'month', 'all'
+let dashboardSearchQuery = '';
+let dashboardStatusFilter = 'all';
+let dashboardCategoryFilter = 'all';
+let dashboardCurrentPage = 1;
+let dashboardPageSize = 10;
+
 const currentUserId = {{ current_user.user_id if current_user and current_user.user_id else 'null' }};
 const currentUsername = "{{ current_user.username if current_user and current_user.username else '' }}";
 
@@ -636,6 +964,7 @@ async function fetchOrders() {
       allOrders = await res.json();
       updateCounters();
       renderOrders();
+      renderDashboard();
     }
   } catch (err) {
     showToast("ບໍ່ສາມາດດຶງຂໍ້ມູນອໍເດີໄດ້: " + err.message, "error");
@@ -653,6 +982,8 @@ function updateCounters() {
   };
 
   document.getElementById("badge-all").textContent = counts.all;
+  const navBadge = document.getElementById("nav-badge-orders-count");
+  if (navBadge) navBadge.textContent = counts.all;
   document.getElementById("badge-pending").textContent = counts.pending;
   document.getElementById("badge-approved").textContent = counts.approved;
   document.getElementById("badge-delivering").textContent = counts.delivering;
@@ -1094,13 +1425,16 @@ async function saveStoreSettings(e) {
 }
 
 // --------------------------------------------------------------------------
-// Tab Switcher (Orders vs Users vs Products)
+// --------------------------------------------------------------------------
+// Tab Switcher (Dashboard vs Orders vs Users vs Products)
 // --------------------------------------------------------------------------
 function switchTab(tab) {
   currentTab = tab;
+  const tabDashboard = document.getElementById("tab-dashboard");
   const tabOrders = document.getElementById("tab-orders");
   const tabUsers = document.getElementById("tab-users");
   const tabProducts = document.getElementById("tab-products");
+  const secDashboard = document.getElementById("section-dashboard");
   const secOrders = document.getElementById("section-orders");
   const secUsers = document.getElementById("section-users");
   const secProducts = document.getElementById("section-products");
@@ -1108,27 +1442,567 @@ function switchTab(tab) {
   const activeTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30 whitespace-nowrap";
   const inactiveTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap";
 
-  tabOrders.className = inactiveTabClass;
-  tabUsers.className = inactiveTabClass;
+  if (tabDashboard) tabDashboard.className = inactiveTabClass;
+  if (tabOrders) tabOrders.className = inactiveTabClass;
+  if (tabUsers) tabUsers.className = inactiveTabClass;
   if (tabProducts) tabProducts.className = inactiveTabClass;
 
-  secOrders.classList.add("hidden");
-  secUsers.classList.add("hidden");
+  if (secDashboard) secDashboard.classList.add("hidden");
+  if (secOrders) secOrders.classList.add("hidden");
+  if (secUsers) secUsers.classList.add("hidden");
   if (secProducts) secProducts.classList.add("hidden");
 
-  if (tab === 'orders') {
-    tabOrders.className = activeTabClass;
-    secOrders.classList.remove("hidden");
+  if (tab === 'dashboard') {
+    if (tabDashboard) tabDashboard.className = activeTabClass;
+    if (secDashboard) secDashboard.classList.remove("hidden");
+    renderDashboard();
+  } else if (tab === 'orders') {
+    if (tabOrders) tabOrders.className = activeTabClass;
+    if (secOrders) secOrders.classList.remove("hidden");
     fetchOrders();
   } else if (tab === 'users') {
-    tabUsers.className = activeTabClass;
-    secUsers.classList.remove("hidden");
+    if (tabUsers) tabUsers.className = activeTabClass;
+    if (secUsers) secUsers.classList.remove("hidden");
     fetchUsers();
   } else if (tab === 'products') {
     if (tabProducts) tabProducts.className = activeTabClass;
     if (secProducts) secProducts.classList.remove("hidden");
     fetchAdminProducts();
   }
+}
+
+// --------------------------------------------------------------------------
+// Admin Sales Dashboard & Analytics Functions
+// --------------------------------------------------------------------------
+function setDashboardTimeRange(range) {
+  dashboardTimeRange = range;
+  const buttons = ['today', 'week', 'month', 'all'];
+  buttons.forEach(b => {
+    const btn = document.getElementById('dash-range-' + b);
+    if (btn) {
+      if (b === range) {
+        btn.className = "dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md whitespace-nowrap";
+      } else {
+        btn.className = "dash-range-btn px-4 py-2 rounded-xl text-xs font-black transition-all text-purple-300 hover:text-white hover:bg-purple-950/60 whitespace-nowrap";
+      }
+    }
+  });
+  renderDashboard();
+}
+
+function handleDashboardSearch(val) {
+  dashboardSearchQuery = val.trim();
+  const clearBtn = document.getElementById("dash-clear-search-btn");
+  if (clearBtn) {
+    if (dashboardSearchQuery) clearBtn.classList.remove("hidden");
+    else clearBtn.classList.add("hidden");
+  }
+  dashboardCurrentPage = 1;
+  renderDashboardTable();
+}
+
+function clearDashboardSearch() {
+  dashboardSearchQuery = '';
+  const input = document.getElementById("dash-table-search");
+  if (input) input.value = '';
+  const clearBtn = document.getElementById("dash-clear-search-btn");
+  if (clearBtn) clearBtn.classList.add("hidden");
+  dashboardCurrentPage = 1;
+  renderDashboardTable();
+}
+
+function handleDashboardStatusFilter(status) {
+  dashboardStatusFilter = status;
+  dashboardCurrentPage = 1;
+  renderDashboardTable();
+}
+
+function handleDashboardCategoryFilter(cat) {
+  dashboardCategoryFilter = cat;
+  dashboardCurrentPage = 1;
+  renderDashboardTable();
+}
+
+function handleDashboardPageSize(size) {
+  dashboardPageSize = parseInt(size, 10) || 10;
+  dashboardCurrentPage = 1;
+  renderDashboardTable();
+}
+
+function goToDashboardPage(page) {
+  dashboardCurrentPage = page;
+  renderDashboardTable();
+}
+
+function jumpToOrder(orderCode) {
+  switchTab('orders');
+  setAdminSearch(orderCode);
+}
+
+function filterOrderByTimeRange(order, range) {
+  if (range === 'all') return true;
+  const now = new Date();
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Vientiane' }).format(now);
+  
+  let orderDateStr = order.created_date || '';
+  if (!orderDateStr && order.created_at_str) {
+    const parts = order.created_at_str.split(' ')[0].split('/');
+    if (parts.length === 3) {
+      orderDateStr = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+    }
+  }
+  if (!orderDateStr) return true;
+
+  if (range === 'today') {
+    return orderDateStr === todayStr;
+  }
+  if (range === 'week') {
+    const dOrder = new Date(orderDateStr + 'T00:00:00');
+    const dToday = new Date(todayStr + 'T00:00:00');
+    const diffTime = dToday.getTime() - dOrder.getTime();
+    const diffDays = diffTime / (1000 * 3600 * 24);
+    return diffDays >= 0 && diffDays <= 7;
+  }
+  if (range === 'month') {
+    return orderDateStr.slice(0, 7) === todayStr.slice(0, 7);
+  }
+  return true;
+}
+
+function getItemCategory(item) {
+  if (item.category && item.category !== 'default') {
+    const c = (item.category + '').toLowerCase();
+    if (c === 'bottle') return 'bottle';
+    if (c === 'leaves_syrup' || c === 'set') return 'leaves_syrup';
+    if (c === 'pilot') return 'pilot';
+  }
+  const name = (item.product_name || '').toLowerCase();
+  if (name.includes('pilot')) return 'pilot';
+  if (name.includes('ຊຸດ') || name.includes('ຕົ້ມ') || name.includes('ໃບ') || name.includes('set')) return 'leaves_syrup';
+  return 'bottle';
+}
+
+function renderPaginationControls(totalPages, currentPage) {
+  const container = document.getElementById("dash-pagination-controls");
+  if (!container) return;
+
+  if (totalPages <= 1) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+
+  // Prev Button
+  const prevDisabled = currentPage <= 1;
+  html += `
+    <button 
+      onclick="goToDashboardPage(${currentPage - 1})" 
+      ${prevDisabled ? 'disabled' : ''} 
+      class="px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center gap-1 ${prevDisabled ? 'opacity-40 cursor-not-allowed border-purple-900/40 text-purple-500 bg-[#0e081c]' : 'border-purple-800/60 bg-[#140d24] text-purple-200 hover:bg-purple-900/60 hover:text-white active:scale-95'}"
+    >
+      <i class="fa-solid fa-chevron-left text-[10px]"></i>
+      <span class="hidden sm:inline">ກ່ອນໜ້າ</span>
+    </button>
+  `;
+
+  // Page Numbers
+  let pagesToShow = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pagesToShow.push(i);
+  } else {
+    pagesToShow.push(1);
+    if (currentPage > 3) pagesToShow.push('...');
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) {
+      if (!pagesToShow.includes(i)) pagesToShow.push(i);
+    }
+    if (currentPage < totalPages - 2) pagesToShow.push('...');
+    if (!pagesToShow.includes(totalPages)) pagesToShow.push(totalPages);
+  }
+
+  pagesToShow.forEach(p => {
+    if (p === '...') {
+      html += `<span class="px-2 py-1 text-purple-500 font-mono text-xs">...</span>`;
+    } else {
+      const isActive = p === currentPage;
+      html += `
+        <button 
+          onclick="goToDashboardPage(${p})" 
+          class="w-8 h-8 rounded-xl text-xs font-black transition-all flex items-center justify-center font-mono ${isActive ? 'bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30' : 'bg-[#140d24] text-purple-300 border border-purple-900/50 hover:bg-purple-900/60 hover:text-white'}"
+        >
+          ${p}
+        </button>
+      `;
+    }
+  });
+
+  // Next Button
+  const nextDisabled = currentPage >= totalPages;
+  html += `
+    <button 
+      onclick="goToDashboardPage(${currentPage + 1})" 
+      ${nextDisabled ? 'disabled' : ''} 
+      class="px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center gap-1 ${nextDisabled ? 'opacity-40 cursor-not-allowed border-purple-900/40 text-purple-500 bg-[#0e081c]' : 'border-purple-800/60 bg-[#140d24] text-purple-200 hover:bg-purple-900/60 hover:text-white active:scale-95'}"
+    >
+      <span class="hidden sm:inline">ຖັດໄປ</span>
+      <i class="fa-solid fa-chevron-right text-[10px]"></i>
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+function renderDashboard() {
+  if (!allOrders) return;
+
+  // Filter orders by chosen dashboard time range
+  const filteredOrders = allOrders.filter(o => filterOrderByTimeRange(o, dashboardTimeRange));
+
+  // Date indicator display
+  const dateIndicator = document.getElementById("dash-date-indicator");
+  if (dateIndicator) {
+    const rangeLabels = {
+      today: 'ມື້ນີ້',
+      week: '7 ມື້ຜ່ານມາ',
+      month: 'ເດືອນນີ້',
+      all: 'ທັງໝົດ'
+    };
+    dateIndicator.textContent = `(ຊ່ວງເວລາ: ${rangeLabels[dashboardTimeRange] || 'ທັງໝົດ'})`;
+  }
+
+  // 1. Calculate KPIs
+  // Revenue counts completed, approved, delivering orders
+  const revenueOrders = filteredOrders.filter(o => o.status === 'completed' || o.status === 'approved' || o.status === 'delivering');
+  const totalRevenue = revenueOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+  const completedCount = filteredOrders.filter(o => o.status === 'completed').length;
+
+  // Today's Sales
+  const todayOrders = allOrders.filter(o => filterOrderByTimeRange(o, 'today') && (o.status === 'completed' || o.status === 'approved' || o.status === 'delivering'));
+  const todayRevenue = todayOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+  const todayCount = allOrders.filter(o => filterOrderByTimeRange(o, 'today')).length;
+
+  // Pending Orders
+  const pendingOrders = filteredOrders.filter(o => o.status === 'pending');
+  const pendingRevenue = pendingOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+  const pendingCount = pendingOrders.length;
+
+  // Average Order Value
+  const aov = revenueOrders.length > 0 ? Math.round(totalRevenue / revenueOrders.length) : 0;
+
+  // Update KPI DOM
+  const elRev = document.getElementById("dash-kpi-revenue");
+  if (elRev) elRev.textContent = formatKip(totalRevenue);
+
+  const elComp = document.getElementById("dash-kpi-completed-orders");
+  if (elComp) elComp.textContent = `${completedCount} ອໍເດີສຳເລັດ`;
+
+  const elTodayRev = document.getElementById("dash-kpi-today-revenue");
+  if (elTodayRev) elTodayRev.textContent = formatKip(todayRevenue);
+
+  const elTodayOrd = document.getElementById("dash-kpi-today-orders");
+  if (elTodayOrd) elTodayOrd.textContent = `${todayCount} ອໍເດີມື້ນີ້`;
+
+  const elPendRev = document.getElementById("dash-kpi-pending-revenue");
+  if (elPendRev) elPendRev.textContent = formatKip(pendingRevenue);
+
+  const elPendOrd = document.getElementById("dash-kpi-pending-orders");
+  if (elPendOrd) elPendOrd.textContent = `${pendingCount} ອໍເດີລໍຖ້າ`;
+
+  const elAov = document.getElementById("dash-kpi-aov");
+  if (elAov) elAov.textContent = formatKip(aov);
+
+  const elTotalOrd = document.getElementById("dash-kpi-total-orders-count");
+  if (elTotalOrd) elTotalOrd.textContent = `ທັງໝົດ ${filteredOrders.length} ອໍເດີ`;
+
+  // 2. Calculate Category Breakdown & Top Products
+  let bottleRev = 0, bottleQty = 0;
+  let setRev = 0, setQty = 0;
+  let pilotRev = 0, pilotQty = 0;
+  const productSales = {};
+
+  revenueOrders.forEach(order => {
+    if (order.items && order.items.length > 0) {
+      order.items.forEach(itm => {
+        const cat = getItemCategory(itm);
+        const qty = itm.quantity || 1;
+        const sub = itm.subtotal || (itm.price * qty) || 0;
+        if (cat === 'bottle') {
+          bottleRev += sub;
+          bottleQty += qty;
+        } else if (cat === 'leaves_syrup') {
+          setRev += sub;
+          setQty += qty;
+        } else if (cat === 'pilot') {
+          pilotRev += sub;
+          pilotQty += qty;
+        }
+
+        const pName = itm.product_name || 'ສິນຄ້າ';
+        if (!productSales[pName]) {
+          productSales[pName] = { name: pName, category: cat, qty: 0, rev: 0 };
+        }
+        productSales[pName].qty += qty;
+        productSales[pName].rev += sub;
+      });
+    } else {
+      const summary = (order.items_summary || '').toLowerCase();
+      const amount = order.total_amount || 0;
+      if (summary.includes('pilot')) {
+        pilotRev += amount;
+        pilotQty += 1;
+      } else if (summary.includes('ຊຸດ') || summary.includes('ຕົ້ມ') || summary.includes('ໃບ')) {
+        setRev += amount;
+        setQty += 1;
+      } else {
+        bottleRev += amount;
+        bottleQty += 1;
+      }
+    }
+  });
+
+  const totalCatRev = (bottleRev + setRev + pilotRev) || 1;
+  const bottlePct = totalRevenue > 0 ? Math.round((bottleRev / totalCatRev) * 100) : 0;
+  const setPct = totalRevenue > 0 ? Math.round((setRev / totalCatRev) * 100) : 0;
+  const pilotPct = totalRevenue > 0 ? Math.round((pilotRev / totalCatRev) * 100) : 0;
+
+  // Update Category UI
+  const elBotRev = document.getElementById("dash-cat-bottle-rev");
+  if (elBotRev) elBotRev.textContent = formatKip(bottleRev);
+  const elBotQty = document.getElementById("dash-cat-bottle-qty");
+  if (elBotQty) elBotQty.textContent = `${bottleQty} ຕຸກ`;
+  const elBotPct = document.getElementById("dash-cat-bottle-pct");
+  if (elBotPct) elBotPct.textContent = `${bottlePct}%`;
+  const elBotBar = document.getElementById("dash-cat-bottle-bar");
+  if (elBotBar) elBotBar.style.width = `${bottlePct}%`;
+
+  const elSetRev = document.getElementById("dash-cat-set-rev");
+  if (elSetRev) elSetRev.textContent = formatKip(setRev);
+  const elSetQty = document.getElementById("dash-cat-set-qty");
+  if (elSetQty) elSetQty.textContent = `${setQty} ຊຸດ`;
+  const elSetPct = document.getElementById("dash-cat-set-pct");
+  if (elSetPct) elSetPct.textContent = `${setPct}%`;
+  const elSetBar = document.getElementById("dash-cat-set-bar");
+  if (elSetBar) elSetBar.style.width = `${setPct}%`;
+
+  const elPilRev = document.getElementById("dash-cat-pilot-rev");
+  if (elPilRev) elPilRev.textContent = formatKip(pilotRev);
+  const elPilQty = document.getElementById("dash-cat-pilot-qty");
+  if (elPilQty) elPilQty.textContent = `${pilotQty} ລາຍການ`;
+  const elPilPct = document.getElementById("dash-cat-pilot-pct");
+  if (elPilPct) elPilPct.textContent = `${pilotPct}%`;
+  const elPilBar = document.getElementById("dash-cat-pilot-bar");
+  if (elPilBar) elPilBar.style.width = `${pilotPct}%`;
+
+  // Top Products List
+  const topListEl = document.getElementById("dash-top-products-list");
+  if (topListEl) {
+    const sortedProducts = Object.values(productSales)
+      .sort((a, b) => b.qty - a.qty || b.rev - a.rev)
+      .slice(0, 5);
+
+    if (sortedProducts.length === 0) {
+      topListEl.innerHTML = `
+        <div class="text-xs text-purple-400/60 py-6 text-center">
+          <i class="fa-solid fa-box-open text-2xl mb-1 text-purple-500"></i>
+          <p>ຍັງບໍ່ມີຂໍ້ມູນຍອດຂາຍສິນຄ້າໃນຊ່ວງເວລານີ້</p>
+        </div>
+      `;
+    } else {
+      const maxQty = sortedProducts[0].qty || 1;
+      const rankBadges = [
+        '<span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] flex items-center justify-center shadow-xs">1</span>',
+        '<span class="w-5 h-5 rounded-full bg-slate-300 text-slate-950 font-black text-[11px] flex items-center justify-center">2</span>',
+        '<span class="w-5 h-5 rounded-full bg-amber-700 text-white font-black text-[11px] flex items-center justify-center">3</span>',
+        '<span class="w-5 h-5 rounded-full bg-purple-900 text-purple-200 font-bold text-[11px] flex items-center justify-center">4</span>',
+        '<span class="w-5 h-5 rounded-full bg-purple-900 text-purple-200 font-bold text-[11px] flex items-center justify-center">5</span>'
+      ];
+
+      topListEl.innerHTML = sortedProducts.map((p, idx) => {
+        const catBadges = {
+          bottle: '<span class="text-[10px] text-amber-300 font-bold">🫙 ຕຸກ</span>',
+          leaves_syrup: '<span class="text-[10px] text-emerald-300 font-bold">📦 ຊຸດ</span>',
+          pilot: '<span class="text-[10px] text-fuchsia-300 font-bold">🚀 Pilot</span>'
+        };
+        const catBadge = catBadges[p.category] || catBadges.bottle;
+        const relativeWidth = Math.min(100, Math.round((p.qty / maxQty) * 100));
+
+        return `
+          <div class="p-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/50 hover:border-purple-700/60 transition">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                ${rankBadges[idx] || `<span class="text-xs font-mono font-bold text-purple-400">${idx + 1}</span>`}
+                <div class="min-w-0">
+                  <div class="text-xs font-bold text-white truncate">${p.name}</div>
+                  <div class="flex items-center gap-1.5 mt-0.5">
+                    ${catBadge}
+                    <span class="text-[10px] text-purple-400 font-mono">(${p.qty} ໜ່ວຍ)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <div class="text-xs font-black text-amber-400 font-mono">${formatKip(p.rev)}</div>
+              </div>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-[#140d24] mt-2 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-purple-500 to-amber-400 rounded-full" style="width: ${relativeWidth}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // 3. Render Table
+  renderDashboardTable();
+}
+
+function renderDashboardTable() {
+  const tbody = document.getElementById("dash-table-body");
+  const infoEl = document.getElementById("dash-pagination-info");
+  if (!tbody) return;
+
+  // Filter by time range
+  let filtered = allOrders.filter(o => filterOrderByTimeRange(o, dashboardTimeRange));
+
+  // Filter by status
+  if (dashboardStatusFilter !== 'all') {
+    filtered = filtered.filter(o => o.status === dashboardStatusFilter);
+  }
+
+  // Filter by category
+  if (dashboardCategoryFilter !== 'all') {
+    filtered = filtered.filter(o => {
+      if (o.items && o.items.length > 0) {
+        return o.items.some(i => getItemCategory(i) === dashboardCategoryFilter);
+      }
+      const summary = (o.items_summary || '').toLowerCase();
+      if (dashboardCategoryFilter === 'pilot') return summary.includes('pilot');
+      if (dashboardCategoryFilter === 'leaves_syrup') return summary.includes('ຊຸດ') || summary.includes('ຕົ້ມ') || summary.includes('ໃບ');
+      return summary.includes('ຕຸກ') || !summary.includes('pilot');
+    });
+  }
+
+  // Filter by search query (order_code, name, phone)
+  if (dashboardSearchQuery) {
+    const sq = dashboardSearchQuery.toLowerCase();
+    const sqDigits = sq.replace(/\D/g, '');
+    filtered = filtered.filter(o => {
+      if ((o.order_code || '').toLowerCase().includes(sq)) return true;
+      if ((o.customer_name || '').toLowerCase().includes(sq)) return true;
+      if ((o.customer_phone || '').toLowerCase().includes(sq)) return true;
+      if (sqDigits && sqDigits.length >= 4) {
+        const phoneDigits = (o.customer_phone || '').replace(/\D/g, '');
+        if (phoneDigits.includes(sqDigits) || sqDigits.includes(phoneDigits)) return true;
+      }
+      return false;
+    });
+  }
+
+  const totalRows = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(totalRows / dashboardPageSize));
+  if (dashboardCurrentPage > totalPages) dashboardCurrentPage = totalPages;
+  if (dashboardCurrentPage < 1) dashboardCurrentPage = 1;
+
+  const startIndex = (dashboardCurrentPage - 1) * dashboardPageSize;
+  const endIndex = Math.min(startIndex + dashboardPageSize, totalRows);
+  const pageOrders = filtered.slice(startIndex, endIndex);
+
+  // Update info text
+  if (infoEl) {
+    if (totalRows === 0) {
+      infoEl.textContent = "ບໍ່ພົບຂໍ້ມູນອໍເດີທີ່ກົງກັບເງື່ອນໄຂ";
+    } else {
+      infoEl.textContent = `ສະແດງ ${startIndex + 1} - ${endIndex} ຈາກທັງໝົດ ${totalRows} ອໍເດີ (ໜ້າ ${dashboardCurrentPage}/${totalPages})`;
+    }
+  }
+
+  // Render pagination buttons
+  renderPaginationControls(totalPages, dashboardCurrentPage);
+
+  if (pageOrders.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="p-12 text-center text-purple-400/60 bg-[#140d24]">
+          <i class="fa-regular fa-folder-open text-3xl mb-2 text-purple-500"></i>
+          <p class="font-bold text-white text-xs">ບໍ່ພົບລາຍການອໍເດີທີ່ກົງກັບເງື່ອນໄຂຄົ້ນຫາ</p>
+          ${dashboardSearchQuery ? `<button onclick="clearDashboardSearch()" class="mt-2.5 px-3 py-1.5 bg-purple-950 text-amber-300 text-xs font-bold rounded-xl border border-purple-800">ລຶບຄຳຄົ້ນຫາ</button>` : ''}
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  const statusBadgeMap = {
+    pending: '<span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>ລໍຖ້າກວດ</span>',
+    approved: '<span class="px-2.5 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40 text-[10px] font-black inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400"></span>ອະນຸມັດ</span>',
+    delivering: '<span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[10px] font-black inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>ກຳລັງສົ່ງ</span>',
+    completed: '<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-black inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>ສຳເລັດ</span>',
+    rejected: '<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] font-black inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>ປະຕິເສດ</span>'
+  };
+
+  tbody.innerHTML = pageOrders.map(order => {
+    // Items breakdown tags
+    let itemsHtml = '';
+    if (order.items && order.items.length > 0) {
+      itemsHtml = order.items.map(i => {
+        const cat = getItemCategory(i);
+        let tagColor = 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        if (cat === 'leaves_syrup') tagColor = 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+        else if (cat === 'pilot') tagColor = 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/30';
+        return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md ${tagColor} border text-[10px] font-bold whitespace-nowrap mb-1">${i.product_name} x${i.quantity}</span>`;
+      }).join(' ');
+    } else {
+      itemsHtml = `<span class="text-[11px] text-purple-300">${order.items_summary || '-'}</span>`;
+    }
+
+    const slipBtn = order.slip_image 
+      ? `<button onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="px-2.5 py-1 rounded-xl bg-purple-950/80 hover:bg-purple-900 text-amber-400 border border-purple-800/60 text-[10px] font-bold inline-flex items-center gap-1 transition shadow-2xs hover:scale-105 active:scale-95"><i class="fa-solid fa-image"></i><span>ສະລິບ</span></button>`
+      : `<span class="text-purple-600 text-[11px]">-</span>`;
+
+    const statusBadge = statusBadgeMap[order.status] || statusBadgeMap.pending;
+
+    return `
+      <tr class="hover:bg-purple-950/30 transition">
+        <td class="py-3 px-4 font-mono font-bold text-amber-400 whitespace-nowrap">
+          ${order.order_code || ('#' + order.id)}
+        </td>
+        <td class="py-3 px-4 text-purple-300 whitespace-nowrap font-mono text-[11px]">
+          ${order.created_at_str || '-'}
+        </td>
+        <td class="py-3 px-4">
+          <div class="font-bold text-white">${order.customer_name || 'ບໍ່ລະບຸຊື່'}</div>
+          ${order.customer_phone ? `
+            <a href="tel:${order.customer_phone}" class="text-[11px] text-purple-400 hover:text-amber-300 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-phone text-[10px]"></i>
+              <span class="font-mono">${order.customer_phone}</span>
+            </a>
+          ` : ''}
+        </td>
+        <td class="py-3 px-4 max-w-xs">
+          <div class="flex flex-wrap gap-1">
+            ${itemsHtml}
+          </div>
+        </td>
+        <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-black text-amber-400 text-sm">
+          ${formatKip(order.total_amount)}
+        </td>
+        <td class="py-3 px-4 text-center whitespace-nowrap">
+          ${statusBadge}
+        </td>
+        <td class="py-3 px-4 text-center whitespace-nowrap">
+          ${slipBtn}
+        </td>
+        <td class="py-3 px-4 text-center whitespace-nowrap">
+          <button onclick="jumpToOrder('${order.order_code}')" class="px-3 py-1.5 rounded-xl bg-purple-950 hover:bg-purple-900 text-purple-200 hover:text-white border border-purple-800/60 text-xs font-bold transition inline-flex items-center gap-1 shadow-2xs active:scale-95">
+            <i class="fa-solid fa-arrow-up-right-from-square text-amber-400 text-[10px]"></i>
+            <span>ຈັດການ</span>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 // --------------------------------------------------------------------------
@@ -1697,7 +2571,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchUsers();
   fetchAdminProducts();
   setInterval(() => {
-    if (currentTab === 'orders') {
+    if (currentTab === 'orders' || currentTab === 'dashboard') {
       fetchOrders();
     }
   }, 15000);

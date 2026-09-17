@@ -749,8 +749,22 @@ def get_admin_orders(request: Request, db: Session = Depends(get_db)):
     if not is_admin_logged_in(request):
         raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
     orders = db.query(Order).order_by(Order.id.desc()).all()
+    products_map = {p.id: p.category for p in db.query(Product).all()}
+
     results = []
     for o in orders:
+        items_detail = []
+        for itm in o.items:
+            cat = products_map.get(itm.product_id, "bottle")
+            items_detail.append({
+                "product_id": itm.product_id,
+                "product_name": itm.product_name,
+                "category": cat,
+                "price": itm.price,
+                "quantity": itm.quantity,
+                "subtotal": itm.subtotal
+            })
+
         results.append({
             "id": o.id,
             "order_code": o.order_code,
@@ -760,12 +774,14 @@ def get_admin_orders(request: Request, db: Session = Depends(get_db)):
             "latitude": o.latitude,
             "longitude": o.longitude,
             "items_summary": o.items_summary,
+            "items": items_detail,
             "total_amount": o.total_amount,
             "slip_image": o.slip_image,
             "status": o.status,
             "admin_note": o.admin_note,
             "sheet_synced": o.sheet_synced,
-            "created_at_str": o.created_at.strftime("%d/%m/%Y %H:%M:%S") if o.created_at else ""
+            "created_at_str": o.created_at.strftime("%d/%m/%Y %H:%M:%S") if o.created_at else "",
+            "created_date": o.created_at.strftime("%Y-%m-%d") if o.created_at else ""
         })
     return results
 
