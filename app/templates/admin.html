@@ -1587,9 +1587,9 @@ function openUserModal(mode, userId) {
     icon.className = "fa-solid fa-user-pen";
     idInput.value = user.id;
     usernameInput.value = user.username;
-    usernameInput.disabled = true;
-    usernameInput.classList.add("bg-[#0e081c]/50", "cursor-not-allowed");
-    usernameHelp.textContent = "ບໍ່ສາມາດປ່ຽນຊື່ຜູ້ໃຊ້ (Username) ໄດ້";
+    usernameInput.disabled = false;
+    usernameInput.classList.remove("bg-[#0e081c]/50", "cursor-not-allowed");
+    usernameHelp.textContent = "ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)";
     displayNameInput.value = user.display_name;
     roleSelect.value = user.role;
     activeSelect.value = user.is_active ? "true" : "false";
@@ -1650,6 +1650,7 @@ async function saveUser(e) {
       }
     } else {
       const payload = {
+        username: document.getElementById("user_username").value.trim(),
         display_name: document.getElementById("user_display_name").value.trim(),
         role: document.getElementById("user_role").value,
         is_active: document.getElementById("user_is_active").value === "true"

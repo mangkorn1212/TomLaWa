@@ -147,9 +147,9 @@ def init_database():
         # Seed default Admin user if no users exist
         if db.query(User).count() == 0:
             default_admin = User(
-                username="admin",
+                username="suzu",
                 password_hash=hashlib.sha256("admin123".encode("utf-8")).hexdigest(),
-                display_name="ຜູ້ດູແລລະບົບ (Super Admin)",
+                display_name="suzu (Super Admin)",
                 role="admin",
                 is_active=True
             )

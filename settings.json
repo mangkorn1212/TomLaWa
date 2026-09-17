@@ -8,5 +8,7 @@
   "qr_image_url": "/static/img/demo_qr.png",
   "google_sheet_webhook_url": "https://script.google.com/macros/s/AKfycbxKT_bPqFeSvsCWyvOTCyLH3p7mSSlSMt3TZREGJ-1NtE6d1jTW5BLeItUdsT_0LS9s/exec",
   "currency_symbol": "₭",
-  "currency_name": "ກີບ"
+  "currency_name": "ກີບ",
+  "admin_username": "suzu",
+  "admin_password": "admin123"
 }

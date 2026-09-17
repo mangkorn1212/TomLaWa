@@ -77,7 +77,7 @@ def run_tests():
     print("Test 6.2 Passed: Invalid login rejected (401)")
 
     # 6.3 Test valid login
-    r6_login = client.post('/api/admin/login', json={"username": "admin", "password": "admin123"})
+    r6_login = client.post('/api/admin/login', json={"username": "suzu", "password": "admin123"})
     assert r6_login.status_code == 200
     assert r6_login.json()["success"] is True
     assert "admin_session" in client.cookies
@@ -116,7 +116,7 @@ def run_tests():
     assert r10_list.status_code == 200
     users_before = r10_list.json()
     assert len(users_before) >= 1
-    admin_user = next(u for u in users_before if u["username"] == "admin")
+    admin_user = next(u for u in users_before if u["username"] == "suzu")
     assert admin_user["role"] == "admin"
     print(f"Test 10.1 Passed: GET /api/admin/users ({len(users_before)} users found)")
 

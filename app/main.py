@@ -630,6 +630,14 @@ def update_admin_user(user_id: int, request: Request, body: dict, db: Session = 
     if not user:
         raise HTTPException(status_code=404, detail="ບໍ່ພົບຜູ້ໃຊ້ງານ")
 
+    if "username" in body and body["username"].strip():
+        new_username = body["username"].strip().lower()
+        if new_username != user.username:
+            existing = db.query(User).filter(User.username == new_username, User.id != user_id).first()
+            if existing:
+                return JSONResponse(status_code=400, content={"success": False, "message": f"ຊື່ຜູ້ໃຊ້ '{new_username}' ນີ້ມີໃນລະບົບແລ້ວ"})
+            user.username = new_username
+
     if "display_name" in body and body["display_name"].strip():
         user.display_name = body["display_name"].strip()
     if "role" in body and body["role"].strip():

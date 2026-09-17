@@ -17,7 +17,7 @@ DEFAULT_SETTINGS = {
     "google_sheet_webhook_url": "",
     "currency_symbol": "₭",
     "currency_name": "ກີບ",
-    "admin_username": "admin",
+    "admin_username": "suzu",
     "admin_password": "admin123"
 }
 
