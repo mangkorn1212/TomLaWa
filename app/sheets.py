@@ -18,10 +18,12 @@ async def sync_order_to_google_sheet(order_data: dict, base_url: str = "") -> bo
 
     slip_url = ""
     if order_data.get("slip_image"):
-        if base_url:
+        # Prefer fast Cloudflare Worker CDN domain for instant image previews without Render wake-up delays
+        cf_domain = "https://tomlawa.tomlawa.workers.dev"
+        if base_url and "127.0.0.1" in base_url or "localhost" in base_url:
             slip_url = f"{base_url.rstrip('/')}/static/uploads/{order_data['slip_image']}"
         else:
-            slip_url = f"/static/uploads/{order_data['slip_image']}"
+            slip_url = f"{cf_domain}/static/uploads/{order_data['slip_image']}"
 
     payload = {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
