@@ -1,3 +1,4 @@
+import os
 import sys
 import uvicorn
 
@@ -9,10 +10,9 @@ if sys.platform == "win32":
         pass
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
     print("\n=======================================================")
-    print(" Lao Water Delivery Web App (FastAPI)")
-    print(" Customer Storefront:      http://localhost:8000")
-    print(" Admin Dashboard:          http://localhost:8000/admin")
-    print(" Google Sheet Setup Guide: http://localhost:8000/google-sheet-setup")
+    print(" TomLaWa Delivery Web App (FastAPI)")
+    print(f" Running on port:          {port}")
     print("=======================================================\n")
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)
