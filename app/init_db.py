@@ -1,5 +1,5 @@
 from app.database import engine, Base, SessionLocal
-from app.models import Product, Order, OrderItem, User
+from app.models import Product, Order, OrderItem, User, StoreSetting
 import hashlib
 
 def init_database():

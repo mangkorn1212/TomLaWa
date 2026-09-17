@@ -22,6 +22,25 @@ DEFAULT_SETTINGS = {
 }
 
 def load_settings() -> dict:
+    """Loads settings from database, falling back to settings.json, then DEFAULT_SETTINGS."""
+    # 1. First try reading from DB
+    try:
+        from app.database import SessionLocal
+        from app.models import StoreSetting
+        db = SessionLocal()
+        try:
+            db_settings = db.query(StoreSetting).all()
+            if db_settings:
+                merged = DEFAULT_SETTINGS.copy()
+                for row in db_settings:
+                    merged[row.key] = row.value
+                return merged
+        finally:
+            db.close()
+    except Exception:
+        pass
+
+    # 2. Fallback to settings.json
     if SETTINGS_FILE.exists():
         try:
             with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
@@ -35,8 +54,32 @@ def load_settings() -> dict:
         return DEFAULT_SETTINGS.copy()
 
 def save_settings(new_settings: dict) -> dict:
-    current = load_settings() if SETTINGS_FILE.exists() else DEFAULT_SETTINGS.copy()
+    """Saves settings to database and syncs to settings.json."""
+    # 1. Update DB
+    try:
+        from app.database import SessionLocal
+        from app.models import StoreSetting
+        db = SessionLocal()
+        try:
+            for k, v in new_settings.items():
+                setting_row = db.query(StoreSetting).filter(StoreSetting.key == k).first()
+                if setting_row:
+                    setting_row.value = str(v)
+                else:
+                    db.add(StoreSetting(key=k, value=str(v)))
+            db.commit()
+        finally:
+            db.close()
+    except Exception:
+        pass
+
+    # 2. Also keep local settings.json in sync
+    current = load_settings()
     current.update(new_settings)
-    with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
-        json.dump(current, f, ensure_ascii=False, indent=2)
+    try:
+        with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+            json.dump(current, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
     return current
