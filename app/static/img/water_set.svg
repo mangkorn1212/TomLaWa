@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="setBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5" />
+      <stop offset="100%" stop-color="#d1fae5" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#setBg)" />
+  
+  <!-- Tanks Combo Representation (Emerald & Teal) -->
+  <!-- Left Tank -->
+  <rect x="35" y="60" width="45" height="70" rx="10" fill="#059669" opacity="0.8"/>
+  <rect x="49" y="52" width="16" height="8" rx="3" fill="#047857"/>
+  
+  <!-- Right Tank -->
+  <rect x="120" y="60" width="45" height="70" rx="10" fill="#059669" opacity="0.8"/>
+  <rect x="134" y="52" width="16" height="8" rx="3" fill="#047857"/>
+
+  <!-- Center Main Tank -->
+  <rect x="70" y="45" width="60" height="90" rx="12" fill="#10b981"/>
+  <rect x="88" y="35" width="24" height="10" rx="4" fill="#047857"/>
+  <rect x="74" y="62" width="52" height="8" rx="3" fill="#34d399"/>
+  <rect x="74" y="82" width="52" height="8" rx="3" fill="#34d399"/>
+  <rect x="74" y="102" width="52" height="8" rx="3" fill="#34d399"/>
+
+  <!-- Promo Ribbon / Star -->
+  <polygon points="100,118 112,126 108,140 100,132 92,140 88,126" fill="#f59e0b"/>
+  <rect x="36" y="145" width="128" height="26" rx="13" fill="#047857"/>
+  <text x="100" y="163" font-family="'Noto Sans Lao', Arial, sans-serif" font-size="13" font-weight="bold" fill="#a7f3d0" text-anchor="middle">🔥 ໂປຣໂມຊັ່ນສຸດຄຸ້ມ</text>
+</svg>

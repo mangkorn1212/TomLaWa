@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}ຕິດຕາມອໍເດີດ້ວຍເບີໂທ - {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto space-y-6">
+
+  <!-- Back Link -->
+  <div>
+    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-slate-900 transition">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>ກັບໄປໜ້າຫຼັກ</span>
+    </a>
+  </div>
+
+  <!-- Search Hero Card (Premium Midnight Gold Style) -->
+  <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 shadow-2xl border border-amber-500/25">
+    
+    <!-- Ambient Glow -->
+    <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-500/15 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-yellow-400/10 blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 space-y-3">
+      <div class="inline-flex items-center gap-2 bg-amber-500/15 px-3 py-1 rounded-full text-xs font-black text-amber-300 border border-amber-500/30">
+        <i class="fa-solid fa-magnifying-glass text-amber-400"></i>
+        <span>ລະບົບກວດສອບສະຖານະອໍເດີອັດຕະໂນມັດ</span>
+      </div>
+
+      <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight">
+        🔍 ຕິດຕາມອໍເດີດ້ວຍ <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-200 bg-clip-text text-transparent">ເບີໂທລະສັບ</span>
+      </h2>
+      
+      <p class="text-xs sm:text-sm text-stone-300/90 leading-relaxed font-normal">
+        ພຽງແຕ່ປ້ອນ <strong>ເບີໂທລະສັບ</strong> ທີ່ທ່ານໃຊ້ສັ່ງຊື້ (ຫຼື <strong>ລະຫັດອໍເດີ</strong>) ລະບົບຈະດຶງປະຫວັດ ແລະ ສະຖານະອໍເດີທັງໝົດຂອງທ່ານມາສະແດງທັນທີ
+      </p>
+
+      <!-- Search Form -->
+      <form onsubmit="handleSearch(event)" class="pt-3">
+        <div class="flex flex-col sm:flex-row items-center gap-2.5">
+          <div class="relative flex-1 w-full flex items-center">
+            <div class="absolute left-0 inset-y-0 pl-3.5 pr-2.5 flex items-center gap-1 border-r border-amber-500/30 text-amber-300 font-black text-xs sm:text-sm select-none pointer-events-none bg-slate-900/70 rounded-l-2xl">
+              <span>🇱🇦 020</span>
+            </div>
+            <input 
+              type="text" 
+              id="search-input" 
+              value="{{ initial_phone }}"
+              placeholder="ພິມ 8 ຕົວເລກ ເຊັ່ນ: 5588 9911 (ຫຼື ລະຫັດ ORD-...)" 
+              required
+              class="w-full pl-22 sm:pl-24 pr-4 py-3.5 rounded-2xl bg-white/10 border border-amber-500/30 text-white placeholder-stone-400 text-sm font-bold font-mono focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-slate-900/90 transition backdrop-blur-md"
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            id="search-btn"
+            class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 transition shrink-0"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>ຄົ້ນຫາອໍເດີ</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Search Tips -->
+      <div class="flex items-center gap-2 text-[11px] text-stone-300 pt-1">
+        <i class="fa-solid fa-circle-check text-amber-400"></i>
+        <span>ບໍ່ຕ້ອງພິມ 020 ພຽງແຕ່ພິມ <strong>8 ຕົວເລກ</strong> (ຫຼື ລະຫັດ ORD-...) ລະບົບຈະກວດສອບໃຫ້ອັດຕະໂນມັດ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div id="results-area" class="space-y-4">
+    <!-- Placeholder / Initial State -->
+    <div id="initial-state" class="bg-white rounded-3xl p-10 text-center border border-amber-100 shadow-card text-slate-400">
+      <div class="w-16 h-16 rounded-3xl bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-3 text-2xl border border-amber-200">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <h3 class="font-black text-slate-800 text-base">ຍັງບໍ່ໄດ້ຄົ້ນຫາ</h3>
+      <p class="text-xs text-slate-500 mt-1">ກະລຸນາປ້ອນເບີໂທລະສັບດ້ານເທິງ ເພື່ອເບິ່ງລາຍການອໍເດີຂອງທ່ານ</p>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-state" class="hidden bg-white rounded-3xl p-12 text-center border border-amber-100 shadow-card text-slate-400">
+      <i class="fa-solid fa-spinner fa-spin text-3xl text-amber-500 mb-3"></i>
+      <p class="text-sm font-bold text-slate-700">ກຳລັງຄົ້ນຫາຂໍ້ມູນອໍເດີ...</p>
+    </div>
+
+    <!-- No Results Box -->
+    <div id="no-results-state" class="hidden bg-white rounded-3xl p-10 text-center border border-amber-100 shadow-card text-slate-400">
+      <div class="w-16 h-16 rounded-3xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-3 text-2xl border border-rose-200">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="font-black text-slate-800 text-base">ບໍ່ພົບຂໍ້ມູນອໍເດີ</h3>
+      <p class="text-xs text-slate-500 mt-1" id="no-results-msg">ບໍ່ພົບລາຍການອໍເດີສຳລັບເບີໂທລະສັບນີ້ ກະລຸນາກວດສອບເບີໂທຄືນໃໝ່</p>
+      <a href="/" class="mt-4 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-2xl bg-amber-50 text-amber-800 font-black text-xs hover:bg-amber-100 transition border border-amber-200">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <span>ໄປເລືອກສັ່ງຊື້ສິນຄ້າໃໝ່</span>
+      </a>
+    </div>
+
+    <!-- Results Container -->
+    <div id="results-list" class="space-y-4 hidden">
+      <!-- Search Summary Card -->
+      <div class="bg-amber-50/70 rounded-3xl p-4 sm:p-5 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div>
+          <span class="text-slate-500 font-bold block text-[11px] uppercase tracking-wider">ຜົນການຄົ້ນຫາ:</span>
+          <div class="font-black text-slate-900 text-sm sm:text-base mt-0.5" id="summary-query-text">
+            ພົບ 0 ອໍເດີ
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs font-bold text-slate-700">
+          <div>
+            <span class="text-slate-400 block text-[10px]">ຈຳນວນອໍເດີ:</span>
+            <span id="summary-order-count" class="text-amber-800 font-black text-sm">0</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">ຍອດລວມທັງໝົດ:</span>
+            <span id="summary-total-spent" class="text-slate-900 font-black text-sm">0 ₭</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Cards -->
+      <div id="orders-cards-container" class="space-y-4"></div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function formatKip(amount) {
+  if (isNaN(amount)) return "0 ₭";
+  return new Intl.NumberFormat("lo-LA").format(amount) + " ₭";
+}
+
+function getStatusBadge(status) {
+  if (status === 'pending') {
+    return `
+      <span class="badge-status badge-pending">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+        <span>ລໍຖ້າກວດສອບ</span>
+      </span>
+    `;
+  } else if (status === 'approved') {
+    return `
+      <span class="badge-status badge-approved">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span>ອະນຸມັດແລ້ວ (ກຽມສົ່ງ)</span>
+      </span>
+    `;
+  } else if (status === 'delivering') {
+    return `
+      <span class="badge-status badge-delivering">
+        <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
+        <span>ກຳລັງຈັດສົ່ງ 🚚</span>
+      </span>
+    `;
+  } else if (status === 'completed') {
+    return `
+      <span class="badge-status badge-completed">
+        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+        <span>ຈັດສົ່ງສຳເລັດ 🎉</span>
+      </span>
+    `;
+  } else if (status === 'rejected') {
+    return `
+      <span class="badge-status badge-rejected">
+        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+        <span>ຖືກປະຕິເສດ</span>
+      </span>
+    `;
+  }
+  return `<span class="badge-status badge-pending">${status}</span>`;
+}
+
+async function handleSearch(e) {
+  if (e) e.preventDefault();
+  const q = document.getElementById("search-input").value.trim();
+  if (!q) return;
+
+  const initialEl = document.getElementById("initial-state");
+  const loadingEl = document.getElementById("loading-state");
+  const noResultsEl = document.getElementById("no-results-state");
+  const resultsListEl = document.getElementById("results-list");
+  const container = document.getElementById("orders-cards-container");
+  const searchBtn = document.getElementById("search-btn");
+
+  initialEl.classList.add("hidden");
+  noResultsEl.classList.add("hidden");
+  resultsListEl.classList.add("hidden");
+  loadingEl.classList.remove("hidden");
+  searchBtn.disabled = true;
+
+  try {
+    const res = await fetch(`/api/orders/lookup?query=${encodeURIComponent(q)}`);
+    const orders = await res.json();
+    loadingEl.classList.add("hidden");
+    searchBtn.disabled = false;
+
+    if (!orders || orders.length === 0) {
+      noResultsEl.classList.remove("hidden");
+      document.getElementById("no-results-msg").textContent = `ບໍ່ພົບອໍເດີສຳລັບ: "${q}" ກະລຸນາກວດສອບເບີໂທລະສັບ ຫຼື ລະຫັດອໍເດີຄືນໃໝ່`;
+      return;
+    }
+
+    // Populate Summary
+    const totalSpent = orders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+    document.getElementById("summary-query-text").textContent = `ພົບ ${orders.length} ອໍເດີ ສຳລັບ: "${q}"`;
+    document.getElementById("summary-order-count").textContent = `${orders.length} ອໍເດີ`;
+    document.getElementById("summary-total-spent").textContent = formatKip(totalSpent);
+
+    // Render Cards
+    container.innerHTML = orders.map(order => `
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-amber-100 shadow-card hover:border-amber-300 transition-all space-y-4">
+        
+        <!-- Card Top Bar: Code, Date, Badge -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-amber-50 gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-slate-900 text-base md:text-lg">${order.order_code}</span>
+              ${getStatusBadge(order.status)}
+            </div>
+            <div class="text-[11px] text-slate-400 font-medium mt-0.5">
+              <i class="fa-regular fa-clock mr-1"></i> ສັ່ງເມື່ອ: <strong>${order.created_at_str}</strong>
+            </div>
+          </div>
+
+          <div class="text-left sm:text-right">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">ຍອດລວມ</span>
+            <div class="text-lg font-black text-amber-800">${formatKip(order.total_amount)}</div>
+          </div>
+        </div>
+
+        <!-- Middle: Customer & Items -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-amber-50/40 p-3.5 rounded-2xl border border-amber-100/70">
+          <div>
+            <span class="text-slate-400 block text-[10px] font-bold">ຜູ້ສັ່ງຊື້:</span>
+            <strong class="text-slate-900 font-extrabold text-xs">${order.customer_name}</strong>
+            <span class="text-slate-500 font-medium block">📞 ${order.customer_phone}</span>
+          </div>
+
+          <div>
+            <span class="text-slate-400 block text-[10px] font-bold">ລາຍການສິນຄ້າ:</span>
+            <div class="text-slate-800 font-semibold text-xs leading-relaxed line-clamp-2">
+              ${order.items_summary || 'ລາຍລະອຽດສິນຄ້າ'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom: Actions -->
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-[11px] text-slate-400">
+            <i class="fa-solid fa-shield-check text-amber-600 mr-1"></i> ຕິດຕາມສົດແບບ Real-time
+          </span>
+
+          <a 
+            href="/order/${order.order_code}" 
+            class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 flex items-center gap-1.5 transition active:scale-95"
+          >
+            <span>ເບິ່ງສະຖານະລະອຽດ & ນຳທາງ</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+
+      </div>
+    `).join("");
+
+    resultsListEl.classList.remove("hidden");
+
+  } catch (err) {
+    loadingEl.classList.add("hidden");
+    searchBtn.disabled = false;
+    noResultsEl.classList.remove("hidden");
+    document.getElementById("no-results-msg").textContent = "ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່: " + err.message;
+  }
+}
+
+// Auto search if input has value on load
+document.addEventListener("DOMContentLoaded", () => {
+  const initial = document.getElementById("search-input").value.trim();
+  if (initial) {
+    handleSearch();
+  }
+});
+</script>
+{% endblock %}

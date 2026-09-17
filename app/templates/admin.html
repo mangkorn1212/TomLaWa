@@ -1,0 +1,1711 @@
+{% extends "base.html" %}
+
+{% block title %}ລະບົບຈັດການອໍເດີ (Admin Dashboard) - {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Top Hero Bar (Premium Midnight Gold Style) -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-7 rounded-3xl border border-stone-200 shadow-card">
+    <div>
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+        </span>
+        <span class="text-xs font-black uppercase tracking-wider text-amber-600">ລະບົບຫຼັງບ້ານພຣີມຽມ (Live Sync)</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
+        <i class="fa-solid fa-gauge-high text-amber-600"></i>
+        <span>ລະບົບຈັດການອໍເດີ & ກວດໃບບິນ (Admin)</span>
+      </h2>
+      <div class="flex flex-wrap items-center gap-2 mt-1">
+        <p class="text-xs sm:text-sm text-slate-500">
+          ກວດສອບໃບບິນ, ອະນຸມັດອໍເດີ, ຈັດການພະນັກງານ ແລະ ເປີດ Google Maps ນຳທາງ
+        </p>
+        {% if current_user %}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold">
+          <i class="fa-solid fa-circle-user text-amber-600"></i>
+          <span>{{ current_user.display_name or current_user.username }}</span>
+          <span class="px-1.5 py-0.5 rounded-md bg-amber-200 text-[10px] font-black uppercase text-amber-900">
+            {% if current_user.role == 'admin' %}👑 Admin{% elif current_user.role == 'driver' %}🚚 Driver{% else %}📋 Staff{% endif %}
+          </span>
+        </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Action Toolbar -->
+    <div class="flex flex-wrap items-center gap-2.5">
+      <a href="/google-sheet-setup" class="px-4 py-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-black flex items-center gap-2 transition shadow-2xs">
+        <i class="fa-solid fa-table-cells text-amber-600"></i>
+        <span>ຕັ້ງຄ່າ Google Sheet</span>
+      </a>
+
+      <button onclick="openSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 border border-amber-200 text-xs font-bold flex items-center gap-2 transition shadow-2xs">
+        <i class="fa-solid fa-gear text-amber-600"></i>
+        <span>ຕັ້ງຄ່າຮ້ານ</span>
+      </button>
+
+      <button onclick="fetchOrders()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span>ໂຫຼດຂໍ້ມູນໃໝ່</span>
+      </button>
+
+      <a href="/admin/logout" class="px-3.5 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-2xs" title="ອອກຈາກລະບົບ">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span class="hidden sm:inline">ອອກຈາກລະບົບ</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs: Orders vs Users -->
+  <div class="flex items-center gap-2 border-b border-amber-100 pb-2">
+    <button onclick="switchTab('orders')" id="tab-orders" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-slate-900 text-amber-400 shadow-md shadow-amber-500/20">
+      <i class="fa-solid fa-box-archive"></i>
+      <span>📦 ລາຍການອໍເດີ (Orders)</span>
+    </button>
+    <button onclick="switchTab('users')" id="tab-users" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs">
+      <i class="fa-solid fa-users-gear text-amber-600"></i>
+      <span>👥 ຈັດການຜູ້ໃຊ້ງານ (Users & Staff)</span>
+      <span id="badge-users-count" class="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-black">0</span>
+    </button>
+    <button onclick="switchTab('products')" id="tab-products" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs">
+      <i class="fa-solid fa-boxes-stacked text-amber-600"></i>
+      <span>🛒 ຈັດການສິນຄ້າ (Products)</span>
+      <span id="badge-products-count" class="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-black">0</span>
+    </button>
+  </div>
+
+  <!-- SECTION 1: ORDERS MANAGEMENT -->
+  <div id="section-orders" class="space-y-6">
+
+    <!-- Google Sheet Status Banner -->
+    <div class="p-4 sm:p-5 rounded-3xl border flex items-center justify-between flex-wrap gap-3 {% if settings.google_sheet_webhook_url %}bg-amber-50/80 border-amber-300 text-slate-950{% else %}bg-amber-50/80 border-amber-200 text-amber-950{% endif %} text-xs shadow-xs">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-base {% if settings.google_sheet_webhook_url %}bg-amber-600 text-white shadow-md shadow-amber-500/20{% else %}bg-amber-100 text-amber-700{% endif %}">
+          <i class="fa-solid {% if settings.google_sheet_webhook_url %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+        </div>
+        <div>
+          {% if settings.google_sheet_webhook_url %}
+            <div class="font-black text-sm">ເຊື່ອມຕໍ່ Google Sheet ແລ້ວ 💧</div>
+            <div class="text-[11px] text-amber-800">ທຸກອໍເດີໃໝ່ຈະຖືກບັນທຶກລົງຕາຕະລາງ Google Sheet ອັດຕະໂນມັດ ພ້ອມລິ້ງ Google Maps ນຳທາງ</div>
+          {% else %}
+            <div class="font-black text-sm">ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google Sheet Webhook</div>
+            <div class="text-[11px] text-amber-800">ອໍເດີຖືກບັນທຶກໄວ້ໃນເຄື່ອງກ່ອນ ທ່ານສາມາດກົດຕັ້ງຄ່າເພື່ອຊິງກ໌ຂໍ້ມູນເຂົ້າ Google Sheet ໄດ້ທັນທີ</div>
+          {% endif %}
+        </div>
+      </div>
+      <a href="/google-sheet-setup" class="font-black underline hover:opacity-80 text-xs px-3.5 py-2 rounded-xl bg-white border border-amber-200 shadow-2xs">
+        {% if settings.google_sheet_webhook_url %}ກວດສອບລິ້ງ Webhook{% else %}ເບິ່ງວິທີເຊື່ອຕໍ່ Google Sheet ທີ່ນີ້ &rarr;{% endif %}
+      </a>
+    </div>
+
+    <!-- Modern Metric Stat Pills & Filters (Premium Midnight Gold Palette) -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      
+      <button onclick="filterOrders('all')" id="btn-filter-all" class="order-filter-btn p-3.5 rounded-2xl bg-slate-950 text-white shadow-card text-left transition-all border border-amber-500/30">
+        <div class="text-[11px] font-bold text-amber-300">ອໍເດີທັງໝົດ</div>
+        <div class="text-xl font-black mt-1" id="badge-all">0</div>
+      </button>
+
+      <button onclick="filterOrders('pending')" id="btn-filter-pending" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
+        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ລໍຖ້າກວດ
+        </div>
+        <div class="text-xl font-black mt-1 text-rose-600" id="badge-pending">0</div>
+      </button>
+
+      <button onclick="filterOrders('approved')" id="btn-filter-approved" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
+        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ອະນຸມັດແລ້ວ
+        </div>
+        <div class="text-xl font-black mt-1 text-amber-700" id="badge-approved">0</div>
+      </button>
+
+      <button onclick="filterOrders('delivering')" id="btn-filter-delivering" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
+        <div class="text-[11px] font-bold text-purple-700 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> ກຳລັງສົ່ງ
+        </div>
+        <div class="text-xl font-black mt-1 text-purple-700" id="badge-delivering">0</div>
+      </button>
+
+      <button onclick="filterOrders('completed')" id="btn-filter-completed" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
+        <div class="text-[11px] font-bold text-amber-800 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> ສຳເລັດ
+        </div>
+        <div class="text-xl font-black mt-1 text-amber-800" id="badge-completed">0</div>
+      </button>
+
+      <button onclick="filterOrders('rejected')" id="btn-filter-rejected" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
+        <div class="text-[11px] font-bold text-rose-700 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ປະຕິເສດ
+        </div>
+        <div class="text-xl font-black mt-1 text-rose-700" id="badge-rejected">0</div>
+      </button>
+
+    </div>
+
+    <!-- Admin Search & Customer History Filter Bar -->
+    <div class="bg-white p-4 sm:p-5 rounded-3xl border border-amber-100 shadow-card flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="relative w-full sm:w-96">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-xs"></i>
+        <input 
+          type="text" 
+          id="admin-search-input" 
+          oninput="handleAdminSearch(this.value)"
+          placeholder="🔍 ຄົ້ນຫາຕາມເບີໂທ, ຊື່ລູກຄ້າ ຫຼື ລະຫັດອໍເດີ..." 
+          class="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs font-semibold bg-slate-50 focus:bg-white transition"
+        />
+        <button 
+          id="admin-clear-search-btn" 
+          onclick="clearAdminSearch()" 
+          class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 w-5 h-5 flex items-center justify-center text-xs"
+          title="ລຶບຄຳຄົ້ນຫາ"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="admin-search-stats" class="text-xs text-slate-600 font-medium flex items-center gap-2">
+        <span id="admin-search-label" class="text-slate-400 text-[11px]">ສະແດງ:</span>
+        <span id="admin-search-count-badge" class="px-3 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold">
+          0 ອໍເດີ
+        </span>
+      </div>
+    </div>
+
+    <!-- Orders Container List -->
+    <div id="orders-container" class="space-y-4">
+      <div class="p-16 text-center text-slate-400 bg-white rounded-3xl border border-amber-100 shadow-card">
+        <i class="fa-solid fa-spinner fa-spin text-3xl text-amber-600 mb-3"></i>
+        <p class="text-sm font-bold text-amber-800">ກຳລັງໂຫຼດຂໍ້ມູນອໍເດີ...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 2: USER & STAFF MANAGEMENT -->
+  <div id="section-users" class="space-y-6 hidden">
+    
+    <!-- User Management Header Card -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-amber-100 shadow-card">
+      <div>
+        <h3 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-users text-amber-600"></i>
+          <span>ລາຍຊື່ຜູ້ໃຊ້ງານລະບົບ & ພະນັກງານ (User Management)</span>
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">
+          ຈັດການບັນຊີຜູ້ໃຊ້, ເພີ່ມພະນັກງານ, ກຳນົດສິດ (Admin, Staff, Driver), ແກ້ໄຂລະຫັດຜ່ານ ແລະ ລຶບບັນຊີ
+        </p>
+      </div>
+      <button onclick="openUserModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95 shrink-0">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>+ ເພີ່ມຜູ້ໃຊ້ໃໝ່ (Add User)</span>
+      </button>
+    </div>
+
+    <!-- Users Table Card -->
+    <div class="bg-white rounded-3xl border border-amber-100 shadow-card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 border-b border-stone-200 text-[11px] font-black uppercase text-slate-500 tracking-wider">
+              <th class="py-3.5 px-5">ຜູ້ໃຊ້ງານ (User)</th>
+              <th class="py-3.5 px-4">ຊື່ສະແດງ (Display Name)</th>
+              <th class="py-3.5 px-4">ສິດການໃຊ້ງານ (Role)</th>
+              <th class="py-3.5 px-4">ສະຖານະ (Status)</th>
+              <th class="py-3.5 px-4">ວັນທີສ້າງ</th>
+              <th class="py-3.5 px-5 text-right">ຈັດການ (Actions)</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body" class="divide-y divide-amber-50 text-xs">
+            <tr>
+              <td colspan="6" class="p-12 text-center text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-600 mb-2"></i>
+                <p class="font-bold text-slate-600">ກຳລັງໂຫຼດຂໍ້ມູນຜູ້ໃຊ້...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Roles & Security Guide Card -->
+    <div class="p-5 rounded-3xl bg-amber-50/60 border border-amber-200 text-xs text-slate-700 space-y-2.5">
+      <div class="font-black text-slate-950 flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved text-amber-600"></i>
+        <span>ຄຳອະທິບາຍສິດການໃຊ້ງານ (Role Permissions) & ຄວາມປອດໄພ</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
+          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-bold text-[10px]">👑 Admin</span>
+            <span>ຜູ້ດູແລສູງສຸດ</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">ມີສິດເຕັມຮູບແບບ: ຈັດການອໍເດີ, ຕັ້ງຄ່າຮ້ານ, Google Sheet, ແລະ ເພີ່ມ/ແກ້ໄຂ/ລຶບຜູ້ໃຊ້ງານອື່ນ</p>
+        </div>
+        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
+          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-800 font-bold text-[10px]">📋 Staff</span>
+            <span>ພະນັກງານຮັບອໍເດີ</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">ກວດສອບໃບບິນໂອນເງິນ, ອະນຸມັດອໍເດີ, ແລະ ປ່ຽນສະຖານະການຈັດສົ່ງ</p>
+        </div>
+        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
+          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-bold text-[10px]">🚚 Driver</span>
+            <span>ພະນັກງານຈັດສົ່ງ</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">ເບິ່ງລາຍການອໍເດີຈັດສົ່ງ, ໂທຫາລູກຄ້າ, ແລະ ເປີດ Google Maps ນຳທາງໄປຫາລູກຄ້າ</p>
+        </div>
+      </div>
+      <p class="text-[11px] text-amber-800 pt-1">
+        <i class="fa-solid fa-lock text-amber-600 mr-1"></i>
+        <strong>ລະບົບຄວາມປອດໄພ:</strong> ລະບົບປ້ອງກັນບໍ່ໃຫ້ລຶບບັນຊີທີ່ທ່ານກຳລັງເຂົ້າສູ່ລະບົບຢູ່ ແລະ ປ້ອງກັນບໍ່ໃຫ້ລຶບ Admin ຄົນສຸດທ້າຍຂອງລະບົບ.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3: PRODUCT MANAGEMENT -->
+  <div id="section-products" class="space-y-6 hidden">
+    
+    <!-- Header Card -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-amber-100 shadow-card">
+      <div>
+        <h3 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked text-amber-600"></i>
+          <span>ລາຍການສິນຄ້າໃນຮ້ານ (Product Management)</span>
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">
+          ເພີ່ມສິນຄ້າໃໝ່, ແກ້ໄຂລາຄາ, ອັບໂຫຼດຮູບພາບ, ຕັ້ງຄ່າປ້າຍຂາຍດີ ແລະ ເປີດ/ປິດການຂາຍ
+        </p>
+      </div>
+      <button onclick="openProductModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95 shrink-0">
+        <i class="fa-solid fa-plus"></i>
+        <span>+ ເພີ່ມສິນຄ້າໃໝ່ (Add Product)</span>
+      </button>
+    </div>
+
+    <!-- Filter & Stats Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <button onclick="filterAdminProducts('all')" id="btn-prodfilter-all" class="prod-filter-btn p-3.5 rounded-2xl bg-slate-950 text-white shadow-card text-left transition-all border border-amber-500/30 ring-2 ring-amber-500">
+        <div class="text-[11px] font-bold text-amber-300 flex items-center gap-1">
+          <i class="fa-solid fa-layer-group text-[10px]"></i> ສິນຄ້າທັງໝົດ
+        </div>
+        <div class="text-xl font-black mt-1 text-white" id="badge-prod-all">0</div>
+      </button>
+
+      <button onclick="filterAdminProducts('bottle')" id="btn-prodfilter-bottle" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
+        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+          🍶 ເປັນຕຸກ
+        </div>
+        <div class="text-xl font-black mt-1 text-amber-700" id="badge-prod-bottle">0</div>
+      </button>
+
+      <button onclick="filterAdminProducts('leaves_syrup')" id="btn-prodfilter-leaves_syrup" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
+        <div class="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+          🍃 ໃບກັບນ້ຳຢາ
+        </div>
+        <div class="text-xl font-black mt-1 text-emerald-700" id="badge-prod-leaves_syrup">0</div>
+      </button>
+
+      <button onclick="filterAdminProducts('pilot')" id="btn-prodfilter-pilot" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
+        <div class="text-[11px] font-bold text-purple-700 flex items-center gap-1">
+          🚀 Pilot
+        </div>
+        <div class="text-xl font-black mt-1 text-purple-700" id="badge-prod-pilot">0</div>
+      </button>
+
+      <div class="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-card text-left">
+        <div class="text-[11px] font-bold text-amber-800 flex items-center gap-1">
+          ⭐ ປ້າຍຂາຍດີ (Popular)
+        </div>
+        <div class="text-xl font-black mt-1 text-amber-900" id="badge-prod-popular">0</div>
+      </div>
+    </div>
+
+    <!-- Products Table Card -->
+    <div class="bg-white rounded-3xl border border-amber-100 shadow-card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 border-b border-stone-200 text-[11px] font-black uppercase text-slate-500 tracking-wider">
+              <th class="py-3.5 px-5">ຮູບສິນຄ້າ (Image)</th>
+              <th class="py-3.5 px-4">ຊື່ສິນຄ້າ (Product Name)</th>
+              <th class="py-3.5 px-4">ໝວດໝູ່ (Category)</th>
+              <th class="py-3.5 px-4">ລາຄາ (Price LAK)</th>
+              <th class="py-3.5 px-4">ປ້າຍກຳກັບ</th>
+              <th class="py-3.5 px-4">ສະຖານະ (Status)</th>
+              <th class="py-3.5 px-5 text-right">ຈັດການ (Actions)</th>
+            </tr>
+          </thead>
+          <tbody id="products-table-body" class="divide-y divide-amber-50 text-xs">
+            <tr>
+              <td colspan="7" class="p-12 text-center text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-600 mb-2"></i>
+                <p class="font-bold text-slate-600">ກຳລັງໂຫຼດຂໍ້ມູນສິນຄ້າ...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Modal for Viewing High-Res Transfer Slip -->
+<div id="slip-modal" onclick="closeSlipModal()" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
+  <div class="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-amber-200" onclick="event.stopPropagation()">
+    <div class="p-4 bg-slate-950 text-white flex items-center justify-between text-xs font-black">
+      <span class="flex items-center gap-2">
+        <i class="fa-solid fa-receipt text-amber-400"></i>
+        <span>ຮູບໃບບິນໂອນເງິນ (Transfer Slip)</span>
+      </span>
+      <button onclick="closeSlipModal()" class="w-7 h-7 rounded-xl hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="p-5 bg-slate-100 flex items-center justify-center max-h-[75vh] overflow-auto">
+      <img id="modal-slip-img" src="" class="max-w-full max-h-[70vh] rounded-2xl shadow-md object-contain" />
+    </div>
+    <div class="p-4 bg-white border-t border-slate-100 text-right">
+      <a id="modal-slip-download" href="" target="_blank" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-black rounded-xl inline-flex items-center gap-1.5 shadow-sm transition">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> ເປີດຮູບເຕັມຈໍ
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Store & Sheet Settings -->
+<div id="settings-modal" onclick="closeSettingsModal()" class="fixed inset-0 bg-slate-950/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+  <div class="relative max-w-lg w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-amber-200" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between pb-4 border-b border-amber-100 mb-4">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-bold">
+          <i class="fa-solid fa-gear"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-base">ຕັ້ງຄ່າລະບົບ & Google Sheet</h3>
+      </div>
+      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form onsubmit="saveStoreSettings(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">Google Sheet Webhook URL</label>
+        <input type="url" id="setting_sheet_url" value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 font-mono text-[11px]" />
+        <p class="text-[10px] text-slate-400 mt-1">
+          ໄດ້ຈາກການ Deploy Web App ໃນ Google Apps Script (<a href="/google-sheet-setup" target="_blank" class="text-amber-600 underline">ເບິ່ງວິທີເຮັດ</a>)
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ຊື່ຮ້ານ</label>
+          <input type="text" id="setting_store_name" value="{{ settings.store_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ເບີໂທຮ້ານ</label>
+          <input type="text" id="setting_store_phone" value="{{ settings.store_phone }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ທະນາຄານ (BCEL One)</label>
+          <input type="text" id="setting_bank_name" value="{{ settings.bank_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ເລກບັນຊີ</label>
+          <input type="text" id="setting_acc_no" value="{{ settings.account_number }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs font-mono" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">ຊື່ບັນຊີ</label>
+        <input type="text" id="setting_acc_name" value="{{ settings.account_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+      </div>
+
+      <div class="pt-3 border-t border-amber-100">
+        <label class="block font-black text-slate-800 mb-2 flex items-center gap-1.5 text-xs">
+          <i class="fa-solid fa-lock text-amber-600"></i>
+          <span>ປ່ຽນຊື່ຜູ້ໃຊ້ & ລະຫັດຜ່ານ Admin</span>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Username ໃໝ່</label>
+            <input type="text" id="setting_admin_user" value="{{ settings.admin_username or 'admin' }}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Password ໃໝ່</label>
+            <input type="text" id="setting_admin_pass" value="{{ settings.admin_password or 'admin123' }}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold font-mono" />
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end gap-2">
+        <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
+        <button type="submit" class="px-5 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black shadow-md shadow-amber-500/20 transition">ບັນທຶກການຕັ້ງຄ່າ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal for Add/Edit User -->
+<div id="user-modal" onclick="closeUserModal()" class="fixed inset-0 bg-slate-950/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+  <div class="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-amber-200" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between pb-4 border-b border-amber-100 mb-4">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-bold">
+          <i id="user-modal-icon" class="fa-solid fa-user-plus"></i>
+        </div>
+        <h3 id="user-modal-title" class="font-black text-slate-900 text-base">ເພີ່ມຜູ້ໃຊ້ງານໃໝ່</h3>
+      </div>
+      <button onclick="closeUserModal()" class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form onsubmit="saveUser(event)" class="space-y-4 text-xs">
+      <input type="hidden" id="user_mode" value="add" />
+      <input type="hidden" id="user_id" value="" />
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">ຊື່ຜູ້ໃຊ້ (Username) <span class="text-rose-500">*</span></label>
+        <input type="text" id="user_username" required placeholder="ຕົວຢ່າງ: somsak, staff_kham" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 font-mono text-xs" />
+        <p id="user_username_help" class="text-[10px] text-slate-400 mt-1">ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)</p>
+      </div>
+
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">ຊື່ສະແດງ / ຊື່ພະນັກງານ (Display Name) <span class="text-rose-500">*</span></label>
+        <input type="text" id="user_display_name" required placeholder="ຕົວຢ່າງ: ສົມສັກ ໃຈດີ" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ສິດການໃຊ້ງານ (Role)</label>
+          <select id="user_role" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs bg-white">
+            <option value="admin">👑 Admin (ຜູ້ດູແລ)</option>
+            <option value="staff" selected>📋 Staff (ພະນັກງານ)</option>
+            <option value="driver">🚚 Driver (ຄົນສົ່ງ)</option>
+          </select>
+        </div>
+
+        <div id="user_status_group">
+          <label class="block font-bold text-slate-700 mb-1">ສະຖານະ (Status)</label>
+          <select id="user_is_active" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs bg-white">
+            <option value="true">🟢 ເປີດໃຊ້ງານ</option>
+            <option value="false">🔴 ປິດໃຊ້ງານ</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label id="user_password_label" class="block font-bold text-slate-700 mb-1">ລະຫັດຜ່ານ (Password) <span class="text-rose-500">*</span></label>
+        <div class="relative">
+          <input type="password" id="user_password" placeholder="ຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-mono pr-10" />
+          <button type="button" onclick="toggleUserPasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+            <i id="user-password-eye" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
+        <p id="user_password_help" class="text-[10px] text-slate-400 mt-1">ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ</p>
+      </div>
+
+      <div class="pt-3 flex justify-end gap-2 border-t border-amber-50">
+        <button type="button" onclick="closeUserModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
+        <button type="submit" id="user_submit_btn" class="px-5 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black shadow-md shadow-amber-500/20 transition">ບັນທຶກ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal for Adding / Editing Product -->
+<div id="product-modal" onclick="closeProductModal()" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
+  <div class="relative max-w-xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-amber-200" onclick="event.stopPropagation()">
+    
+    <div class="p-4 sm:p-5 bg-slate-950 text-white flex items-center justify-between text-xs font-black">
+      <span class="flex items-center gap-2" id="product_modal_title">
+        <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+        <span>ເພີ່ມສິນຄ້າໃໝ່ (Add Product)</span>
+      </span>
+      <button onclick="closeProductModal()" class="w-7 h-7 rounded-xl hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="product_form" onsubmit="saveProduct(event)" class="p-5 sm:p-6 space-y-4 text-xs max-h-[80vh] overflow-y-auto">
+      <input type="hidden" id="product_id" value="" />
+
+      <!-- Row 1: Name & Code -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ຊື່ສິນຄ້າ <span class="text-rose-500">*</span></label>
+          <input type="text" id="product_name" required placeholder="ຕົວຢ່າງ: ນ້ຳດື່ມຕຸກໃຫຍ່ 20L" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-semibold" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ລະຫັດສິນຄ້າ (Code)</label>
+          <input type="text" id="product_code" placeholder="ເຊັ່ນ: BTL-01 (ປ່ອຍວ່າງເພື່ອສ້າງອັດຕະໂນມັດ)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-mono uppercase" />
+        </div>
+      </div>
+
+      <!-- Row 2: Category, Price, Unit -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ໝວດໝູ່ <span class="text-rose-500">*</span></label>
+          <select id="product_category" required class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-bold">
+            <option value="bottle">🍶 ຂາຍເປັນຕຸກ (Bottles)</option>
+            <option value="leaves_syrup">🍃 ໃບກັບນ້ຳຢາ (Leaves & Syrups)</option>
+            <option value="pilot">🚀 Pilot</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ລາຄາ (LAK) <span class="text-rose-500">*</span></label>
+          <input type="number" id="product_price" required min="0" step="500" placeholder="30000" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-black font-mono text-amber-900" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ໜ່ວຍນັບ (Unit)</label>
+          <input type="text" id="product_unit_label" placeholder="ຕຸກ 1.5L, 1kg, ຊຸດ" value="ຕຸກ 1.5L" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-medium" />
+        </div>
+      </div>
+
+      <!-- Row 3: Product Image Upload & Preview -->
+      <div class="space-y-2 bg-amber-50/50 p-3.5 rounded-2xl border border-amber-200">
+        <label class="block font-bold text-slate-800">
+          <i class="fa-regular fa-image text-amber-600 mr-1"></i> ຮູບພາບສິນຄ້າ (Product Image)
+        </label>
+        
+        <div class="flex items-center gap-3">
+          <!-- Thumbnail Preview -->
+          <div id="product_image_preview_box" class="w-16 h-16 rounded-xl border border-amber-200 bg-white flex items-center justify-center p-1 shrink-0 overflow-hidden shadow-xs">
+            <img id="product_image_preview" src="/static/img/tom_bottle.svg" class="w-full h-full object-contain" />
+          </div>
+
+          <div class="flex-1 space-y-1.5">
+            <input type="file" id="product_image_file" accept="image/*" onchange="previewProductImage(this)" class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-amber-300 hover:file:bg-slate-800 cursor-pointer" />
+            <p class="text-[10px] text-slate-500">ຮອງຮັບຮູບ: .jpg, .png, .webp, .svg (ຖ້າບໍ່ເລືອກຈະໃຊ້ຮູບມາດຕະຖານຕາມໝວດໝູ່)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Description -->
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">ລາຍລະອຽດສິນຄ້າ</label>
+        <textarea id="product_description" rows="2" placeholder="ຕົວຢ່າງ: ນ້ຳດື່ມບໍລິສຸດ ຜ່ານລະບົບ RO + UV + Ozone ສະອາດປອດໄພ" class="w-full px-3.5 py-2 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-medium"></textarea>
+      </div>
+
+      <!-- Row 5: Deposit Note -->
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">ໝາຍເຫດຄ່າມັດຈຳ (ຖ້າມີ)</label>
+        <input type="text" id="product_deposit_note" placeholder="ຕົວຢ່າງ: ລູກຄ້າມີຕຸກເກົ່າມາປ່ຽນ (ຖ້າບໍ່ມີໃຫ້ເລືອກຊື້ພ້ອມຕຸກໃໝ່)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs" />
+      </div>
+
+      <!-- Row 6: Checkboxes (Popular & Active) -->
+      <div class="flex items-center gap-6 pt-1">
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" id="product_is_popular" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500" />
+          <span class="font-bold text-slate-800">🔥 ປ້າຍສິນຄ້າຂາຍດີ (Popular)</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" id="product_is_active" checked class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500" />
+          <span class="font-bold text-slate-800">🟢 ເປີດຂາຍໜ້າເວັບ (Active)</span>
+        </label>
+      </div>
+
+      <div class="pt-3 flex justify-end gap-2 border-t border-amber-50">
+        <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
+        <button type="submit" id="product_submit_btn" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black shadow-md shadow-amber-500/25 transition active:scale-95">ບັນທຶກສິນຄ້າ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentFilter = 'all';
+let allOrders = [];
+let currentTab = 'orders';
+let allUsers = [];
+const currentUserId = {{ current_user.user_id if current_user and current_user.user_id else 'null' }};
+const currentUsername = "{{ current_user.username if current_user and current_user.username else '' }}";
+
+async function fetchOrders() {
+  try {
+    const res = await fetch("/api/admin/orders");
+    if (res.status === 401) {
+      window.location.href = "/admin/login";
+      return;
+    }
+    if (res.ok) {
+      allOrders = await res.json();
+      updateCounters();
+      renderOrders();
+    }
+  } catch (err) {
+    showToast("ບໍ່ສາມາດດຶງຂໍ້ມູນອໍເດີໄດ້: " + err.message, "error");
+  }
+}
+
+function updateCounters() {
+  const counts = {
+    all: allOrders.length,
+    pending: allOrders.filter(x => x.status === 'pending').length,
+    approved: allOrders.filter(x => x.status === 'approved').length,
+    delivering: allOrders.filter(x => x.status === 'delivering').length,
+    completed: allOrders.filter(x => x.status === 'completed').length,
+    rejected: allOrders.filter(x => x.status === 'rejected').length
+  };
+
+  document.getElementById("badge-all").textContent = counts.all;
+  document.getElementById("badge-pending").textContent = counts.pending;
+  document.getElementById("badge-approved").textContent = counts.approved;
+  document.getElementById("badge-delivering").textContent = counts.delivering;
+  document.getElementById("badge-completed").textContent = counts.completed;
+  document.getElementById("badge-rejected").textContent = counts.rejected;
+}
+
+function filterOrders(status) {
+  currentFilter = status;
+  document.querySelectorAll(".order-filter-btn").forEach(btn => {
+    btn.classList.remove("ring-2", "ring-amber-500", "scale-102");
+  });
+  const activeBtn = document.getElementById("btn-filter-" + status);
+  if (activeBtn) {
+    activeBtn.classList.add("ring-2", "ring-amber-500");
+  }
+  renderOrders();
+}
+
+let adminSearchQuery = '';
+
+function handleAdminSearch(val) {
+  adminSearchQuery = val.trim();
+  const clearBtn = document.getElementById("admin-clear-search-btn");
+  if (clearBtn) {
+    if (adminSearchQuery) clearBtn.classList.remove("hidden");
+    else clearBtn.classList.add("hidden");
+  }
+  renderOrders();
+}
+
+function clearAdminSearch() {
+  adminSearchQuery = '';
+  const input = document.getElementById("admin-search-input");
+  if (input) input.value = '';
+  const clearBtn = document.getElementById("admin-clear-search-btn");
+  if (clearBtn) clearBtn.classList.add("hidden");
+  renderOrders();
+}
+
+function setAdminSearch(query) {
+  const input = document.getElementById("admin-search-input");
+  if (input) {
+    input.value = query;
+    input.focus();
+  }
+  handleAdminSearch(query);
+  filterOrders('all');
+  showToast(`ກັ່ນຕອງອໍເດີສຳລັບ: ${query}`, "info");
+}
+
+function renderOrders() {
+  const container = document.getElementById("orders-container");
+  let filtered = currentFilter === 'all' 
+    ? allOrders 
+    : allOrders.filter(x => x.status === currentFilter);
+
+  if (adminSearchQuery) {
+    const sq = adminSearchQuery.toLowerCase();
+    const sqDigits = sq.replace(/\D/g, '');
+    filtered = filtered.filter(x => {
+      if ((x.customer_name || '').toLowerCase().includes(sq)) return true;
+      if ((x.order_code || '').toLowerCase().includes(sq)) return true;
+      if ((x.customer_phone || '').toLowerCase().includes(sq)) return true;
+      if (sqDigits && sqDigits.length >= 4) {
+        const phoneDigits = (x.customer_phone || '').replace(/\D/g, '');
+        if (phoneDigits.includes(sqDigits) || sqDigits.includes(phoneDigits)) return true;
+      }
+      return false;
+    });
+  }
+
+  // Update count badge & stats
+  const badgeEl = document.getElementById("admin-search-count-badge");
+  const labelEl = document.getElementById("admin-search-label");
+  if (badgeEl) {
+    if (adminSearchQuery) {
+      const totalSpent = filtered.reduce((s, o) => s + (o.total_amount || 0), 0);
+      badgeEl.textContent = `${filtered.length} ອໍເດີ (ຍອດລວມ: ${formatKip(totalSpent)})`;
+      if (labelEl) labelEl.textContent = `ຜົນຄົ້ນຫາ "${adminSearchQuery}":`;
+    } else {
+      badgeEl.textContent = `${filtered.length} ອໍເດີ`;
+      if (labelEl) labelEl.textContent = `ສະແດງ:`;
+    }
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="p-16 text-center text-slate-400 bg-white rounded-3xl border border-amber-100 shadow-card">
+        <i class="fa-regular fa-folder-open text-4xl mb-3 text-amber-300"></i>
+        <p class="text-sm font-bold text-slate-700">ບໍ່ມີລາຍການອໍເດີທີ່ກົງກັບເງື່ອນໄຂ</p>
+        ${adminSearchQuery ? `<button onclick="clearAdminSearch()" class="mt-3 px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-xl border border-amber-200 transition">ລຶບຄຳຄົ້ນຫາ</button>` : ''}
+      </div>
+    `;
+    return;
+  }
+
+  const statusSteps = ['pending', 'approved', 'delivering', 'completed'];
+
+  container.innerHTML = filtered.map(order => {
+    const lat = order.latitude;
+    const lng = order.longitude;
+    const hasLocation = lat && lng;
+    const mapsNavUrl = hasLocation ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}` : '#';
+
+    let statusBadgeClass = "badge-pending";
+    let statusText = "⏳ 1. ລໍຖ້າກວດສອບ";
+    if (order.status === 'approved') {
+      statusBadgeClass = "badge-approved";
+      statusText = "✅ 2. ອະນຸມັດແລ້ວ";
+    } else if (order.status === 'delivering') {
+      statusBadgeClass = "badge-delivering";
+      statusText = "🚚 3. ກຳລັງຈັດສົ່ງ";
+    } else if (order.status === 'completed') {
+      statusBadgeClass = "badge-completed";
+      statusText = "🎉 4. ສຳເລັດແລ້ວ";
+    } else if (order.status === 'rejected') {
+      statusBadgeClass = "badge-rejected";
+      statusText = "❌ ປະຕິເສດແລ້ວ";
+    }
+
+    const currentStepIdx = statusSteps.indexOf(order.status);
+    const progressWidth = currentStepIdx >= 0 ? `${(currentStepIdx / 3) * 100}%` : '0%';
+
+    // Build the Stepper Pipeline HTML
+    const stepperHtml = `
+      <div class="bg-slate-950 text-white p-3 sm:p-3.5 rounded-2xl border border-amber-500/25 shadow-sm space-y-2">
+        <div class="flex items-center justify-between text-[10px] font-bold text-slate-400">
+          <span class="flex items-center gap-1.5 text-amber-400">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
+            <span>ຂັ້ນຕອນການຈັດສົ່ງ (Pipeline)</span>
+          </span>
+          <span class="font-mono text-amber-300 text-[10px]">${order.created_at_str || ''}</span>
+        </div>
+
+        <!-- Stepper Nodes & Dynamic Line -->
+        <div class="relative flex items-center justify-between px-2 pt-1 pb-0.5">
+          <!-- Background Line -->
+          <div class="absolute left-5 right-5 top-1/2 -translate-y-1/2 h-0.5 bg-slate-800 -z-0"></div>
+          <!-- Active Gradient Line -->
+          <div class="absolute left-5 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500 -z-0" style="width: ${progressWidth}; max-width: calc(100% - 2.5rem);"></div>
+
+          ${statusSteps.map((stepKey, i) => {
+            const isDone = (currentStepIdx > i);
+            const isCurrent = (currentStepIdx === i);
+            let nodeClass = "";
+            let iconHtml = "";
+            let labelText = "";
+            let labelColor = "text-slate-500";
+
+            if (stepKey === 'pending') {
+              labelText = "ລໍຖ້າກວດ";
+              iconHtml = isDone ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-receipt"></i>';
+            } else if (stepKey === 'approved') {
+              labelText = "ອະນຸມັດ";
+              iconHtml = isDone ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-box-archive"></i>';
+            } else if (stepKey === 'delivering') {
+              labelText = "ກຳລັງສົ່ງ";
+              iconHtml = isDone ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-truck-fast"></i>';
+            } else if (stepKey === 'completed') {
+              labelText = "ສຳເລັດ";
+              iconHtml = isDone || isCurrent ? '<i class="fa-solid fa-award"></i>' : '<i class="fa-solid fa-circle-check"></i>';
+            }
+
+            if (isDone) {
+              nodeClass = "bg-amber-500 border-amber-300 text-slate-950 shadow-xs";
+              labelColor = "text-amber-400";
+            } else if (isCurrent) {
+              nodeClass = "bg-amber-400 border-white text-slate-950 ring-4 ring-amber-500/30 scale-110 font-black shadow-md";
+              labelColor = "text-white font-black";
+            } else {
+              nodeClass = "bg-slate-900 border-slate-700 text-slate-500";
+              labelColor = "text-slate-600";
+            }
+
+            return `
+              <div class="relative z-10 flex flex-col items-center gap-1 cursor-pointer group" onclick="updateOrderStatus(${order.id}, '${stepKey}')" title="ກົດເພື່ອປ່ຽນສະຖານະເປັນ: ${labelText}">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] border transition-all ${nodeClass}">
+                  ${iconHtml}
+                </div>
+                <span class="text-[9px] font-bold ${labelColor} group-hover:text-amber-300 transition">${labelText}</span>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+
+    // Build the Smart Hero Action Button
+    let smartButtonHtml = '';
+    if (order.status === 'pending') {
+      smartButtonHtml = `
+        <button onclick="updateOrderStatus(${order.id}, 'approved')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center justify-between shadow-lg shadow-amber-500/20 transition-all active:scale-[0.98] group">
+          <div class="flex items-center gap-2.5 text-left">
+            <div class="w-7 h-7 rounded-xl bg-slate-950/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+              <div class="text-[9px] uppercase tracking-wider text-slate-800 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
+              <div class="font-black text-xs sm:text-sm">ກວດໃບບິນແລ້ວ • ກົດອະນຸມັດອໍເດີ</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 bg-slate-950/20 px-2.5 py-1 rounded-xl text-[11px] font-black">
+            <span>ອະນຸມັດ</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+      `;
+    } else if (order.status === 'approved') {
+      smartButtonHtml = `
+        <button onclick="updateOrderStatus(${order.id}, 'delivering')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-500 to-amber-500 hover:from-purple-500 hover:to-amber-400 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-purple-500/25 transition-all active:scale-[0.98] group">
+          <div class="flex items-center gap-2.5 text-left">
+            <div class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div>
+              <div class="text-[9px] uppercase tracking-wider text-purple-100 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
+              <div class="font-black text-xs sm:text-sm">ມອບເຄື່ອງໃຫ້ຄົນຂັບ • ອອກລົດຈັດສົ່ງ</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 bg-white/20 px-2.5 py-1 rounded-xl text-[11px] font-black">
+            <span>ເລີ່ມສົ່ງ</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </button>
+      `;
+    } else if (order.status === 'delivering') {
+      smartButtonHtml = `
+        <button onclick="updateOrderStatus(${order.id}, 'completed')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-amber-500/20 transition-all active:scale-[0.98] group">
+          <div class="flex items-center gap-2.5 text-left">
+            <div class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
+              <i class="fa-solid fa-flag-checkered"></i>
+            </div>
+            <div>
+              <div class="text-[9px] uppercase tracking-wider text-amber-100 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
+              <div class="font-black text-xs sm:text-sm">ສົ່ງຮອດເຮືອນລູກຄ້າແລ້ວ • ຈົບງານຈັດສົ່ງ</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 bg-white/20 px-2.5 py-1 rounded-xl text-[11px] font-black">
+            <span>ສຳເລັດ</span>
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </button>
+      `;
+    } else if (order.status === 'completed') {
+      smartButtonHtml = `
+        <div class="w-full py-3.5 px-4 rounded-2xl bg-slate-950 border border-amber-500/30 text-amber-400 font-black text-xs flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <div>
+              <div class="text-[9px] uppercase tracking-wider text-amber-400/80 font-bold">ສະຖານະປະຈຸບັນ</div>
+              <div class="font-black text-xs text-white">🎉 ອໍເດີນີ້ຈັດສົ່ງສຳເລັດຮຽບຮ້ອຍແລ້ວ!</div>
+            </div>
+          </div>
+          <span class="text-[10px] bg-slate-900 px-2.5 py-1 rounded-xl border border-amber-500/30 text-amber-300">ຈົບງານ 🏆</span>
+        </div>
+      `;
+    } else if (order.status === 'rejected') {
+      smartButtonHtml = `
+        <div class="w-full py-3 px-3.5 rounded-2xl bg-rose-950/40 border border-rose-900/50 text-rose-300 font-black text-xs flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-ban"></i>
+            </div>
+            <div>
+              <div class="text-[9px] uppercase tracking-wider text-rose-400 font-bold">ສະຖານະປະຈຸບັນ</div>
+              <div class="font-black text-xs text-white">❌ ອໍເດີນີ້ຖືກປະຕິເສດແລ້ວ</div>
+            </div>
+          </div>
+          <button onclick="updateOrderStatus(${order.id}, 'pending')" class="text-[10px] bg-rose-900/60 hover:bg-rose-800 text-rose-200 px-2.5 py-1 rounded-xl border border-rose-700/50 transition">
+            ↺ ເປີດກວດໃໝ່
+          </button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-amber-100 shadow-card hover:border-amber-300 transition-all flex flex-col lg:flex-row gap-6 justify-between">
+        
+        <!-- Left Side: Customer & Order Details -->
+        <div class="flex-1 space-y-3.5">
+          
+          <!-- Top Row: Code, Status Badge, Sheet Badge, Timestamp -->
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-amber-50">
+            <div class="flex items-center gap-2">
+              <span class="font-black text-slate-900 font-mono text-sm sm:text-base">${order.order_code}</span>
+              <span class="badge-status ${statusBadgeClass}">${statusText}</span>
+              ${order.sheet_synced ? `<span class="text-[10px] text-amber-700 font-black bg-amber-50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-200" title="ບັນທຶກລົງ Google Sheet ແລ້ວ"><i class="fa-solid fa-circle-check"></i> Sheet</span>` : ''}
+            </div>
+            <span class="text-xs text-slate-400 font-medium">${order.created_at_str || ''}</span>
+          </div>
+
+          <!-- Customer Info & Action Chips -->
+          <div class="flex flex-wrap items-center gap-2.5 text-xs">
+            <div class="flex items-center gap-1.5 font-black text-slate-900 text-sm">
+              <i class="fa-solid fa-user text-amber-600 text-xs"></i>
+              <span>${order.customer_name}</span>
+            </div>
+
+            <!-- Call Button -->
+            <a href="tel:${order.customer_phone}" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold flex items-center gap-1.5 transition border border-amber-200 shadow-2xs">
+              <i class="fa-solid fa-phone text-amber-600"></i>
+              <span>${order.customer_phone}</span>
+            </a>
+
+            <!-- View Customer Order History Button -->
+            <button onclick="setAdminSearch('${order.customer_phone}')" title="ກັ່ນຕອງເບິ່ງປະຫວັດອໍເດີທັງໝົດຂອງເບີນີ້" class="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 text-[11px] font-bold flex items-center gap-1 transition shadow-2xs active:scale-95">
+              <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>
+              <span>ປະຫວັດເບີນີ້</span>
+            </button>
+
+            <!-- Google Maps GPS Navigation Button -->
+            ${hasLocation ? `
+              <a href="${mapsNavUrl}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-600 hover:from-amber-700 hover:to-amber-700 text-white font-black flex items-center gap-1.5 shadow-sm shadow-amber-500/20 transition active:scale-95">
+                <i class="fa-solid fa-location-arrow"></i>
+                <span>🧭 Google Maps GPS</span>
+              </a>
+            ` : `
+              <span class="text-slate-400 text-xs italic">ບໍ່ມີພິກັດແຜນທີ່</span>
+            `}
+          </div>
+
+          <!-- Items Summary & Total Amount -->
+          <div class="bg-amber-50/40 p-3.5 rounded-2xl border border-amber-100/80 text-xs">
+            <div class="text-slate-400 font-bold uppercase tracking-wider text-[10px] mb-1">ສິນຄ້າທີ່ສັ່ງ:</div>
+            <div class="font-extrabold text-slate-900 text-sm mb-1">${order.items_summary}</div>
+            <div class="text-right font-black text-sm sm:text-base text-amber-800">
+              ຍອດລວມ: ${formatKip(order.total_amount)}
+            </div>
+          </div>
+
+          <!-- Address Note -->
+          <div class="text-xs text-slate-600">
+            <span class="font-bold text-slate-700">ທີ່ຢູ່ / ຈຸດສັງເກດ:</span>
+            <p class="text-slate-600 mt-0.5 leading-relaxed">${order.address_note || 'ບໍ່ໄດ້ລະບຸ'}</p>
+          </div>
+
+          <!-- Slip Inspection Box -->
+          <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-amber-100">
+            ${order.slip_image ? `
+              <div onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="group relative cursor-pointer overflow-hidden rounded-xl border border-amber-200 bg-white w-16 h-16 shrink-0 flex items-center justify-center shadow-sm">
+                <img src="/static/uploads/${order.slip_image}" alt="Slip" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                </div>
+              </div>
+              <div class="text-xs">
+                <div class="font-black text-slate-900">ໃບບິນໂອນເງິນ</div>
+                <button onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="text-[10px] text-amber-600 font-bold hover:underline">ກົດເບິ່ງຮູບເຕັມ</button>
+              </div>
+            ` : `
+              <div class="w-16 h-16 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+                <i class="fa-solid fa-image-slash"></i>
+              </div>
+              <div class="text-xs text-slate-500 font-medium">ບໍ່ມີຮູບໃບບິນ</div>
+            `}
+          </div>
+
+        </div>
+
+        <!-- Right Side: Pipeline & Actions -->
+        <div class="lg:w-72 flex flex-col justify-between space-y-4 shrink-0">
+          ${stepperHtml}
+          ${smartButtonHtml}
+        </div>
+
+      </div>
+    `;
+  }).join("");
+}
+
+async function updateOrderStatus(orderId, newStatus) {
+  try {
+    const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("ອັບເດດສະຖານະສຳເລັດແລ້ວ!", "success");
+      fetchOrders();
+    } else {
+      showToast(data.message || "ເກີດຂໍ້ຜິດພາດ", "error");
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+function openSlipModal(imgSrc) {
+  document.getElementById("modal-slip-img").src = imgSrc;
+  document.getElementById("modal-slip-download").href = imgSrc;
+  document.getElementById("slip-modal").classList.remove("hidden");
+}
+
+function closeSlipModal() {
+  document.getElementById("slip-modal").classList.add("hidden");
+}
+
+function openSettingsModal() {
+  document.getElementById("settings-modal").classList.remove("hidden");
+}
+
+function closeSettingsModal() {
+  document.getElementById("settings-modal").classList.add("hidden");
+}
+
+async function saveStoreSettings(e) {
+  e.preventDefault();
+  const payload = {
+    google_sheet_webhook_url: document.getElementById("setting_sheet_url").value.trim(),
+    store_name: document.getElementById("setting_store_name").value.trim(),
+    store_phone: document.getElementById("setting_store_phone").value.trim(),
+    bank_name: document.getElementById("setting_bank_name").value.trim(),
+    account_number: document.getElementById("setting_acc_no").value.trim(),
+    account_name: document.getElementById("setting_acc_name").value.trim(),
+    admin_username: document.getElementById("setting_admin_user").value.trim(),
+    admin_password: document.getElementById("setting_admin_pass").value.trim()
+  };
+
+  try {
+    const res = await fetch("/api/admin/settings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      showToast("ບັນທຶກການຕັ້ງຄ່າຮຽບຮ້ອຍແລ້ວ!", "success");
+      closeSettingsModal();
+      setTimeout(() => window.location.reload(), 1000);
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+// --------------------------------------------------------------------------
+// Tab Switcher (Orders vs Users vs Products)
+// --------------------------------------------------------------------------
+function switchTab(tab) {
+  currentTab = tab;
+  const tabOrders = document.getElementById("tab-orders");
+  const tabUsers = document.getElementById("tab-users");
+  const tabProducts = document.getElementById("tab-products");
+  const secOrders = document.getElementById("section-orders");
+  const secUsers = document.getElementById("section-users");
+  const secProducts = document.getElementById("section-products");
+
+  const activeTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-slate-900 text-amber-400 shadow-md shadow-amber-500/20";
+  const inactiveTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs";
+
+  tabOrders.className = inactiveTabClass;
+  tabUsers.className = inactiveTabClass;
+  if (tabProducts) tabProducts.className = inactiveTabClass;
+
+  secOrders.classList.add("hidden");
+  secUsers.classList.add("hidden");
+  if (secProducts) secProducts.classList.add("hidden");
+
+  if (tab === 'orders') {
+    tabOrders.className = activeTabClass;
+    secOrders.classList.remove("hidden");
+    fetchOrders();
+  } else if (tab === 'users') {
+    tabUsers.className = activeTabClass;
+    secUsers.classList.remove("hidden");
+    fetchUsers();
+  } else if (tab === 'products') {
+    if (tabProducts) tabProducts.className = activeTabClass;
+    if (secProducts) secProducts.classList.remove("hidden");
+    fetchAdminProducts();
+  }
+}
+
+// --------------------------------------------------------------------------
+// Product Management Functions (Fetch, Add, Edit, Delete, Image Preview)
+// --------------------------------------------------------------------------
+let allProducts = [];
+let currentProdFilter = 'all';
+
+async function fetchAdminProducts() {
+  try {
+    const res = await fetch("/api/admin/products");
+    if (res.status === 401) {
+      window.location.href = "/admin/login";
+      return;
+    }
+    if (res.ok) {
+      allProducts = await res.json();
+      const countBadge = document.getElementById("badge-products-count");
+      if (countBadge) countBadge.textContent = allProducts.length;
+      updateProductCounters();
+      renderAdminProducts();
+    }
+  } catch (err) {
+    showToast("ບໍ່ສາມາດດຶງຂໍ້ມູນສິນຄ້າໄດ້: " + err.message, "error");
+  }
+}
+
+function updateProductCounters() {
+  const allCount = allProducts.length;
+  const bottleCount = allProducts.filter(p => p.category === 'bottle').length;
+  const leavesCount = allProducts.filter(p => p.category === 'leaves_syrup').length;
+  const pilotCount = allProducts.filter(p => p.category === 'pilot').length;
+  const popCount = allProducts.filter(p => p.is_popular).length;
+
+  const elAll = document.getElementById("badge-prod-all");
+  const elBottle = document.getElementById("badge-prod-bottle");
+  const elLeaves = document.getElementById("badge-prod-leaves_syrup");
+  const elPilot = document.getElementById("badge-prod-pilot");
+  const elPop = document.getElementById("badge-prod-popular");
+
+  if (elAll) elAll.textContent = allCount;
+  if (elBottle) elBottle.textContent = bottleCount;
+  if (elLeaves) elLeaves.textContent = leavesCount;
+  if (elPilot) elPilot.textContent = pilotCount;
+  if (elPop) elPop.textContent = popCount;
+}
+
+function filterAdminProducts(cat) {
+  currentProdFilter = cat;
+  document.querySelectorAll(".prod-filter-btn").forEach(btn => {
+    btn.classList.remove("ring-2", "ring-amber-500", "bg-slate-950", "text-white");
+    btn.classList.add("bg-white", "text-slate-800");
+  });
+  const activeBtn = document.getElementById("btn-prodfilter-" + cat);
+  if (activeBtn) {
+    activeBtn.classList.remove("bg-white", "text-slate-800");
+    activeBtn.classList.add("bg-slate-950", "text-white", "ring-2", "ring-amber-500");
+  }
+  renderAdminProducts();
+}
+
+function renderAdminProducts() {
+  const tbody = document.getElementById("products-table-body");
+  if (!tbody) return;
+
+  const filtered = currentProdFilter === 'all' 
+    ? allProducts 
+    : allProducts.filter(p => p.category === currentProdFilter);
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="p-12 text-center text-slate-400">
+          <i class="fa-solid fa-boxes-stacked text-3xl mb-2 text-amber-300"></i>
+          <p class="font-bold text-slate-600">ຍັງບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</p>
+          <button onclick="openProductModal('add')" class="mt-3 px-4 py-2 rounded-xl bg-amber-50 text-amber-800 font-bold text-xs border border-amber-200 hover:bg-amber-100 transition">
+            + ເພີ່ມສິນຄ້າຕອນນີ້
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(p => {
+    let catBadge = '<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-black text-[10px] border border-amber-200">🍶 ເປັນຕຸກ</span>';
+    if (p.category === 'leaves_syrup') {
+      catBadge = '<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-black text-[10px] border border-emerald-200">🍃 ໃບກັບນ້ຳຢາ</span>';
+    } else if (p.category === 'pilot') {
+      catBadge = '<span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-black text-[10px] border border-purple-200">🚀 Pilot</span>';
+    }
+    
+    const activeBadge = p.is_active 
+      ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-black text-[10px] border border-emerald-200 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ເປີດຂາຍ</span>' 
+      : '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-bold text-[10px] border border-slate-300 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> ປິດຂາຍ</span>';
+
+    const popBadge = p.is_popular 
+      ? '<span class="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] shadow-xs">⭐ ຂາຍດີ</span>' 
+      : '<span class="text-slate-300 text-[10px]">-</span>';
+
+    let fallbackImg = '/static/img/tom_bottle.svg';
+    if (p.category === 'leaves_syrup') fallbackImg = '/static/img/tom_leaves.svg';
+    else if (p.category === 'pilot') fallbackImg = '/static/img/tom_pilot.svg';
+    const imgUrl = p.image_url || fallbackImg;
+
+    return `
+      <tr class="hover:bg-amber-50/30 transition">
+        <!-- Thumbnail -->
+        <td class="py-3 px-5">
+          <div class="w-12 h-12 rounded-xl bg-white border border-amber-200 p-1 flex items-center justify-center overflow-hidden shadow-2xs">
+            <img src="${imgUrl}" alt="${p.name}" class="w-full h-full object-contain" />
+          </div>
+        </td>
+
+        <!-- Name & Code -->
+        <td class="py-3 px-4">
+          <div class="font-black text-slate-900 text-xs sm:text-sm">${p.name}</div>
+          <div class="text-[10px] font-mono text-slate-400 mt-0.5">${p.code || '-'}</div>
+          ${p.description ? `<p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${p.description}</p>` : ''}
+        </td>
+
+        <!-- Category -->
+        <td class="py-3 px-4 whitespace-nowrap">
+          ${catBadge}
+        </td>
+
+        <!-- Price -->
+        <td class="py-3 px-4 whitespace-nowrap">
+          <div class="font-black text-amber-800 text-xs sm:text-sm">${formatKip(p.price)}</div>
+          <div class="text-[10px] text-slate-400 font-medium">/ ${p.unit_label || 'ຕຸກ'}</div>
+        </td>
+
+        <!-- Popular -->
+        <td class="py-3 px-4 whitespace-nowrap">
+          ${popBadge}
+        </td>
+
+        <!-- Active Status -->
+        <td class="py-3 px-4 whitespace-nowrap">
+          ${activeBadge}
+        </td>
+
+        <!-- Actions -->
+        <td class="py-3 px-5 text-right whitespace-nowrap">
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="openProductModal('edit', ${p.id})" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition active:scale-95" title="ແກ້ໄຂ">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>ແກ້ໄຂ</span>
+            </button>
+            <button onclick="deleteProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs flex items-center gap-1 border border-rose-200 transition active:scale-95" title="ລຶບ">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>ລຶບ</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function previewProductImage(input) {
+  const preview = document.getElementById("product_image_preview");
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function openProductModal(mode, productId = null) {
+  const modal = document.getElementById("product-modal");
+  const title = document.getElementById("product_modal_title");
+  const submitBtn = document.getElementById("product_submit_btn");
+  const idInput = document.getElementById("product_id");
+  const nameInput = document.getElementById("product_name");
+  const codeInput = document.getElementById("product_code");
+  const catInput = document.getElementById("product_category");
+  const priceInput = document.getElementById("product_price");
+  const unitInput = document.getElementById("product_unit_label");
+  const descInput = document.getElementById("product_description");
+  const depInput = document.getElementById("product_deposit_note");
+  const popInput = document.getElementById("product_is_popular");
+  const activeInput = document.getElementById("product_is_active");
+  const imgInput = document.getElementById("product_image_file");
+  const preview = document.getElementById("product_image_preview");
+
+  imgInput.value = "";
+
+  if (mode === 'add') {
+    title.innerHTML = `<i class="fa-solid fa-plus text-amber-400"></i> <span>ເພີ່ມສິນຄ້າໃໝ່ (Add Product)</span>`;
+    submitBtn.textContent = "ບັນທຶກສິນຄ້າໃໝ່";
+    idInput.value = "";
+    nameInput.value = "";
+    codeInput.value = "";
+    catInput.value = "bottle";
+    priceInput.value = "";
+    unitInput.value = "ຕຸກ 1.5L";
+    descInput.value = "";
+    depInput.value = "";
+    popInput.checked = false;
+    activeInput.checked = true;
+    preview.src = "/static/img/tom_bottle.svg";
+  } else if (mode === 'edit') {
+    const prod = allProducts.find(p => p.id === productId);
+    if (!prod) return;
+    title.innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> <span>ແກ້ໄຂສິນຄ້າ: ${prod.name}</span>`;
+    submitBtn.textContent = "ບັນທຶກການແກ້ໄຂ";
+    idInput.value = prod.id;
+    nameInput.value = prod.name;
+    codeInput.value = prod.code || "";
+    catInput.value = prod.category;
+    priceInput.value = prod.price;
+    unitInput.value = prod.unit_label || "";
+    descInput.value = prod.description || "";
+    depInput.value = prod.deposit_note || "";
+    popInput.checked = prod.is_popular;
+    activeInput.checked = prod.is_active;
+    let fallbackImg = '/static/img/tom_bottle.svg';
+    if (prod.category === 'leaves_syrup') fallbackImg = '/static/img/tom_leaves.svg';
+    else if (prod.category === 'pilot') fallbackImg = '/static/img/tom_pilot.svg';
+    preview.src = prod.image_url || fallbackImg;
+  }
+
+  modal.classList.remove("hidden");
+}
+
+function closeProductModal() {
+  document.getElementById("product-modal").classList.add("hidden");
+}
+
+async function saveProduct(e) {
+  e.preventDefault();
+  const id = document.getElementById("product_id").value;
+  const isEdit = Boolean(id);
+  const submitBtn = document.getElementById("product_submit_btn");
+  const origText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>ກຳລັງບັນທຶກ...</span>`;
+
+  const formData = new FormData();
+  formData.append("name", document.getElementById("product_name").value.trim());
+  formData.append("code", document.getElementById("product_code").value.trim());
+  formData.append("category", document.getElementById("product_category").value);
+  formData.append("price", document.getElementById("product_price").value);
+  formData.append("unit_label", document.getElementById("product_unit_label").value.trim());
+  formData.append("description", document.getElementById("product_description").value.trim());
+  formData.append("deposit_note", document.getElementById("product_deposit_note").value.trim());
+  formData.append("is_popular", document.getElementById("product_is_popular").checked ? "true" : "false");
+  formData.append("is_active", document.getElementById("product_is_active").checked ? "true" : "false");
+
+  const fileInput = document.getElementById("product_image_file");
+  if (fileInput.files && fileInput.files[0]) {
+    formData.append("image_file", fileInput.files[0]);
+  }
+
+  try {
+    const url = isEdit ? `/api/admin/products/${id}` : "/api/admin/products";
+    const method = isEdit ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method: method,
+      body: formData
+    });
+    const data = await res.json();
+    submitBtn.disabled = false;
+    submitBtn.textContent = origText;
+
+    if (res.ok && data.success) {
+      showToast(data.message, "success");
+      closeProductModal();
+      fetchAdminProducts();
+    } else {
+      showToast(data.message || "ເກີດຂໍ້ຜິດພາດໃນການບັນທຶກ", "error");
+    }
+  } catch (err) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = origText;
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+async function deleteProduct(productId, productName) {
+  if (!confirm(`ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບສິນຄ້າ "${productName}"?`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/products/${productId}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message, "success");
+      fetchAdminProducts();
+    } else {
+      showToast(data.message || "ບໍ່ສາມາດລຶບສິນຄ້າໄດ້", "error");
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+// --------------------------------------------------------------------------
+// User Management Functions (Fetch, Add, Edit, Delete)
+// --------------------------------------------------------------------------
+async function fetchUsers() {
+  try {
+    const res = await fetch("/api/admin/users");
+    if (res.status === 401) {
+      window.location.href = "/admin/login";
+      return;
+    }
+    if (res.ok) {
+      allUsers = await res.json();
+      const countBadge = document.getElementById("badge-users-count");
+      if (countBadge) countBadge.textContent = allUsers.length;
+      renderUsers(allUsers);
+    }
+  } catch (err) {
+    showToast("ບໍ່ສາມາດດຶງຂໍ້ມູນຜູ້ໃຊ້ງານໄດ້: " + err.message, "error");
+  }
+}
+
+function renderUsers(users) {
+  const tbody = document.getElementById("users-table-body");
+  if (!tbody) return;
+
+  if (!users || users.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="p-12 text-center text-slate-400">
+          <i class="fa-regular fa-user text-3xl mb-2 text-amber-300"></i>
+          <p class="font-bold text-slate-600">ບໍ່ພົບລາຍຊື່ຜູ້ໃຊ້ງານ</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = users.map(u => {
+    const isCurrent = (currentUserId && u.id === currentUserId) || (currentUsername && u.username === currentUsername);
+
+    let roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-black text-[11px]">Staff</span>';
+    let roleIcon = 'fa-user';
+    if (u.role === 'admin') {
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 font-black text-[11px] border border-amber-200">👑 Admin</span>';
+      roleIcon = 'fa-user-shield';
+    } else if (u.role === 'driver') {
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-purple-100 text-purple-800 font-black text-[11px] border border-purple-200">🚚 Driver</span>';
+      roleIcon = 'fa-truck';
+    } else {
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-blue-100 text-blue-800 font-black text-[11px] border border-blue-200">📋 Staff</span>';
+      roleIcon = 'fa-clipboard-user';
+    }
+
+    const statusBadge = u.is_active 
+      ? '<span class="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ເປີດໃຊ້ງານ</span>'
+      : '<span class="inline-flex items-center gap-1 text-rose-700 bg-rose-50 px-2.5 py-1 rounded-xl border border-rose-200 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ປິດໃຊ້ງານ</span>';
+
+    return `
+      <tr class="hover:bg-amber-50/40 transition">
+        <td class="py-3.5 px-5">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-500 flex items-center justify-center text-white text-xs font-black shadow-xs shrink-0">
+              <i class="fa-solid ${roleIcon}"></i>
+            </div>
+            <div>
+              <div class="font-black text-slate-900 font-mono text-xs flex items-center gap-1.5">
+                ${u.username}
+                ${isCurrent ? '<span class="px-1.5 py-0.5 rounded-md bg-amber-200 text-amber-900 font-bold text-[9px]">ທ່ານເອງ (You)</span>' : ''}
+              </div>
+              <div class="text-[11px] text-slate-400">ID: #${u.id}</div>
+            </div>
+          </div>
+        </td>
+        <td class="py-3.5 px-4 font-bold text-slate-800">${u.display_name}</td>
+        <td class="py-3.5 px-4">${roleBadge}</td>
+        <td class="py-3.5 px-4">${statusBadge}</td>
+        <td class="py-3.5 px-4 text-slate-400 font-mono text-[11px]">${u.created_at_str || '-'}</td>
+        <td class="py-3.5 px-5 text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="openUserModal('edit', ${u.id})" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-amber-50 hover:text-amber-700 text-slate-700 text-xs font-black transition border border-slate-200 hover:border-amber-200 flex items-center gap-1 active:scale-95">
+              <i class="fa-solid fa-pen-to-square"></i> ແກ້ໄຂ
+            </button>
+            ${!isCurrent ? `
+              <button onclick="deleteUser(${u.id}, '${u.username}')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-black transition border border-rose-200 flex items-center gap-1 active:scale-95">
+                <i class="fa-solid fa-trash"></i> ລຶບ
+              </button>
+            ` : `
+              <span class="text-[10px] text-slate-400 italic px-2 py-1">ບັນຊີປັດຈຸບັນ</span>
+            `}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function openUserModal(mode, userId) {
+  const modal = document.getElementById("user-modal");
+  const title = document.getElementById("user-modal-title");
+  const icon = document.getElementById("user-modal-icon");
+  const modeInput = document.getElementById("user_mode");
+  const idInput = document.getElementById("user_id");
+  const usernameInput = document.getElementById("user_username");
+  const usernameHelp = document.getElementById("user_username_help");
+  const displayNameInput = document.getElementById("user_display_name");
+  const roleSelect = document.getElementById("user_role");
+  const activeSelect = document.getElementById("user_is_active");
+  const passwordInput = document.getElementById("user_password");
+  const passwordLabel = document.getElementById("user_password_label");
+  const passwordHelp = document.getElementById("user_password_help");
+
+  modeInput.value = mode;
+  passwordInput.value = "";
+  passwordInput.type = "password";
+  document.getElementById("user-password-eye").className = "fa-solid fa-eye text-xs";
+
+  if (mode === 'add') {
+    title.textContent = "ເພີ່ມຜູ້ໃຊ້ງານໃໝ່ (Add User)";
+    icon.className = "fa-solid fa-user-plus";
+    idInput.value = "";
+    usernameInput.value = "";
+    usernameInput.disabled = false;
+    usernameInput.classList.remove("bg-slate-100", "cursor-not-allowed");
+    usernameHelp.textContent = "ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)";
+    displayNameInput.value = "";
+    roleSelect.value = "staff";
+    activeSelect.value = "true";
+    passwordInput.required = true;
+    passwordLabel.innerHTML = 'ລະຫັດຜ່ານ (Password) <span class="text-rose-500">*</span>';
+    passwordHelp.textContent = "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ";
+  } else {
+    const user = allUsers.find(u => u.id === userId);
+    if (!user) return;
+    title.textContent = `ແກ້ໄຂຂໍ້ມູນຜູ້ໃຊ້: ${user.username}`;
+    icon.className = "fa-solid fa-user-pen";
+    idInput.value = user.id;
+    usernameInput.value = user.username;
+    usernameInput.disabled = true;
+    usernameInput.classList.add("bg-slate-100", "cursor-not-allowed");
+    usernameHelp.textContent = "ບໍ່ສາມາດປ່ຽນຊື່ຜູ້ໃຊ້ (Username) ໄດ້";
+    displayNameInput.value = user.display_name;
+    roleSelect.value = user.role;
+    activeSelect.value = user.is_active ? "true" : "false";
+    passwordInput.required = false;
+    passwordLabel.innerHTML = 'ລະຫັດຜ່ານໃໝ່ (ປ່ຽນລະຫັດຜ່ານ)';
+    passwordHelp.textContent = "ປະວ່າງໄວ້ ຖ້າບໍ່ຕ້ອງການປ່ຽນລະຫັດຜ່ານເກົ່າ (ຖ້າປ່ຽນ ຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວ)";
+  }
+
+  modal.classList.remove("hidden");
+}
+
+function closeUserModal() {
+  document.getElementById("user-modal").classList.add("hidden");
+}
+
+function toggleUserPasswordVisibility() {
+  const pwd = document.getElementById("user_password");
+  const eye = document.getElementById("user-password-eye");
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    eye.className = "fa-solid fa-eye-slash text-xs";
+  } else {
+    pwd.type = "password";
+    eye.className = "fa-solid fa-eye text-xs";
+  }
+}
+
+async function saveUser(e) {
+  e.preventDefault();
+  const mode = document.getElementById("user_mode").value;
+  const userId = document.getElementById("user_id").value;
+  const submitBtn = document.getElementById("user_submit_btn");
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ກຳລັງບັນທຶກ...';
+
+  try {
+    if (mode === 'add') {
+      const payload = {
+        username: document.getElementById("user_username").value.trim(),
+        display_name: document.getElementById("user_display_name").value.trim(),
+        role: document.getElementById("user_role").value,
+        password: document.getElementById("user_password").value.trim()
+      };
+
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message || "ເພີ່ມຜູ້ໃຊ້ສຳເລັດແລ້ວ!", "success");
+        closeUserModal();
+        fetchUsers();
+      } else {
+        showToast(data.message || "ເກີດຂໍ້ຜິດພາດໃນການເພີ່ມຜູ້ໃຊ້", "error");
+      }
+    } else {
+      const payload = {
+        display_name: document.getElementById("user_display_name").value.trim(),
+        role: document.getElementById("user_role").value,
+        is_active: document.getElementById("user_is_active").value === "true"
+      };
+      const newPwd = document.getElementById("user_password").value.trim();
+      if (newPwd) {
+        payload.password = newPwd;
+      }
+
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(data.message || "ອັບເດດຂໍ້ມູນຜູ້ໃຊ້ສຳເລັດແລ້ວ!", "success");
+        closeUserModal();
+        fetchUsers();
+      } else {
+        showToast(data.message || "ເກີດຂໍ້ຜິດພາດໃນການອັບເດດ", "error");
+      }
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "ບັນທຶກ";
+  }
+}
+
+async function deleteUser(userId, username) {
+  if (!confirm(`ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບຜູ້ໃຊ້ "${username}" ນີ້? ການລຶບຈະບໍ່ສາມາດກູ້ຄືນໄດ້.`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/users/${userId}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || "ລຶບຜູ້ໃຊ້ງານສຳເລັດແລ້ວ!", "success");
+      fetchUsers();
+    } else {
+      showToast(data.message || "ບໍ່ສາມາດລຶບຜູ້ໃຊ້ໄດ້", "error");
+    }
+  } catch (err) {
+    showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchOrders();
+  fetchUsers();
+  fetchAdminProducts();
+  setInterval(() => {
+    if (currentTab === 'orders') {
+      fetchOrders();
+    }
+  }, 15000);
+});
+</script>
+{% endblock %}

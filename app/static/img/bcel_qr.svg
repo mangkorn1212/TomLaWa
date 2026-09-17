@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <rect width="300" height="300" fill="#ffffff" rx="16"/>
+  <!-- Header with BCEL Red & Blue colors -->
+  <rect x="0" y="0" width="300" height="50" fill="#cc0000" rx="16"/>
+  <rect x="0" y="35" width="300" height="15" fill="#003399"/>
+  <text x="150" y="28" font-family="'Noto Sans Lao', Arial, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">BCEL One QR Pay</text>
+  
+  <!-- Outer QR Frame -->
+  <rect x="35" y="65" width="230" height="200" fill="#f8fafc" rx="8" stroke="#cbd5e1" stroke-width="2"/>
+  
+  <!-- QR Pattern Mockup -->
+  <!-- Top-left finder pattern -->
+  <rect x="55" y="85" width="45" height="45" fill="#0f172a" rx="4"/>
+  <rect x="62" y="92" width="31" height="31" fill="#ffffff"/>
+  <rect x="69" y="99" width="17" height="17" fill="#0f172a"/>
+
+  <!-- Top-right finder pattern -->
+  <rect x="200" y="85" width="45" height="45" fill="#0f172a" rx="4"/>
+  <rect x="207" y="92" width="31" height="31" fill="#ffffff"/>
+  <rect x="214" y="99" width="17" height="17" fill="#0f172a"/>
+
+  <!-- Bottom-left finder pattern -->
+  <rect x="55" y="195" width="45" height="45" fill="#0f172a" rx="4"/>
+  <rect x="62" y="202" width="31" height="31" fill="#ffffff"/>
+  <rect x="69" y="209" width="17" height="17" fill="#0f172a"/>
+
+  <!-- Random QR decorative data bits -->
+  <rect x="115" y="85" width="12" height="12" fill="#0f172a"/>
+  <rect x="135" y="85" width="12" height="24" fill="#0f172a"/>
+  <rect x="160" y="90" width="24" height="12" fill="#0f172a"/>
+  <rect x="115" y="115" width="32" height="12" fill="#0f172a"/>
+  <rect x="155" y="115" width="12" height="32" fill="#0f172a"/>
+  <rect x="175" y="115" width="15" height="15" fill="#0f172a"/>
+
+  <!-- Center Icon Logo: Water Drop with Heart -->
+  <circle cx="150" cy="165" r="22" fill="#0284c7" stroke="#ffffff" stroke-width="3"/>
+  <path d="M150 148 C144 156 138 164 138 171 C138 178 143 183 150 183 C157 183 162 178 162 171 C162 164 156 156 150 148 Z" fill="#ffffff"/>
+
+  <rect x="115" y="195" width="24" height="12" fill="#0f172a"/>
+  <rect x="145" y="195" width="12" height="30" fill="#0f172a"/>
+  <rect x="175" y="185" width="30" height="12" fill="#0f172a"/>
+  <rect x="190" y="210" width="18" height="25" fill="#0f172a"/>
+  <rect x="220" y="195" width="15" height="15" fill="#0f172a"/>
+  <rect x="220" y="225" width="25" height="15" fill="#0f172a"/>
+  <rect x="115" y="225" width="20" height="15" fill="#0f172a"/>
+
+  <!-- Footer hint -->
+  <text x="150" y="282" font-family="'Noto Sans Lao', Arial, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">ສະແກນ QR ຈ່າຍຜ່ານ BCEL One / ທະນາຄານ</text>
+</svg>

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}ວິທີເຊື່ອມຕໍ່ Google Sheet - {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+  <!-- Header -->
+  <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow-sm">
+        <i class="fa-solid fa-table-cells"></i>
+      </div>
+      <div>
+        <h2 class="text-xl md:text-2xl font-black text-slate-800">
+          ວິທີເຊື່ອມຕໍ່ລະບົບບັນທຶກລົງ Google Sheet
+        </h2>
+        <p class="text-xs text-slate-500">
+          ໃຊ້ເວລາພຽງ 1-2 ນາທີ ຂໍ້ມູນອໍເດີທັງໝົດຈະຖືກບັນທຶກລົງ Google Sheet ໃນມືຖືຂອງທ່ານທັນທີ
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step-by-Step Guide -->
+  <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-6">
+    <h3 class="font-bold text-slate-800 text-base pb-3 border-b border-slate-100 flex items-center gap-2">
+      <span class="w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs">✓</span>
+      <span>ຂັ້ນຕອນການຕິດຕັ້ງງ່າຍໆ 4 ຂັ້ນຕອນ:</span>
+    </h3>
+
+    <!-- Step 1 -->
+    <div class="flex items-start gap-4">
+      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+        1
+      </div>
+      <div class="space-y-1">
+        <h4 class="font-bold text-slate-800 text-sm">ສ້າງ Google Sheet ໃໝ່</h4>
+        <p class="text-xs text-slate-600">
+          ເຂົ້າໄປທີ່ <a href="https://sheets.new" target="_blank" class="text-sky-600 font-bold underline">sheets.new</a> ຫຼື ເປີດ Google Drive ແລ້ວສ້າງ Google Sheet ເປົ່າໆ ຕັ້ງຊື່ໄຟລ໌ວ່າ <strong>"ອໍເດີນ້ຳດື່ມ"</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flex items-start gap-4">
+      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+        2
+      </div>
+      <div class="space-y-1">
+        <h4 class="font-bold text-slate-800 text-sm">ເປີດ Apps Script & ວາງໂຄ້ດ</h4>
+        <p class="text-xs text-slate-600">
+          ໃນ Google Sheet ໃຫ້ກົດເມນູດ້ານເທິງ: <strong>ສ່ວນຂະຫຍາຍ (Extensions) &rarr; Apps Script</strong>
+        </p>
+        <p class="text-xs text-slate-600">
+          ຈາກນັ້ນລຶບໂຄ້ດເກົ່າອອກ ແລ້ວກົດປຸ່ມ <strong>"ຄັດລອກໂຄ້ດ"</strong> ດ້ານລຸ່ມນີ້ໄປວາງ:
+        </p>
+
+        <!-- Code Block with Copy Button -->
+        <div class="mt-2 relative bg-slate-900 rounded-2xl p-4 text-slate-200 text-xs font-mono overflow-x-auto max-h-64">
+          <button onclick="copyAppsScript()" id="copy-script-btn" class="absolute top-3 right-3 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-sans text-xs font-bold flex items-center gap-1.5 shadow transition active:scale-95">
+            <i class="fa-regular fa-copy"></i>
+            <span>ຄັດລອກໂຄ້ດທັງໝົດ</span>
+          </button>
+          <pre id="script-code-text">{{ apps_script_code }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flex items-start gap-4">
+      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+        3
+      </div>
+      <div class="space-y-1">
+        <h4 class="font-bold text-slate-800 text-sm">ກົດ Deploy ເປັນ Web App</h4>
+        <div class="text-xs text-slate-600 space-y-1">
+          <p>1. ກົດປຸ່ມບັນທຶກ (Save 💾)</p>
+          <p>2. ກົດປຸ່ມສີຟ້າ <strong>"ນຳໄປໃຊ້ງານ" (Deploy) &rarr; "ການນຳໄປໃຊ້ງານໃໝ່" (New deployment)</strong></p>
+          <p>3. ກົດໄອຄອນຟັນເຟືອງ ⚙️ ເລືອກ <strong>"ເວັບແອັບ" (Web app)</strong></p>
+          <p>4. ຕັ້ງຄ່າ:
+            <ul class="list-disc pl-5 mt-1 space-y-0.5 text-slate-700">
+              <li>Execute as: <strong>ຂ້ອຍ (Me)</strong></li>
+              <li>Who has access: <strong class="text-rose-600 font-bold">ທຸກຄົນ (Anyone)</strong> *** ສຳຄັນຫຼາຍ ເພື່ອໃຫ້ລະບົບສົ່ງຂໍ້ມູນເຂົ້າໄດ້ ***</li>
+            </ul>
+          </p>
+          <p>5. ກົດ <strong>"Deploy"</strong> ແລະ ອະນຸຍາດສິດ (Authorize access) ຕາມຂັ້ນຕອນຂອງ Google</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flex items-start gap-4">
+      <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 font-black text-sm flex items-center justify-center shrink-0">
+        4
+      </div>
+      <div class="space-y-3 flex-1">
+        <h4 class="font-bold text-slate-800 text-sm">ວາງລິ້ງ Web App URL ທີ່ນີ້</h4>
+        <p class="text-xs text-slate-600">
+          ຄັດລອກລິ້ງ Web App URL ທີ່ Google ໃຫ້ມາ (ຂຶ້ນຕົ້ນດ້ວຍ <code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700">https://script.google.com/macros/s/.../exec</code>) ແລ້ວນຳມາວາງລົງໃນຊ່ອງນີ້:
+        </p>
+
+        <!-- Form to Save and Test Webhook -->
+        <form onsubmit="saveAndTestWebhook(event)" class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Web App URL ຂອງທ່ານ:</label>
+            <input type="url" id="webhook_url_input" required value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono text-xs bg-white" />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="submit" id="save-webhook-btn" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-slate-950 text-xs font-bold shadow-md shadow-amber-200 transition flex items-center gap-1.5 active:scale-95">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>ບັນທຶກ & ທົດສອບສົ່ງຂໍ້ມູນ</span>
+            </button>
+            <a href="/admin" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-100 transition">
+              ໄປໜ້າ Admin
+            </a>
+          </div>
+
+          <div id="test-result-box" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyAppsScript() {
+  const code = document.getElementById("script-code-text").innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById("copy-script-btn");
+    btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>ຄັດລອກແລ້ວ!</span>`;
+    btn.className = btn.className.replace("bg-sky-600", "bg-amber-600");
+    showToast("ຄັດລອກໂຄ້ດ Apps Script ສຳເລັດແລ້ວ!", "success");
+    setTimeout(() => {
+      btn.innerHTML = `<i class="fa-regular fa-copy"></i> <span>ຄັດລອກໂຄ້ດທັງໝົດ</span>`;
+      btn.className = btn.className.replace("bg-amber-600", "bg-sky-600");
+    }, 3000);
+  });
+}
+
+async function saveAndTestWebhook(e) {
+  e.preventDefault();
+  const url = document.getElementById("webhook_url_input").value.trim();
+  const btn = document.getElementById("save-webhook-btn");
+  const resultBox = document.getElementById("test-result-box");
+
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>ກຳລັງທົດສອບສົ່ງຂໍ້ມູນ...</span>`;
+  resultBox.className = "hidden";
+
+  try {
+    const res = await fetch("/api/admin/test-sheet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ webhook_url: url })
+    });
+
+    const data = await res.json();
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> <span>ບັນທຶກ & ທົດສອບສົ່ງຂໍ້ມູນ</span>`;
+
+    resultBox.classList.remove("hidden");
+    if (res.ok && data.success) {
+      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300";
+      resultBox.innerHTML = `🎉 <strong>ສຳເລັດແລ້ວ!</strong> ສົ່ງຂໍ້ມູນທົດສອບເຂົ້າ Google Sheet ຮຽບຮ້ອຍແລ້ວ ກະລຸນາເປີດເບິ່ງໃນ Google Sheet ຂອງທ່ານ`;
+      showToast("ເຊື່ອມຕໍ່ Google Sheet ສຳເລັດ!", "success");
+    } else {
+      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300";
+      resultBox.innerHTML = `❌ <strong>ເກີດຂໍ້ຜິດພາດ:</strong> ${data.message || 'ບໍ່ສາມາດເຊື່ອມຕໍ່ໄດ້ ກະລຸນາກວດສອບວ່າຕັ້ງສິດ Anyone ແລ້ວຫຼືຍັງ'}`;
+      showToast("ການທົດສອບບໍ່ສຳເລັດ", "error");
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> <span>ບັນທຶກ & ທົດສອບສົ່ງຂໍ້ມູນ</span>`;
+    resultBox.classList.remove("hidden");
+    resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300";
+    resultBox.innerHTML = `❌ <strong>ຂໍ້ຜິດພາດ:</strong> ${err.message}`;
+  }
+}
+</script>
+{% endblock %}

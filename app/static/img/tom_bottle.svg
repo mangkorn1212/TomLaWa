@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bottleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#15803d" />
+      <stop offset="35%" stop-color="#16a34a" />
+      <stop offset="70%" stop-color="#22c55e" />
+      <stop offset="100%" stop-color="#14532d" />
+    </linearGradient>
+    <linearGradient id="teaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#854d0e" />
+      <stop offset="50%" stop-color="#a16207" />
+      <stop offset="100%" stop-color="#713f12" />
+    </linearGradient>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle (Amber/Gold Glow) -->
+  <circle cx="100" cy="100" r="88" fill="#fef3c7" stroke="#fde68a" stroke-width="2"/>
+  
+  <!-- Cap -->
+  <rect x="88" y="22" width="24" height="14" rx="3" fill="url(#capGrad)"/>
+  <rect x="84" y="34" width="32" height="6" rx="2" fill="#d97706"/>
+  
+  <!-- Bottle Neck -->
+  <path d="M 86 40 L 114 40 L 126 70 L 74 70 Z" fill="url(#teaGrad)"/>
+  
+  <!-- Bottle Body -->
+  <rect x="68" y="68" width="64" height="102" rx="14" fill="url(#teaGrad)"/>
+  
+  <!-- Liquid Wave / Texture -->
+  <path d="M 68 110 Q 84 102 100 110 T 132 110 L 132 170 L 68 170 Z" fill="#58310c" opacity="0.35"/>
+  <path d="M 68 135 Q 84 128 100 135 T 132 135 L 132 170 L 68 170 Z" fill="#3b2106" opacity="0.25"/>
+
+  <!-- Light Reflection Line -->
+  <path d="M 76 74 L 76 160" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Label on Bottle -->
+  <rect x="74" y="90" width="52" height="42" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+  <!-- Leaf Icon inside label -->
+  <path d="M 100 96 C 108 96 114 102 114 110 C 106 110 100 106 100 96 Z" fill="#22c55e"/>
+  <path d="M 100 96 C 92 96 86 102 86 110 C 94 110 100 106 100 96 Z" fill="#16a34a"/>
+  <line x1="100" y1="96" x2="100" y2="114" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="100" y="125" font-family="Arial, sans-serif" font-size="9" font-weight="900" fill="#fbbf24" text-anchor="middle">TomLaWa</text>
+
+  <!-- Cold Droplets -->
+  <circle cx="140" cy="85" r="4" fill="#38bdf8" opacity="0.7"/>
+  <circle cx="60" cy="115" r="3" fill="#38bdf8" opacity="0.7"/>
+  <circle cx="142" cy="130" r="3" fill="#38bdf8" opacity="0.7"/>
+</svg>
