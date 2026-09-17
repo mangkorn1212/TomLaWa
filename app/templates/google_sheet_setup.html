@@ -6,16 +6,16 @@
 <div class="max-w-4xl mx-auto space-y-6">
 
   <!-- Header -->
-  <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
+  <div class="bg-[#140d24] rounded-3xl p-6 md:p-8 border border-purple-900/50 shadow-xl">
     <div class="flex items-center gap-3 mb-2">
-      <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow-sm">
+      <div class="w-12 h-12 rounded-2xl bg-purple-950 text-amber-400 flex items-center justify-center text-2xl shadow-sm border border-purple-800/60">
         <i class="fa-solid fa-table-cells"></i>
       </div>
       <div>
-        <h2 class="text-xl md:text-2xl font-black text-slate-800">
+        <h2 class="text-xl md:text-2xl font-black text-white">
           ວິທີເຊື່ອມຕໍ່ລະບົບບັນທຶກລົງ Google Sheet
         </h2>
-        <p class="text-xs text-slate-500">
+        <p class="text-xs text-purple-300/80">
           ໃຊ້ເວລາພຽງ 1-2 ນາທີ ຂໍ້ມູນອໍເດີທັງໝົດຈະຖືກບັນທຶກລົງ Google Sheet ໃນມືຖືຂອງທ່ານທັນທີ
         </p>
       </div>
@@ -23,42 +23,42 @@
   </div>
 
   <!-- Step-by-Step Guide -->
-  <div class="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-6">
-    <h3 class="font-bold text-slate-800 text-base pb-3 border-b border-slate-100 flex items-center gap-2">
-      <span class="w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs">✓</span>
+  <div class="bg-[#140d24] rounded-3xl p-6 md:p-8 border border-purple-900/50 shadow-xl space-y-6">
+    <h3 class="font-bold text-white text-base pb-3 border-b border-purple-900/40 flex items-center gap-2">
+      <span class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white flex items-center justify-center text-xs">✓</span>
       <span>ຂັ້ນຕອນການຕິດຕັ້ງງ່າຍໆ 4 ຂັ້ນຕອນ:</span>
     </h3>
 
     <!-- Step 1 -->
     <div class="flex items-start gap-4">
-      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+      <div class="w-8 h-8 rounded-xl bg-purple-950/80 text-purple-300 font-black text-sm flex items-center justify-center shrink-0 border border-purple-800/60">
         1
       </div>
       <div class="space-y-1">
-        <h4 class="font-bold text-slate-800 text-sm">ສ້າງ Google Sheet ໃໝ່</h4>
-        <p class="text-xs text-slate-600">
-          ເຂົ້າໄປທີ່ <a href="https://sheets.new" target="_blank" class="text-sky-600 font-bold underline">sheets.new</a> ຫຼື ເປີດ Google Drive ແລ້ວສ້າງ Google Sheet ເປົ່າໆ ຕັ້ງຊື່ໄຟລ໌ວ່າ <strong>"ອໍເດີນ້ຳດື່ມ"</strong>
+        <h4 class="font-bold text-white text-sm">ສ້າງ Google Sheet ໃໝ່</h4>
+        <p class="text-xs text-purple-200/80">
+          ເຂົ້າໄປທີ່ <a href="https://sheets.new" target="_blank" class="text-amber-400 font-bold underline hover:text-amber-300">sheets.new</a> ຫຼື ເປີດ Google Drive ແລ້ວສ້າງ Google Sheet ເປົ່າໆ ຕັ້ງຊື່ໄຟລ໌ວ່າ <strong>"ອໍເດີນ້ຳດື່ມ TomLaWa"</strong>
         </p>
       </div>
     </div>
 
     <!-- Step 2 -->
     <div class="flex items-start gap-4">
-      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+      <div class="w-8 h-8 rounded-xl bg-purple-950/80 text-purple-300 font-black text-sm flex items-center justify-center shrink-0 border border-purple-800/60">
         2
       </div>
-      <div class="space-y-1">
-        <h4 class="font-bold text-slate-800 text-sm">ເປີດ Apps Script & ວາງໂຄ້ດ</h4>
-        <p class="text-xs text-slate-600">
+      <div class="space-y-1 flex-1">
+        <h4 class="font-bold text-white text-sm">ເປີດ Apps Script & ວາງໂຄ້ດ</h4>
+        <p class="text-xs text-purple-200/80">
           ໃນ Google Sheet ໃຫ້ກົດເມນູດ້ານເທິງ: <strong>ສ່ວນຂະຫຍາຍ (Extensions) &rarr; Apps Script</strong>
         </p>
-        <p class="text-xs text-slate-600">
+        <p class="text-xs text-purple-200/80">
           ຈາກນັ້ນລຶບໂຄ້ດເກົ່າອອກ ແລ້ວກົດປຸ່ມ <strong>"ຄັດລອກໂຄ້ດ"</strong> ດ້ານລຸ່ມນີ້ໄປວາງ:
         </p>
 
         <!-- Code Block with Copy Button -->
-        <div class="mt-2 relative bg-slate-900 rounded-2xl p-4 text-slate-200 text-xs font-mono overflow-x-auto max-h-64">
-          <button onclick="copyAppsScript()" id="copy-script-btn" class="absolute top-3 right-3 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-sans text-xs font-bold flex items-center gap-1.5 shadow transition active:scale-95">
+        <div class="mt-2 relative bg-[#0a0514] rounded-2xl p-4 text-purple-200 text-xs font-mono overflow-x-auto max-h-64 border border-purple-900/60">
+          <button onclick="copyAppsScript()" id="copy-script-btn" class="absolute top-3 right-3 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-sans text-xs font-bold flex items-center gap-1.5 shadow transition active:scale-95">
             <i class="fa-regular fa-copy"></i>
             <span>ຄັດລອກໂຄ້ດທັງໝົດ</span>
           </button>
@@ -69,19 +69,19 @@
 
     <!-- Step 3 -->
     <div class="flex items-start gap-4">
-      <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center shrink-0">
+      <div class="w-8 h-8 rounded-xl bg-purple-950/80 text-purple-300 font-black text-sm flex items-center justify-center shrink-0 border border-purple-800/60">
         3
       </div>
       <div class="space-y-1">
-        <h4 class="font-bold text-slate-800 text-sm">ກົດ Deploy ເປັນ Web App</h4>
-        <div class="text-xs text-slate-600 space-y-1">
+        <h4 class="font-bold text-white text-sm">ກົດ Deploy ເປັນ Web App</h4>
+        <div class="text-xs text-purple-200/80 space-y-1">
           <p>1. ກົດປຸ່ມບັນທຶກ (Save 💾)</p>
           <p>2. ກົດປຸ່ມສີຟ້າ <strong>"ນຳໄປໃຊ້ງານ" (Deploy) &rarr; "ການນຳໄປໃຊ້ງານໃໝ່" (New deployment)</strong></p>
           <p>3. ກົດໄອຄອນຟັນເຟືອງ ⚙️ ເລືອກ <strong>"ເວັບແອັບ" (Web app)</strong></p>
           <p>4. ຕັ້ງຄ່າ:
-            <ul class="list-disc pl-5 mt-1 space-y-0.5 text-slate-700">
+            <ul class="list-disc pl-5 mt-1 space-y-0.5 text-purple-200">
               <li>Execute as: <strong>ຂ້ອຍ (Me)</strong></li>
-              <li>Who has access: <strong class="text-rose-600 font-bold">ທຸກຄົນ (Anyone)</strong> *** ສຳຄັນຫຼາຍ ເພື່ອໃຫ້ລະບົບສົ່ງຂໍ້ມູນເຂົ້າໄດ້ ***</li>
+              <li>Who has access: <strong class="text-rose-400 font-bold">ທຸກຄົນ (Anyone)</strong> *** ສຳຄັນຫຼາຍ ເພື່ອໃຫ້ລະບົບສົ່ງຂໍ້ມູນເຂົ້າໄດ້ ***</li>
             </ul>
           </p>
           <p>5. ກົດ <strong>"Deploy"</strong> ແລະ ອະນຸຍາດສິດ (Authorize access) ຕາມຂັ້ນຕອນຂອງ Google</p>
@@ -91,28 +91,28 @@
 
     <!-- Step 4 -->
     <div class="flex items-start gap-4">
-      <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 font-black text-sm flex items-center justify-center shrink-0">
+      <div class="w-8 h-8 rounded-xl bg-purple-950/80 text-amber-400 font-black text-sm flex items-center justify-center shrink-0 border border-purple-800/60">
         4
       </div>
       <div class="space-y-3 flex-1">
-        <h4 class="font-bold text-slate-800 text-sm">ວາງລິ້ງ Web App URL ທີ່ນີ້</h4>
-        <p class="text-xs text-slate-600">
-          ຄັດລອກລິ້ງ Web App URL ທີ່ Google ໃຫ້ມາ (ຂຶ້ນຕົ້ນດ້ວຍ <code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700">https://script.google.com/macros/s/.../exec</code>) ແລ້ວນຳມາວາງລົງໃນຊ່ອງນີ້:
+        <h4 class="font-bold text-white text-sm">ວາງລິ້ງ Web App URL ທີ່ນີ້</h4>
+        <p class="text-xs text-purple-200/80">
+          ຄັດລອກລິ້ງ Web App URL ທີ່ Google ໃຫ້ມາ (ຂຶ້ນຕົ້ນດ້ວຍ <code class="bg-[#0a0514] px-1 py-0.5 rounded text-amber-400 border border-purple-900/60">https://script.google.com/macros/s/.../exec</code>) ແລ້ວນຳມາວາງລົງໃນຊ່ອງນີ້:
         </p>
 
         <!-- Form to Save and Test Webhook -->
-        <form onsubmit="saveAndTestWebhook(event)" class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+        <form onsubmit="saveAndTestWebhook(event)" class="space-y-3 bg-[#0e081c] p-4 rounded-2xl border border-purple-900/60">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Web App URL ຂອງທ່ານ:</label>
-            <input type="url" id="webhook_url_input" required value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono text-xs bg-white" />
+            <label class="block text-xs font-bold text-purple-200 mb-1">Web App URL ຂອງທ່ານ:</label>
+            <input type="url" id="webhook_url_input" required value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-purple-900/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 font-mono text-xs bg-[#19102c] text-white" />
           </div>
 
           <div class="flex items-center gap-2">
-            <button type="submit" id="save-webhook-btn" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-slate-950 text-xs font-bold shadow-md shadow-amber-200 transition flex items-center gap-1.5 active:scale-95">
+            <button type="submit" id="save-webhook-btn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 text-xs font-black shadow-md shadow-purple-600/30 transition flex items-center gap-1.5 active:scale-95">
               <i class="fa-solid fa-floppy-disk"></i>
               <span>ບັນທຶກ & ທົດສອບສົ່ງຂໍ້ມູນ</span>
             </button>
-            <a href="/admin" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-100 transition">
+            <a href="/admin" class="px-4 py-2.5 rounded-xl bg-purple-950/60 border border-purple-800/60 text-purple-200 text-xs font-bold hover:bg-purple-900/60 transition">
               ໄປໜ້າ Admin
             </a>
           </div>
@@ -134,11 +134,9 @@ function copyAppsScript() {
   navigator.clipboard.writeText(code).then(() => {
     const btn = document.getElementById("copy-script-btn");
     btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>ຄັດລອກແລ້ວ!</span>`;
-    btn.className = btn.className.replace("bg-sky-600", "bg-amber-600");
     showToast("ຄັດລອກໂຄ້ດ Apps Script ສຳເລັດແລ້ວ!", "success");
     setTimeout(() => {
       btn.innerHTML = `<i class="fa-regular fa-copy"></i> <span>ຄັດລອກໂຄ້ດທັງໝົດ</span>`;
-      btn.className = btn.className.replace("bg-amber-600", "bg-sky-600");
     }, 3000);
   });
 }
@@ -166,11 +164,11 @@ async function saveAndTestWebhook(e) {
 
     resultBox.classList.remove("hidden");
     if (res.ok && data.success) {
-      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300";
+      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-purple-950/80 text-purple-200 border border-purple-500/50";
       resultBox.innerHTML = `🎉 <strong>ສຳເລັດແລ້ວ!</strong> ສົ່ງຂໍ້ມູນທົດສອບເຂົ້າ Google Sheet ຮຽບຮ້ອຍແລ້ວ ກະລຸນາເປີດເບິ່ງໃນ Google Sheet ຂອງທ່ານ`;
       showToast("ເຊື່ອມຕໍ່ Google Sheet ສຳເລັດ!", "success");
     } else {
-      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300";
+      resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-950/80 text-rose-300 border border-rose-800/60";
       resultBox.innerHTML = `❌ <strong>ເກີດຂໍ້ຜິດພາດ:</strong> ${data.message || 'ບໍ່ສາມາດເຊື່ອມຕໍ່ໄດ້ ກະລຸນາກວດສອບວ່າຕັ້ງສິດ Anyone ແລ້ວຫຼືຍັງ'}`;
       showToast("ການທົດສອບບໍ່ສຳເລັດ", "error");
     }
@@ -178,7 +176,7 @@ async function saveAndTestWebhook(e) {
     btn.disabled = false;
     btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> <span>ບັນທຶກ & ທົດສອບສົ່ງຂໍ້ມູນ</span>`;
     resultBox.classList.remove("hidden");
-    resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300";
+    resultBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-950/80 text-rose-300 border border-rose-800/60";
     resultBox.innerHTML = `❌ <strong>ຂໍ້ຜິດພາດ:</strong> ${err.message}`;
   }
 }

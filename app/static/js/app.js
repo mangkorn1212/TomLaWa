@@ -1,5 +1,5 @@
 // =========================================================================
-// Lao Water Delivery Web App - Client Script
+// Lao Water Delivery Web App - Client Script (Pilot Cyber Neon Theme)
 // =========================================================================
 
 // --- Cart Management (LocalStorage) ---
@@ -158,20 +158,20 @@ function renderCartDrawer() {
   if (totalEl) totalEl.textContent = formatKip(totalAmount);
 
   container.innerHTML = cart.map(item => `
-    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
-      <img src="${item.image_url || '/static/img/water_tank.svg'}" class="w-14 h-14 object-contain bg-white rounded-lg p-1 border" />
+    <div class="flex items-center gap-3 p-3 bg-[#19102c] rounded-2xl border border-purple-900/50 text-white shadow-sm">
+      <img src="${item.image_url || '/static/img/tom_bottle.svg'}" class="w-14 h-14 object-contain bg-[#0e081c] rounded-xl p-1 border border-purple-900/60 shrink-0" />
       <div class="flex-1 min-w-0">
-        <h4 class="font-medium text-slate-800 text-sm truncate">${item.name}</h4>
-        <p class="text-xs text-sky-600 font-semibold">${formatKip(item.price)} / ${item.unit_label}</p>
+        <h4 class="font-bold text-white text-sm truncate">${item.name}</h4>
+        <p class="text-xs text-amber-400 font-mono font-bold">${formatKip(item.price)} / ${item.unit_label}</p>
         <div class="flex items-center gap-2 mt-2">
-          <button onclick="updateCartItemQty(${item.id}, -1)" class="w-6 h-6 rounded-md bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 flex items-center justify-center text-xs">-</button>
-          <span class="text-sm font-semibold px-1">${item.quantity}</span>
-          <button onclick="updateCartItemQty(${item.id}, 1)" class="w-6 h-6 rounded-md bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100 flex items-center justify-center text-xs">+</button>
+          <button onclick="updateCartItemQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-purple-950/80 border border-purple-800/60 text-purple-200 font-bold hover:bg-purple-900 flex items-center justify-center text-xs transition">-</button>
+          <span class="text-sm font-bold text-white px-1 font-mono">${item.quantity}</span>
+          <button onclick="updateCartItemQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-purple-950/80 border border-purple-800/60 text-purple-200 font-bold hover:bg-purple-900 flex items-center justify-center text-xs transition">+</button>
         </div>
       </div>
-      <div class="text-right">
-        <div class="font-bold text-slate-900 text-sm">${formatKip(item.price * item.quantity)}</div>
-        <button onclick="removeCartItem(${item.id})" class="text-xs text-rose-500 hover:text-rose-700 mt-2">ລຶບ</button>
+      <div class="text-right shrink-0">
+        <div class="font-black text-amber-400 font-mono text-sm">${formatKip(item.price * item.quantity)}</div>
+        <button onclick="removeCartItem(${item.id})" class="text-xs text-rose-400 hover:text-rose-300 font-bold mt-2 transition">ລຶບ</button>
       </div>
     </div>
   `).join("");
@@ -186,7 +186,7 @@ function renderCheckoutSummary() {
   const { cart, totalAmount } = getCartSummary();
 
   if (cart.length === 0) {
-    container.innerHTML = `<div class="p-6 text-center text-slate-400">ບໍ່ມີສິນຄ້າໃນກະຕ່າ <br><a href="/" class="text-sky-600 font-semibold underline mt-2 inline-block">ກັບໄປເລືອກຊື້ສິນຄ້າ</a></div>`;
+    container.innerHTML = `<div class="p-6 text-center text-purple-400/60">ບໍ່ມີສິນຄ້າໃນກະຕ່າ <br><a href="/" class="text-amber-400 font-bold underline mt-2 inline-block">ກັບໄປເລືອກຊື້ສິນຄ້າ</a></div>`;
     if (totalEl) totalEl.textContent = "0 ₭";
     if (qrTotalEl) qrTotalEl.textContent = "0 ₭";
     const submitBtn = document.getElementById("submit-order-btn");
@@ -198,12 +198,12 @@ function renderCheckoutSummary() {
   if (submitBtn) submitBtn.disabled = false;
 
   container.innerHTML = cart.map(item => `
-    <div class="flex items-center justify-between py-2 border-b border-slate-100 text-sm">
+    <div class="flex items-center justify-between py-2.5 border-b border-purple-900/30 text-sm">
       <div class="flex items-center gap-2">
-        <span class="font-semibold text-sky-600">${item.quantity}x</span>
-        <span class="text-slate-700 font-medium">${item.name}</span>
+        <span class="font-bold text-amber-400 font-mono">${item.quantity}x</span>
+        <span class="text-purple-200 font-medium">${item.name}</span>
       </div>
-      <span class="font-bold text-slate-800">${formatKip(item.price * item.quantity)}</span>
+      <span class="font-black text-amber-400 font-mono">${formatKip(item.price * item.quantity)}</span>
     </div>
   `).join("");
 

@@ -5,29 +5,29 @@
 {% block content %}
 <div class="space-y-6">
 
-  <!-- Top Hero Bar (Premium Midnight Gold Style) -->
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-7 rounded-3xl border border-stone-200 shadow-card">
+  <!-- Top Hero Bar (Pilot Cyber Neon Style) -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#140d24] p-6 sm:p-7 rounded-3xl border border-purple-900/50 shadow-xl text-white">
     <div>
       <div class="flex items-center gap-2 mb-1.5">
         <span class="relative flex h-2.5 w-2.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
         </span>
-        <span class="text-xs font-black uppercase tracking-wider text-amber-600">ລະບົບຫຼັງບ້ານພຣີມຽມ (Live Sync)</span>
+        <span class="text-xs font-black uppercase tracking-wider text-purple-300">ລະບົບຫຼັງບ້ານພຣີມຽມ (Live Sync)</span>
       </div>
-      <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
-        <i class="fa-solid fa-gauge-high text-amber-600"></i>
+      <h2 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2.5">
+        <i class="fa-solid fa-gauge-high text-amber-400"></i>
         <span>ລະບົບຈັດການອໍເດີ & ກວດໃບບິນ (Admin)</span>
       </h2>
       <div class="flex flex-wrap items-center gap-2 mt-1">
-        <p class="text-xs sm:text-sm text-slate-500">
+        <p class="text-xs sm:text-sm text-purple-300/80">
           ກວດສອບໃບບິນ, ອະນຸມັດອໍເດີ, ຈັດການພະນັກງານ ແລະ ເປີດ Google Maps ນຳທາງ
         </p>
         {% if current_user %}
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold">
-          <i class="fa-solid fa-circle-user text-amber-600"></i>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-950/80 text-purple-200 border border-purple-800/60 text-xs font-bold">
+          <i class="fa-solid fa-circle-user text-amber-400"></i>
           <span>{{ current_user.display_name or current_user.username }}</span>
-          <span class="px-1.5 py-0.5 rounded-md bg-amber-200 text-[10px] font-black uppercase text-amber-900">
+          <span class="px-1.5 py-0.5 rounded-md bg-purple-900 text-[10px] font-black uppercase text-amber-300">
             {% if current_user.role == 'admin' %}👑 Admin{% elif current_user.role == 'driver' %}🚚 Driver{% else %}📋 Staff{% endif %}
           </span>
         </span>
@@ -37,43 +37,43 @@
 
     <!-- Action Toolbar -->
     <div class="flex flex-wrap items-center gap-2.5">
-      <a href="/google-sheet-setup" class="px-4 py-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-black flex items-center gap-2 transition shadow-2xs">
-        <i class="fa-solid fa-table-cells text-amber-600"></i>
+      <a href="/google-sheet-setup" class="px-4 py-2.5 rounded-2xl bg-purple-950/80 hover:bg-purple-900/80 text-purple-200 border border-purple-800/60 text-xs font-black flex items-center gap-2 transition shadow-2xs">
+        <i class="fa-solid fa-table-cells text-amber-400"></i>
         <span>ຕັ້ງຄ່າ Google Sheet</span>
       </a>
 
-      <button onclick="openSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 border border-amber-200 text-xs font-bold flex items-center gap-2 transition shadow-2xs">
-        <i class="fa-solid fa-gear text-amber-600"></i>
+      <button onclick="openSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-[#0e081c] hover:bg-purple-950/60 text-purple-200 border border-purple-800/60 text-xs font-bold flex items-center gap-2 transition shadow-2xs">
+        <i class="fa-solid fa-gear text-purple-400"></i>
         <span>ຕັ້ງຄ່າຮ້ານ</span>
       </button>
 
-      <button onclick="fetchOrders()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95">
+      <button onclick="fetchOrders()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-purple-600/30 transition active:scale-95">
         <i class="fa-solid fa-arrows-rotate"></i>
         <span>ໂຫຼດຂໍ້ມູນໃໝ່</span>
       </button>
 
-      <a href="/admin/logout" class="px-3.5 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-2xs" title="ອອກຈາກລະບົບ">
+      <a href="/admin/logout" class="px-3.5 py-2.5 rounded-2xl bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-900/60 text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-2xs" title="ອອກຈາກລະບົບ">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span class="hidden sm:inline">ອອກຈາກລະບົບ</span>
       </a>
     </div>
   </div>
 
-  <!-- Navigation Tabs: Orders vs Users -->
-  <div class="flex items-center gap-2 border-b border-amber-100 pb-2">
-    <button onclick="switchTab('orders')" id="tab-orders" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-slate-900 text-amber-400 shadow-md shadow-amber-500/20">
+  <!-- Navigation Tabs: Orders vs Users vs Products -->
+  <div class="flex items-center gap-2 border-b border-purple-900/40 pb-2 overflow-x-auto">
+    <button onclick="switchTab('orders')" id="tab-orders" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30 whitespace-nowrap">
       <i class="fa-solid fa-box-archive"></i>
       <span>📦 ລາຍການອໍເດີ (Orders)</span>
     </button>
-    <button onclick="switchTab('users')" id="tab-users" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs">
-      <i class="fa-solid fa-users-gear text-amber-600"></i>
+    <button onclick="switchTab('users')" id="tab-users" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap">
+      <i class="fa-solid fa-users-gear text-purple-400"></i>
       <span>👥 ຈັດການຜູ້ໃຊ້ງານ (Users & Staff)</span>
-      <span id="badge-users-count" class="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-black">0</span>
+      <span id="badge-users-count" class="px-2 py-0.5 text-[10px] rounded-full bg-purple-950 text-purple-200 font-black border border-purple-800/60">0</span>
     </button>
-    <button onclick="switchTab('products')" id="tab-products" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs">
-      <i class="fa-solid fa-boxes-stacked text-amber-600"></i>
+    <button onclick="switchTab('products')" id="tab-products" class="admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap">
+      <i class="fa-solid fa-boxes-stacked text-purple-400"></i>
       <span>🛒 ຈັດການສິນຄ້າ (Products)</span>
-      <span id="badge-products-count" class="px-2 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-black">0</span>
+      <span id="badge-products-count" class="px-2 py-0.5 text-[10px] rounded-full bg-purple-950 text-purple-200 font-black border border-purple-800/60">0</span>
     </button>
   </div>
 
@@ -81,95 +81,95 @@
   <div id="section-orders" class="space-y-6">
 
     <!-- Google Sheet Status Banner -->
-    <div class="p-4 sm:p-5 rounded-3xl border flex items-center justify-between flex-wrap gap-3 {% if settings.google_sheet_webhook_url %}bg-amber-50/80 border-amber-300 text-slate-950{% else %}bg-amber-50/80 border-amber-200 text-amber-950{% endif %} text-xs shadow-xs">
+    <div class="p-4 sm:p-5 rounded-3xl border flex items-center justify-between flex-wrap gap-3 bg-[#19102c] border-purple-900/50 text-purple-200 text-xs shadow-xs">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-base {% if settings.google_sheet_webhook_url %}bg-amber-600 text-white shadow-md shadow-amber-500/20{% else %}bg-amber-100 text-amber-700{% endif %}">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-base {% if settings.google_sheet_webhook_url %}bg-purple-700 text-white shadow-md shadow-purple-600/30{% else %}bg-purple-950 text-amber-400 border border-purple-800{% endif %}">
           <i class="fa-solid {% if settings.google_sheet_webhook_url %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
         </div>
         <div>
           {% if settings.google_sheet_webhook_url %}
-            <div class="font-black text-sm">ເຊື່ອມຕໍ່ Google Sheet ແລ້ວ 💧</div>
-            <div class="text-[11px] text-amber-800">ທຸກອໍເດີໃໝ່ຈະຖືກບັນທຶກລົງຕາຕະລາງ Google Sheet ອັດຕະໂນມັດ ພ້ອມລິ້ງ Google Maps ນຳທາງ</div>
+            <div class="font-black text-sm text-white">ເຊື່ອມຕໍ່ Google Sheet ແລ້ວ 🚀</div>
+            <div class="text-[11px] text-purple-300/80">ທຸກອໍເດີໃໝ່ຈະຖືກບັນທຶກລົງຕາຕະລາງ Google Sheet ອັດຕະໂນມັດ ພ້ອມລິ້ງ Google Maps ນຳທາງ</div>
           {% else %}
-            <div class="font-black text-sm">ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google Sheet Webhook</div>
-            <div class="text-[11px] text-amber-800">ອໍເດີຖືກບັນທຶກໄວ້ໃນເຄື່ອງກ່ອນ ທ່ານສາມາດກົດຕັ້ງຄ່າເພື່ອຊິງກ໌ຂໍ້ມູນເຂົ້າ Google Sheet ໄດ້ທັນທີ</div>
+            <div class="font-black text-sm text-amber-400">ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google Sheet Webhook</div>
+            <div class="text-[11px] text-purple-300/80">ອໍເດີຖືກບັນທຶກໄວ້ໃນເຄື່ອງກ່ອນ ທ່ານສາມາດກົດຕັ້ງຄ່າເພື່ອຊິງກ໌ຂໍ້ມູນເຂົ້າ Google Sheet ໄດ້ທັນທີ</div>
           {% endif %}
         </div>
       </div>
-      <a href="/google-sheet-setup" class="font-black underline hover:opacity-80 text-xs px-3.5 py-2 rounded-xl bg-white border border-amber-200 shadow-2xs">
+      <a href="/google-sheet-setup" class="font-black underline hover:text-white text-xs px-3.5 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-amber-400 shadow-2xs">
         {% if settings.google_sheet_webhook_url %}ກວດສອບລິ້ງ Webhook{% else %}ເບິ່ງວິທີເຊື່ອຕໍ່ Google Sheet ທີ່ນີ້ &rarr;{% endif %}
       </a>
     </div>
 
-    <!-- Modern Metric Stat Pills & Filters (Premium Midnight Gold Palette) -->
+    <!-- Modern Metric Stat Pills & Filters (Pilot Cyber Neon Palette) -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       
-      <button onclick="filterOrders('all')" id="btn-filter-all" class="order-filter-btn p-3.5 rounded-2xl bg-slate-950 text-white shadow-card text-left transition-all border border-amber-500/30">
-        <div class="text-[11px] font-bold text-amber-300">ອໍເດີທັງໝົດ</div>
-        <div class="text-xl font-black mt-1" id="badge-all">0</div>
+      <button onclick="filterOrders('all')" id="btn-filter-all" class="order-filter-btn p-3.5 rounded-2xl bg-[#19102c] text-white shadow-card text-left transition-all border border-purple-500/40 ring-2 ring-purple-500">
+        <div class="text-[11px] font-bold text-purple-300">ອໍເດີທັງໝົດ</div>
+        <div class="text-xl font-black mt-1 font-mono text-white" id="badge-all">0</div>
       </button>
 
-      <button onclick="filterOrders('pending')" id="btn-filter-pending" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
-        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ລໍຖ້າກວດ
+      <button onclick="filterOrders('pending')" id="btn-filter-pending" class="order-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ລໍຖ້າກວດ
         </div>
-        <div class="text-xl font-black mt-1 text-rose-600" id="badge-pending">0</div>
+        <div class="text-xl font-black mt-1 text-amber-400 font-mono" id="badge-pending">0</div>
       </button>
 
-      <button onclick="filterOrders('approved')" id="btn-filter-approved" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
-        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ອະນຸມັດແລ້ວ
+      <button onclick="filterOrders('approved')" id="btn-filter-approved" class="order-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-fuchsia-400 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400"></span> ອະນຸມັດແລ້ວ
         </div>
-        <div class="text-xl font-black mt-1 text-amber-700" id="badge-approved">0</div>
+        <div class="text-xl font-black mt-1 text-fuchsia-400 font-mono" id="badge-approved">0</div>
       </button>
 
-      <button onclick="filterOrders('delivering')" id="btn-filter-delivering" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
-        <div class="text-[11px] font-bold text-purple-700 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> ກຳລັງສົ່ງ
+      <button onclick="filterOrders('delivering')" id="btn-filter-delivering" class="order-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-purple-300 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> ກຳລັງສົ່ງ
         </div>
-        <div class="text-xl font-black mt-1 text-purple-700" id="badge-delivering">0</div>
+        <div class="text-xl font-black mt-1 text-purple-300 font-mono" id="badge-delivering">0</div>
       </button>
 
-      <button onclick="filterOrders('completed')" id="btn-filter-completed" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-amber-200">
-        <div class="text-[11px] font-bold text-amber-800 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> ສຳເລັດ
+      <button onclick="filterOrders('completed')" id="btn-filter-completed" class="order-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ສຳເລັດ
         </div>
-        <div class="text-xl font-black mt-1 text-amber-800" id="badge-completed">0</div>
+        <div class="text-xl font-black mt-1 text-emerald-400 font-mono" id="badge-completed">0</div>
       </button>
 
-      <button onclick="filterOrders('rejected')" id="btn-filter-rejected" class="order-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
-        <div class="text-[11px] font-bold text-rose-700 flex items-center gap-1">
+      <button onclick="filterOrders('rejected')" id="btn-filter-rejected" class="order-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-rose-400 flex items-center gap-1">
           <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ປະຕິເສດ
         </div>
-        <div class="text-xl font-black mt-1 text-rose-700" id="badge-rejected">0</div>
+        <div class="text-xl font-black mt-1 text-rose-400 font-mono" id="badge-rejected">0</div>
       </button>
 
     </div>
 
     <!-- Admin Search & Customer History Filter Bar -->
-    <div class="bg-white p-4 sm:p-5 rounded-3xl border border-amber-100 shadow-card flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="bg-[#140d24] p-4 sm:p-5 rounded-3xl border border-purple-900/50 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-white">
       <div class="relative w-full sm:w-96">
-        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-xs"></i>
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-purple-400/60 text-xs"></i>
         <input 
           type="text" 
           id="admin-search-input" 
           oninput="handleAdminSearch(this.value)"
           placeholder="🔍 ຄົ້ນຫາຕາມເບີໂທ, ຊື່ລູກຄ້າ ຫຼື ລະຫັດອໍເດີ..." 
-          class="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-xs font-semibold bg-slate-50 focus:bg-white transition"
+          class="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-purple-900/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 text-xs font-semibold bg-[#0e081c] text-white placeholder-purple-400/40 transition"
         />
         <button 
           id="admin-clear-search-btn" 
           onclick="clearAdminSearch()" 
-          class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 w-5 h-5 flex items-center justify-center text-xs"
+          class="hidden absolute right-3 top-2.5 text-purple-400 hover:text-white w-5 h-5 flex items-center justify-center text-xs"
           title="ລຶບຄຳຄົ້ນຫາ"
         >
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div id="admin-search-stats" class="text-xs text-slate-600 font-medium flex items-center gap-2">
-        <span id="admin-search-label" class="text-slate-400 text-[11px]">ສະແດງ:</span>
-        <span id="admin-search-count-badge" class="px-3 py-1 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold">
+      <div id="admin-search-stats" class="text-xs text-purple-300 font-medium flex items-center gap-2">
+        <span id="admin-search-label" class="text-purple-400/70 text-[11px]">ສະແດງ:</span>
+        <span id="admin-search-count-badge" class="px-3 py-1 rounded-xl bg-purple-950 text-amber-400 border border-purple-800/60 text-xs font-bold font-mono">
           0 ອໍເດີ
         </span>
       </div>
@@ -177,9 +177,9 @@
 
     <!-- Orders Container List -->
     <div id="orders-container" class="space-y-4">
-      <div class="p-16 text-center text-slate-400 bg-white rounded-3xl border border-amber-100 shadow-card">
-        <i class="fa-solid fa-spinner fa-spin text-3xl text-amber-600 mb-3"></i>
-        <p class="text-sm font-bold text-amber-800">ກຳລັງໂຫຼດຂໍ້ມູນອໍເດີ...</p>
+      <div class="p-16 text-center text-purple-400/60 bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl">
+        <i class="fa-solid fa-spinner fa-spin text-3xl text-purple-400 mb-3"></i>
+        <p class="text-sm font-bold text-white">ກຳລັງໂຫຼດຂໍ້ມູນອໍເດີ...</p>
       </div>
     </div>
 
@@ -189,28 +189,28 @@
   <div id="section-users" class="space-y-6 hidden">
     
     <!-- User Management Header Card -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-amber-100 shadow-card">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#140d24] p-5 sm:p-6 rounded-3xl border border-purple-900/50 shadow-xl text-white">
       <div>
-        <h3 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-users text-amber-600"></i>
+        <h3 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-users text-amber-400"></i>
           <span>ລາຍຊື່ຜູ້ໃຊ້ງານລະບົບ & ພະນັກງານ (User Management)</span>
         </h3>
-        <p class="text-xs text-slate-500 mt-1">
+        <p class="text-xs text-purple-300/80 mt-1">
           ຈັດການບັນຊີຜູ້ໃຊ້, ເພີ່ມພະນັກງານ, ກຳນົດສິດ (Admin, Staff, Driver), ແກ້ໄຂລະຫັດຜ່ານ ແລະ ລຶບບັນຊີ
         </p>
       </div>
-      <button onclick="openUserModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95 shrink-0">
+      <button onclick="openUserModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-purple-600/30 transition active:scale-95 shrink-0">
         <i class="fa-solid fa-user-plus"></i>
         <span>+ ເພີ່ມຜູ້ໃຊ້ໃໝ່ (Add User)</span>
       </button>
     </div>
 
     <!-- Users Table Card -->
-    <div class="bg-white rounded-3xl border border-amber-100 shadow-card overflow-hidden">
+    <div class="bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-slate-50/80 border-b border-stone-200 text-[11px] font-black uppercase text-slate-500 tracking-wider">
+            <tr class="bg-[#0e081c] border-b border-purple-900/60 text-[11px] font-black uppercase text-purple-400 tracking-wider">
               <th class="py-3.5 px-5">ຜູ້ໃຊ້ງານ (User)</th>
               <th class="py-3.5 px-4">ຊື່ສະແດງ (Display Name)</th>
               <th class="py-3.5 px-4">ສິດການໃຊ້ງານ (Role)</th>
@@ -219,11 +219,11 @@
               <th class="py-3.5 px-5 text-right">ຈັດການ (Actions)</th>
             </tr>
           </thead>
-          <tbody id="users-table-body" class="divide-y divide-amber-50 text-xs">
+          <tbody id="users-table-body" class="divide-y divide-purple-900/30 text-xs text-purple-200">
             <tr>
-              <td colspan="6" class="p-12 text-center text-slate-400">
-                <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-600 mb-2"></i>
-                <p class="font-bold text-slate-600">ກຳລັງໂຫຼດຂໍ້ມູນຜູ້ໃຊ້...</p>
+              <td colspan="6" class="p-12 text-center text-purple-400/60">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-purple-400 mb-2"></i>
+                <p class="font-bold text-white">ກຳລັງໂຫຼດຂໍ້ມູນຜູ້ໃຊ້...</p>
               </td>
             </tr>
           </tbody>
@@ -232,36 +232,36 @@
     </div>
 
     <!-- Roles & Security Guide Card -->
-    <div class="p-5 rounded-3xl bg-amber-50/60 border border-amber-200 text-xs text-slate-700 space-y-2.5">
-      <div class="font-black text-slate-950 flex items-center gap-2">
-        <i class="fa-solid fa-shield-halved text-amber-600"></i>
+    <div class="p-5 rounded-3xl bg-[#19102c] border border-purple-900/50 text-xs text-purple-200 space-y-2.5">
+      <div class="font-black text-white flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved text-amber-400"></i>
         <span>ຄຳອະທິບາຍສິດການໃຊ້ງານ (Role Permissions) & ຄວາມປອດໄພ</span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
-          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
-            <span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-bold text-[10px]">👑 Admin</span>
+        <div class="bg-[#140d24] p-3.5 rounded-2xl border border-purple-900/40 shadow-2xs">
+          <div class="font-black text-white flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-purple-950 text-fuchsia-300 border border-fuchsia-500/40 font-bold text-[10px]">👑 Admin</span>
             <span>ຜູ້ດູແລສູງສຸດ</span>
           </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">ມີສິດເຕັມຮູບແບບ: ຈັດການອໍເດີ, ຕັ້ງຄ່າຮ້ານ, Google Sheet, ແລະ ເພີ່ມ/ແກ້ໄຂ/ລຶບຜູ້ໃຊ້ງານອື່ນ</p>
+          <p class="text-[11px] text-purple-300/80 leading-relaxed">ມີສິດເຕັມຮູບແບບ: ຈັດການອໍເດີ, ຕັ້ງຄ່າຮ້ານ, Google Sheet, ແລະ ເພີ່ມ/ແກ້ໄຂ/ລຶບຜູ້ໃຊ້ງານອື່ນ</p>
         </div>
-        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
-          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
-            <span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-800 font-bold text-[10px]">📋 Staff</span>
+        <div class="bg-[#140d24] p-3.5 rounded-2xl border border-purple-900/40 shadow-2xs">
+          <div class="font-black text-white flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-blue-950 text-blue-300 border border-blue-800/50 font-bold text-[10px]">📋 Staff</span>
             <span>ພະນັກງານຮັບອໍເດີ</span>
           </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">ກວດສອບໃບບິນໂອນເງິນ, ອະນຸມັດອໍເດີ, ແລະ ປ່ຽນສະຖານະການຈັດສົ່ງ</p>
+          <p class="text-[11px] text-purple-300/80 leading-relaxed">ກວດສອບໃບບິນໂອນເງິນ, ອະນຸມັດອໍເດີ, ແລະ ປ່ຽນສະຖານະການຈັດສົ່ງ</p>
         </div>
-        <div class="bg-white p-3.5 rounded-2xl border border-amber-100 shadow-2xs">
-          <div class="font-black text-slate-900 flex items-center gap-1.5 mb-1">
-            <span class="px-2 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-bold text-[10px]">🚚 Driver</span>
+        <div class="bg-[#140d24] p-3.5 rounded-2xl border border-purple-900/40 shadow-2xs">
+          <div class="font-black text-white flex items-center gap-1.5 mb-1">
+            <span class="px-2 py-0.5 rounded-lg bg-amber-950 text-amber-300 border border-amber-800/50 font-bold text-[10px]">🚚 Driver</span>
             <span>ພະນັກງານຈັດສົ່ງ</span>
           </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">ເບິ່ງລາຍການອໍເດີຈັດສົ່ງ, ໂທຫາລູກຄ້າ, ແລະ ເປີດ Google Maps ນຳທາງໄປຫາລູກຄ້າ</p>
+          <p class="text-[11px] text-purple-300/80 leading-relaxed">ເບິ່ງລາຍການອໍເດີຈັດສົ່ງ, ໂທຫາລູກຄ້າ, ແລະ ເປີດ Google Maps ນຳທາງໄປຫາລູກຄ້າ</p>
         </div>
       </div>
-      <p class="text-[11px] text-amber-800 pt-1">
-        <i class="fa-solid fa-lock text-amber-600 mr-1"></i>
+      <p class="text-[11px] text-purple-300/80 pt-1">
+        <i class="fa-solid fa-lock text-amber-400 mr-1"></i>
         <strong>ລະບົບຄວາມປອດໄພ:</strong> ລະບົບປ້ອງກັນບໍ່ໃຫ້ລຶບບັນຊີທີ່ທ່ານກຳລັງເຂົ້າສູ່ລະບົບຢູ່ ແລະ ປ້ອງກັນບໍ່ໃຫ້ລຶບ Admin ຄົນສຸດທ້າຍຂອງລະບົບ.
       </p>
     </div>
@@ -272,17 +272,17 @@
   <div id="section-products" class="space-y-6 hidden">
     
     <!-- Header Card -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-3xl border border-amber-100 shadow-card">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#140d24] p-5 sm:p-6 rounded-3xl border border-purple-900/50 shadow-xl text-white">
       <div>
-        <h3 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-boxes-stacked text-amber-600"></i>
+        <h3 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
           <span>ລາຍການສິນຄ້າໃນຮ້ານ (Product Management)</span>
         </h3>
-        <p class="text-xs text-slate-500 mt-1">
+        <p class="text-xs text-purple-300/80 mt-1">
           ເພີ່ມສິນຄ້າໃໝ່, ແກ້ໄຂລາຄາ, ອັບໂຫຼດຮູບພາບ, ຕັ້ງຄ່າປ້າຍຂາຍດີ ແລະ ເປີດ/ປິດການຂາຍ
         </p>
       </div>
-      <button onclick="openProductModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-amber-500/25 transition active:scale-95 shrink-0">
+      <button onclick="openProductModal('add')" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-purple-600/30 transition active:scale-95 shrink-0">
         <i class="fa-solid fa-plus"></i>
         <span>+ ເພີ່ມສິນຄ້າໃໝ່ (Add Product)</span>
       </button>
@@ -290,48 +290,48 @@
 
     <!-- Filter & Stats Bar -->
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-      <button onclick="filterAdminProducts('all')" id="btn-prodfilter-all" class="prod-filter-btn p-3.5 rounded-2xl bg-slate-950 text-white shadow-card text-left transition-all border border-amber-500/30 ring-2 ring-amber-500">
-        <div class="text-[11px] font-bold text-amber-300 flex items-center gap-1">
+      <button onclick="filterAdminProducts('all')" id="btn-prodfilter-all" class="prod-filter-btn p-3.5 rounded-2xl bg-[#19102c] text-white shadow-card text-left transition-all border border-purple-500/50 ring-2 ring-purple-500">
+        <div class="text-[11px] font-bold text-purple-300 flex items-center gap-1">
           <i class="fa-solid fa-layer-group text-[10px]"></i> ສິນຄ້າທັງໝົດ
         </div>
-        <div class="text-xl font-black mt-1 text-white" id="badge-prod-all">0</div>
+        <div class="text-xl font-black mt-1 text-white font-mono" id="badge-prod-all">0</div>
       </button>
 
-      <button onclick="filterAdminProducts('bottle')" id="btn-prodfilter-bottle" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
-        <div class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+      <button onclick="filterAdminProducts('bottle')" id="btn-prodfilter-bottle" class="prod-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
           🍶 ເປັນຕຸກ
         </div>
-        <div class="text-xl font-black mt-1 text-amber-700" id="badge-prod-bottle">0</div>
+        <div class="text-xl font-black mt-1 text-amber-400 font-mono" id="badge-prod-bottle">0</div>
       </button>
 
-      <button onclick="filterAdminProducts('leaves_syrup')" id="btn-prodfilter-leaves_syrup" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
-        <div class="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+      <button onclick="filterAdminProducts('leaves_syrup')" id="btn-prodfilter-leaves_syrup" class="prod-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
           🍃 ໃບກັບນ້ຳຢາ
         </div>
-        <div class="text-xl font-black mt-1 text-emerald-700" id="badge-prod-leaves_syrup">0</div>
+        <div class="text-xl font-black mt-1 text-emerald-400 font-mono" id="badge-prod-leaves_syrup">0</div>
       </button>
 
-      <button onclick="filterAdminProducts('pilot')" id="btn-prodfilter-pilot" class="prod-filter-btn p-3.5 rounded-2xl bg-white text-slate-800 hover:bg-amber-50/50 shadow-card text-left transition-all border border-slate-200">
-        <div class="text-[11px] font-bold text-purple-700 flex items-center gap-1">
+      <button onclick="filterAdminProducts('pilot')" id="btn-prodfilter-pilot" class="prod-filter-btn p-3.5 rounded-2xl bg-[#140d24] text-purple-200 hover:bg-purple-950/60 shadow-card text-left transition-all border border-purple-900/50">
+        <div class="text-[11px] font-bold text-fuchsia-400 flex items-center gap-1">
           🚀 Pilot
         </div>
-        <div class="text-xl font-black mt-1 text-purple-700" id="badge-prod-pilot">0</div>
+        <div class="text-xl font-black mt-1 text-fuchsia-400 font-mono" id="badge-prod-pilot">0</div>
       </button>
 
-      <div class="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-card text-left">
-        <div class="text-[11px] font-bold text-amber-800 flex items-center gap-1">
+      <div class="p-3.5 rounded-2xl bg-[#19102c] border border-purple-900/50 shadow-card text-left">
+        <div class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
           ⭐ ປ້າຍຂາຍດີ (Popular)
         </div>
-        <div class="text-xl font-black mt-1 text-amber-900" id="badge-prod-popular">0</div>
+        <div class="text-xl font-black mt-1 text-amber-400 font-mono" id="badge-prod-popular">0</div>
       </div>
     </div>
 
     <!-- Products Table Card -->
-    <div class="bg-white rounded-3xl border border-amber-100 shadow-card overflow-hidden">
+    <div class="bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-slate-50/80 border-b border-stone-200 text-[11px] font-black uppercase text-slate-500 tracking-wider">
+            <tr class="bg-[#0e081c] border-b border-purple-900/60 text-[11px] font-black uppercase text-purple-400 tracking-wider">
               <th class="py-3.5 px-5">ຮູບສິນຄ້າ (Image)</th>
               <th class="py-3.5 px-4">ຊື່ສິນຄ້າ (Product Name)</th>
               <th class="py-3.5 px-4">ໝວດໝູ່ (Category)</th>
@@ -341,11 +341,11 @@
               <th class="py-3.5 px-5 text-right">ຈັດການ (Actions)</th>
             </tr>
           </thead>
-          <tbody id="products-table-body" class="divide-y divide-amber-50 text-xs">
+          <tbody id="products-table-body" class="divide-y divide-purple-900/30 text-xs text-purple-200">
             <tr>
-              <td colspan="7" class="p-12 text-center text-slate-400">
-                <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-600 mb-2"></i>
-                <p class="font-bold text-slate-600">ກຳລັງໂຫຼດຂໍ້ມູນສິນຄ້າ...</p>
+              <td colspan="7" class="p-12 text-center text-purple-400/60">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-purple-400 mb-2"></i>
+                <p class="font-bold text-white">ກຳລັງໂຫຼດຂໍ້ມູນສິນຄ້າ...</p>
               </td>
             </tr>
           </tbody>
@@ -358,22 +358,22 @@
 </div>
 
 <!-- Modal for Viewing High-Res Transfer Slip -->
-<div id="slip-modal" onclick="closeSlipModal()" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
-  <div class="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-amber-200" onclick="event.stopPropagation()">
-    <div class="p-4 bg-slate-950 text-white flex items-center justify-between text-xs font-black">
+<div id="slip-modal" onclick="closeSlipModal()" class="fixed inset-0 bg-[#08050e]/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
+  <div class="relative max-w-2xl w-full bg-[#140d24] rounded-3xl overflow-hidden shadow-2xl border border-purple-500/30" onclick="event.stopPropagation()">
+    <div class="p-4 bg-[#0e081c] text-white flex items-center justify-between text-xs font-black border-b border-purple-900/50">
       <span class="flex items-center gap-2">
         <i class="fa-solid fa-receipt text-amber-400"></i>
         <span>ຮູບໃບບິນໂອນເງິນ (Transfer Slip)</span>
       </span>
-      <button onclick="closeSlipModal()" class="w-7 h-7 rounded-xl hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
+      <button onclick="closeSlipModal()" class="w-7 h-7 rounded-xl hover:bg-purple-900/50 flex items-center justify-center text-purple-300 hover:text-white transition">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-    <div class="p-5 bg-slate-100 flex items-center justify-center max-h-[75vh] overflow-auto">
-      <img id="modal-slip-img" src="" class="max-w-full max-h-[70vh] rounded-2xl shadow-md object-contain" />
+    <div class="p-5 bg-[#0a0514] flex items-center justify-center max-h-[75vh] overflow-auto">
+      <img id="modal-slip-img" src="" class="max-w-full max-h-[70vh] rounded-2xl shadow-md object-contain border border-purple-900/50" />
     </div>
-    <div class="p-4 bg-white border-t border-slate-100 text-right">
-      <a id="modal-slip-download" href="" target="_blank" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-black rounded-xl inline-flex items-center gap-1.5 shadow-sm transition">
+    <div class="p-4 bg-[#140d24] border-t border-purple-900/50 text-right">
+      <a id="modal-slip-download" href="" target="_blank" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white text-xs font-black rounded-xl inline-flex items-center gap-1.5 shadow-sm transition">
         <i class="fa-solid fa-arrow-up-right-from-square"></i> ເປີດຮູບເຕັມຈໍ
       </a>
     </div>
@@ -381,92 +381,92 @@
 </div>
 
 <!-- Modal for Store & Sheet Settings -->
-<div id="settings-modal" onclick="closeSettingsModal()" class="fixed inset-0 bg-slate-950/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
-  <div class="relative max-w-lg w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-amber-200" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between pb-4 border-b border-amber-100 mb-4">
+<div id="settings-modal" onclick="closeSettingsModal()" class="fixed inset-0 bg-[#08050e]/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+  <div class="relative max-w-lg w-full bg-[#140d24] rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-purple-500/30 text-white" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between pb-4 border-b border-purple-900/40 mb-4">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-bold">
+        <div class="w-9 h-9 rounded-xl bg-purple-950 text-amber-400 flex items-center justify-center text-sm font-bold border border-purple-800/60">
           <i class="fa-solid fa-gear"></i>
         </div>
-        <h3 class="font-black text-slate-900 text-base">ຕັ້ງຄ່າລະບົບ & Google Sheet</h3>
+        <h3 class="font-black text-white text-base">ຕັ້ງຄ່າລະບົບ & Google Sheet</h3>
       </div>
-      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-xl hover:bg-purple-900/50 text-purple-300 hover:text-white flex items-center justify-center transition">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
     <form onsubmit="saveStoreSettings(event)" class="space-y-4 text-xs">
       <div>
-        <label class="block font-bold text-slate-700 mb-1">Google Sheet Webhook URL</label>
-        <input type="url" id="setting_sheet_url" value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 font-mono text-[11px]" />
-        <p class="text-[10px] text-slate-400 mt-1">
-          ໄດ້ຈາກການ Deploy Web App ໃນ Google Apps Script (<a href="/google-sheet-setup" target="_blank" class="text-amber-600 underline">ເບິ່ງວິທີເຮັດ</a>)
+        <label class="block font-bold text-purple-200 mb-1">Google Sheet Webhook URL</label>
+        <input type="url" id="setting_sheet_url" value="{{ settings.google_sheet_webhook_url }}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white font-mono text-[11px]" />
+        <p class="text-[10px] text-purple-400/70 mt-1">
+          ໄດ້ຈາກການ Deploy Web App ໃນ Google Apps Script (<a href="/google-sheet-setup" target="_blank" class="text-amber-400 underline">ເບິ່ງວິທີເຮັດ</a>)
         </p>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ຊື່ຮ້ານ</label>
-          <input type="text" id="setting_store_name" value="{{ settings.store_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+          <label class="block font-bold text-purple-200 mb-1">ຊື່ຮ້ານ</label>
+          <input type="text" id="setting_store_name" value="{{ settings.store_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
         </div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ເບີໂທຮ້ານ</label>
-          <input type="text" id="setting_store_phone" value="{{ settings.store_phone }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+          <label class="block font-bold text-purple-200 mb-1">ເບີໂທຮ້ານ</label>
+          <input type="text" id="setting_store_phone" value="{{ settings.store_phone }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ທະນາຄານ (BCEL One)</label>
-          <input type="text" id="setting_bank_name" value="{{ settings.bank_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+          <label class="block font-bold text-purple-200 mb-1">ທະນາຄານ (BCEL One)</label>
+          <input type="text" id="setting_bank_name" value="{{ settings.bank_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
         </div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ເລກບັນຊີ</label>
-          <input type="text" id="setting_acc_no" value="{{ settings.account_number }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs font-mono" />
+          <label class="block font-bold text-purple-200 mb-1">ເລກບັນຊີ</label>
+          <input type="text" id="setting_acc_no" value="{{ settings.account_number }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-amber-400 text-xs font-mono" />
         </div>
       </div>
 
       <div>
-        <label class="block font-bold text-slate-700 mb-1">ຊື່ບັນຊີ</label>
-        <input type="text" id="setting_acc_name" value="{{ settings.account_name }}" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 text-xs" />
+        <label class="block font-bold text-purple-200 mb-1">ຊື່ບັນຊີ</label>
+        <input type="text" id="setting_acc_name" value="{{ settings.account_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
       </div>
 
-      <div class="pt-3 border-t border-amber-100">
-        <label class="block font-black text-slate-800 mb-2 flex items-center gap-1.5 text-xs">
-          <i class="fa-solid fa-lock text-amber-600"></i>
+      <div class="pt-3 border-t border-purple-900/40">
+        <label class="block font-black text-white mb-2 flex items-center gap-1.5 text-xs">
+          <i class="fa-solid fa-lock text-amber-400"></i>
           <span>ປ່ຽນຊື່ຜູ້ໃຊ້ & ລະຫັດຜ່ານ Admin</span>
         </label>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-slate-600 mb-1">Username ໃໝ່</label>
-            <input type="text" id="setting_admin_user" value="{{ settings.admin_username or 'admin' }}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold" />
+            <label class="block font-bold text-purple-300 mb-1">Username ໃໝ່</label>
+            <input type="text" id="setting_admin_user" value="{{ settings.admin_username or 'admin' }}" class="w-full px-3.5 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-white text-xs font-semibold" />
           </div>
           <div>
-            <label class="block font-bold text-slate-600 mb-1">Password ໃໝ່</label>
-            <input type="text" id="setting_admin_pass" value="{{ settings.admin_password or 'admin123' }}" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold font-mono" />
+            <label class="block font-bold text-purple-300 mb-1">Password ໃໝ່</label>
+            <input type="text" id="setting_admin_pass" value="{{ settings.admin_password or 'admin123' }}" class="w-full px-3.5 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-white text-xs font-semibold font-mono" />
           </div>
         </div>
       </div>
 
       <div class="pt-2 flex justify-end gap-2">
-        <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
-        <button type="submit" class="px-5 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black shadow-md shadow-amber-500/20 transition">ບັນທຶກການຕັ້ງຄ່າ</button>
+        <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-purple-950/60 text-purple-300 font-bold hover:bg-purple-900/60 transition border border-purple-800/60">ຍົກເລີກ</button>
+        <button type="submit" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black shadow-md shadow-purple-600/30 transition">ບັນທຶກການຕັ້ງຄ່າ</button>
       </div>
     </form>
   </div>
 </div>
 
 <!-- Modal for Add/Edit User -->
-<div id="user-modal" onclick="closeUserModal()" class="fixed inset-0 bg-slate-950/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
-  <div class="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-amber-200" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between pb-4 border-b border-amber-100 mb-4">
+<div id="user-modal" onclick="closeUserModal()" class="fixed inset-0 bg-[#08050e]/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+  <div class="relative max-w-md w-full bg-[#140d24] rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-7 border border-purple-500/30 text-white" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between pb-4 border-b border-purple-900/40 mb-4">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-bold">
+        <div class="w-9 h-9 rounded-xl bg-purple-950 text-amber-400 flex items-center justify-center text-sm font-bold border border-purple-800/60">
           <i id="user-modal-icon" class="fa-solid fa-user-plus"></i>
         </div>
-        <h3 id="user-modal-title" class="font-black text-slate-900 text-base">ເພີ່ມຜູ້ໃຊ້ງານໃໝ່</h3>
+        <h3 id="user-modal-title" class="font-black text-white text-base">ເພີ່ມຜູ້ໃຊ້ງານໃໝ່</h3>
       </div>
-      <button onclick="closeUserModal()" class="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+      <button onclick="closeUserModal()" class="w-8 h-8 rounded-xl hover:bg-purple-900/50 text-purple-300 hover:text-white flex items-center justify-center transition">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -476,20 +476,20 @@
       <input type="hidden" id="user_id" value="" />
 
       <div>
-        <label class="block font-bold text-slate-700 mb-1">ຊື່ຜູ້ໃຊ້ (Username) <span class="text-rose-500">*</span></label>
-        <input type="text" id="user_username" required placeholder="ຕົວຢ່າງ: somsak, staff_kham" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 font-mono text-xs" />
-        <p id="user_username_help" class="text-[10px] text-slate-400 mt-1">ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)</p>
+        <label class="block font-bold text-purple-200 mb-1">ຊື່ຜູ້ໃຊ້ (Username) <span class="text-rose-400">*</span></label>
+        <input type="text" id="user_username" required placeholder="ຕົວຢ່າງ: somsak, staff_kham" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white font-mono text-xs" />
+        <p id="user_username_help" class="text-[10px] text-purple-400/70 mt-1">ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)</p>
       </div>
 
       <div>
-        <label class="block font-bold text-slate-700 mb-1">ຊື່ສະແດງ / ຊື່ພະນັກງານ (Display Name) <span class="text-rose-500">*</span></label>
-        <input type="text" id="user_display_name" required placeholder="ຕົວຢ່າງ: ສົມສັກ ໃຈດີ" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs" />
+        <label class="block font-bold text-purple-200 mb-1">ຊື່ສະແດງ / ຊື່ພະນັກງານ (Display Name) <span class="text-rose-400">*</span></label>
+        <input type="text" id="user_display_name" required placeholder="ຕົວຢ່າງ: ສົມສັກ ໃຈດີ" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs" />
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ສິດການໃຊ້ງານ (Role)</label>
-          <select id="user_role" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs bg-white">
+          <label class="block font-bold text-purple-200 mb-1">ສິດການໃຊ້ງານ (Role)</label>
+          <select id="user_role" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-xs text-white">
             <option value="admin">👑 Admin (ຜູ້ດູແລ)</option>
             <option value="staff" selected>📋 Staff (ພະນັກງານ)</option>
             <option value="driver">🚚 Driver (ຄົນສົ່ງ)</option>
@@ -497,8 +497,8 @@
         </div>
 
         <div id="user_status_group">
-          <label class="block font-bold text-slate-700 mb-1">ສະຖານະ (Status)</label>
-          <select id="user_is_active" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs bg-white">
+          <label class="block font-bold text-purple-200 mb-1">ສະຖານະ (Status)</label>
+          <select id="user_is_active" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-xs text-white">
             <option value="true">🟢 ເປີດໃຊ້ງານ</option>
             <option value="false">🔴 ປິດໃຊ້ງານ</option>
           </select>
@@ -506,34 +506,34 @@
       </div>
 
       <div>
-        <label id="user_password_label" class="block font-bold text-slate-700 mb-1">ລະຫັດຜ່ານ (Password) <span class="text-rose-500">*</span></label>
+        <label id="user_password_label" class="block font-bold text-purple-200 mb-1">ລະຫັດຜ່ານ (Password) <span class="text-rose-400">*</span></label>
         <div class="relative">
-          <input type="password" id="user_password" placeholder="ຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-mono pr-10" />
-          <button type="button" onclick="toggleUserPasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+          <input type="password" id="user_password" placeholder="ຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs font-mono pr-10" />
+          <button type="button" onclick="toggleUserPasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-purple-400 hover:text-white">
             <i id="user-password-eye" class="fa-solid fa-eye text-xs"></i>
           </button>
         </div>
-        <p id="user_password_help" class="text-[10px] text-slate-400 mt-1">ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ</p>
+        <p id="user_password_help" class="text-[10px] text-purple-400/70 mt-1">ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ</p>
       </div>
 
-      <div class="pt-3 flex justify-end gap-2 border-t border-amber-50">
-        <button type="button" onclick="closeUserModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
-        <button type="submit" id="user_submit_btn" class="px-5 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black shadow-md shadow-amber-500/20 transition">ບັນທຶກ</button>
+      <div class="pt-3 flex justify-end gap-2 border-t border-purple-900/40">
+        <button type="button" onclick="closeUserModal()" class="px-4 py-2.5 rounded-2xl bg-purple-950/60 text-purple-300 font-bold hover:bg-purple-900/60 transition border border-purple-800/60">ຍົກເລີກ</button>
+        <button type="submit" id="user_submit_btn" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black shadow-md shadow-purple-600/30 transition">ບັນທຶກ</button>
       </div>
     </form>
   </div>
 </div>
 
 <!-- Modal for Adding / Editing Product -->
-<div id="product-modal" onclick="closeProductModal()" class="fixed inset-0 bg-slate-950/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
-  <div class="relative max-w-xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-amber-200" onclick="event.stopPropagation()">
+<div id="product-modal" onclick="closeProductModal()" class="fixed inset-0 bg-[#08050e]/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md transition-all">
+  <div class="relative max-w-xl w-full bg-[#140d24] rounded-3xl overflow-hidden shadow-2xl border border-purple-500/30 text-white" onclick="event.stopPropagation()">
     
-    <div class="p-4 sm:p-5 bg-slate-950 text-white flex items-center justify-between text-xs font-black">
+    <div class="p-4 sm:p-5 bg-[#0e081c] text-white flex items-center justify-between text-xs font-black border-b border-purple-900/60">
       <span class="flex items-center gap-2" id="product_modal_title">
         <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
         <span>ເພີ່ມສິນຄ້າໃໝ່ (Add Product)</span>
       </span>
-      <button onclick="closeProductModal()" class="w-7 h-7 rounded-xl hover:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
+      <button onclick="closeProductModal()" class="w-7 h-7 rounded-xl hover:bg-purple-900/50 flex items-center justify-center text-purple-300 hover:text-white transition">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -544,81 +544,81 @@
       <!-- Row 1: Name & Code -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ຊື່ສິນຄ້າ <span class="text-rose-500">*</span></label>
-          <input type="text" id="product_name" required placeholder="ຕົວຢ່າງ: ນ້ຳດື່ມຕຸກໃຫຍ່ 20L" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-semibold" />
+          <label class="block font-bold text-purple-200 mb-1">ຊື່ສິນຄ້າ <span class="text-rose-400">*</span></label>
+          <input type="text" id="product_name" required placeholder="ຕົວຢ່າງ: TomLaWa ຕົ້ມສົດ 1.5L" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs font-semibold" />
         </div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ລະຫັດສິນຄ້າ (Code)</label>
-          <input type="text" id="product_code" placeholder="ເຊັ່ນ: BTL-01 (ປ່ອຍວ່າງເພື່ອສ້າງອັດຕະໂນມັດ)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-mono uppercase" />
+          <label class="block font-bold text-purple-200 mb-1">ລະຫັດສິນຄ້າ (Code)</label>
+          <input type="text" id="product_code" placeholder="ເຊັ່ນ: BTL-01 (ປ່ອຍວ່າງເພື່ອສ້າງອັດຕະໂນມັດ)" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs font-mono uppercase" />
         </div>
       </div>
 
       <!-- Row 2: Category, Price, Unit -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ໝວດໝູ່ <span class="text-rose-500">*</span></label>
-          <select id="product_category" required class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-bold">
+          <label class="block font-bold text-purple-200 mb-1">ໝວດໝູ່ <span class="text-rose-400">*</span></label>
+          <select id="product_category" required class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-xs font-bold text-white">
             <option value="bottle">🍶 ຂາຍເປັນຕຸກ (Bottles)</option>
             <option value="leaves_syrup">🍃 ໃບກັບນ້ຳຢາ (Leaves & Syrups)</option>
             <option value="pilot">🚀 Pilot</option>
           </select>
         </div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ລາຄາ (LAK) <span class="text-rose-500">*</span></label>
-          <input type="number" id="product_price" required min="0" step="500" placeholder="30000" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-black font-mono text-amber-900" />
+          <label class="block font-bold text-purple-200 mb-1">ລາຄາ (LAK) <span class="text-rose-400">*</span></label>
+          <input type="number" id="product_price" required min="0" step="500" placeholder="30000" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-xs font-black font-mono text-amber-400" />
         </div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">ໜ່ວຍນັບ (Unit)</label>
-          <input type="text" id="product_unit_label" placeholder="ຕຸກ 1.5L, 1kg, ຊຸດ" value="ຕຸກ 1.5L" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-medium" />
+          <label class="block font-bold text-purple-200 mb-1">ໜ່ວຍນັບ (Unit)</label>
+          <input type="text" id="product_unit_label" placeholder="ຕຸກ 1.5L, 1kg, ຊຸດ" value="ຕຸກ 1.5L" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-xs font-medium text-white" />
         </div>
       </div>
 
       <!-- Row 3: Product Image Upload & Preview -->
-      <div class="space-y-2 bg-amber-50/50 p-3.5 rounded-2xl border border-amber-200">
-        <label class="block font-bold text-slate-800">
-          <i class="fa-regular fa-image text-amber-600 mr-1"></i> ຮູບພາບສິນຄ້າ (Product Image)
+      <div class="space-y-2 bg-[#0e081c] p-3.5 rounded-2xl border border-purple-900/60">
+        <label class="block font-bold text-purple-200">
+          <i class="fa-regular fa-image text-amber-400 mr-1"></i> ຮູບພາບສິນຄ້າ (Product Image)
         </label>
         
         <div class="flex items-center gap-3">
           <!-- Thumbnail Preview -->
-          <div id="product_image_preview_box" class="w-16 h-16 rounded-xl border border-amber-200 bg-white flex items-center justify-center p-1 shrink-0 overflow-hidden shadow-xs">
+          <div id="product_image_preview_box" class="w-16 h-16 rounded-xl border border-purple-900/80 bg-[#140d24] flex items-center justify-center p-1 shrink-0 overflow-hidden shadow-xs">
             <img id="product_image_preview" src="/static/img/tom_bottle.svg" class="w-full h-full object-contain" />
           </div>
 
           <div class="flex-1 space-y-1.5">
-            <input type="file" id="product_image_file" accept="image/*" onchange="previewProductImage(this)" class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-amber-300 hover:file:bg-slate-800 cursor-pointer" />
-            <p class="text-[10px] text-slate-500">ຮອງຮັບຮູບ: .jpg, .png, .webp, .svg (ຖ້າບໍ່ເລືອກຈະໃຊ້ຮູບມາດຕະຖານຕາມໝວດໝູ່)</p>
+            <input type="file" id="product_image_file" accept="image/*" onchange="previewProductImage(this)" class="w-full text-xs text-purple-300 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-gradient-to-r file:from-purple-600 file:to-fuchsia-600 file:text-white hover:file:opacity-90 cursor-pointer" />
+            <p class="text-[10px] text-purple-400/70">ຮອງຮັບຮູບ: .jpg, .png, .webp, .svg (ຖ້າບໍ່ເລືອກຈະໃຊ້ຮູບມາດຕະຖານຕາມໝວດໝູ່)</p>
           </div>
         </div>
       </div>
 
       <!-- Row 4: Description -->
       <div>
-        <label class="block font-bold text-slate-700 mb-1">ລາຍລະອຽດສິນຄ້າ</label>
-        <textarea id="product_description" rows="2" placeholder="ຕົວຢ່າງ: ນ້ຳດື່ມບໍລິສຸດ ຜ່ານລະບົບ RO + UV + Ozone ສະອາດປອດໄພ" class="w-full px-3.5 py-2 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs font-medium"></textarea>
+        <label class="block font-bold text-purple-200 mb-1">ລາຍລະອຽດສິນຄ້າ</label>
+        <textarea id="product_description" rows="2" placeholder="ຕົວຢ່າງ: ນ້ຳກະທ່ອມແທ້ ຕົ້ມສົດ ໃໝ່ທຸກວັນ ເຂັ້ມຂຸ້ນ ສະອາດປອດໄພ" class="w-full px-3.5 py-2 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs font-medium"></textarea>
       </div>
 
       <!-- Row 5: Deposit Note -->
       <div>
-        <label class="block font-bold text-slate-700 mb-1">ໝາຍເຫດຄ່າມັດຈຳ (ຖ້າມີ)</label>
-        <input type="text" id="product_deposit_note" placeholder="ຕົວຢ່າງ: ລູກຄ້າມີຕຸກເກົ່າມາປ່ຽນ (ຖ້າບໍ່ມີໃຫ້ເລືອກຊື້ພ້ອມຕຸກໃໝ່)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-amber-500 text-xs" />
+        <label class="block font-bold text-purple-200 mb-1">ໝາຍເຫດຄ່າມັດຈຳ (ຖ້າມີ)</label>
+        <input type="text" id="product_deposit_note" placeholder="ຕົວຢ່າງ: ລູກຄ້າມີຕຸກເກົ່າມາປ່ຽນ (ຖ້າບໍ່ມີໃຫ້ເລືອກຊື້ພ້ອມຕຸກໃໝ່)" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:ring-2 focus:ring-purple-500 text-white text-xs" />
       </div>
 
       <!-- Row 6: Checkboxes (Popular & Active) -->
       <div class="flex items-center gap-6 pt-1">
         <label class="flex items-center gap-2 cursor-pointer select-none">
-          <input type="checkbox" id="product_is_popular" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500" />
-          <span class="font-bold text-slate-800">🔥 ປ້າຍສິນຄ້າຂາຍດີ (Popular)</span>
+          <input type="checkbox" id="product_is_popular" class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500" />
+          <span class="font-bold text-white">🔥 ປ້າຍສິນຄ້າຂາຍດີ (Popular)</span>
         </label>
         <label class="flex items-center gap-2 cursor-pointer select-none">
-          <input type="checkbox" id="product_is_active" checked class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500" />
-          <span class="font-bold text-slate-800">🟢 ເປີດຂາຍໜ້າເວັບ (Active)</span>
+          <input type="checkbox" id="product_is_active" checked class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500" />
+          <span class="font-bold text-white">🟢 ເປີດຂາຍໜ້າເວັບ (Active)</span>
         </label>
       </div>
 
-      <div class="pt-3 flex justify-end gap-2 border-t border-amber-50">
-        <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition">ຍົກເລີກ</button>
-        <button type="submit" id="product_submit_btn" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black shadow-md shadow-amber-500/25 transition active:scale-95">ບັນທຶກສິນຄ້າ</button>
+      <div class="pt-3 flex justify-end gap-2 border-t border-purple-900/40">
+        <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 rounded-2xl bg-purple-950/60 text-purple-300 font-bold hover:bg-purple-900/60 transition border border-purple-800/60">ຍົກເລີກ</button>
+        <button type="submit" id="product_submit_btn" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black shadow-md shadow-purple-600/30 transition active:scale-95">ບັນທຶກສິນຄ້າ</button>
       </div>
     </form>
   </div>
@@ -634,6 +634,11 @@ let currentTab = 'orders';
 let allUsers = [];
 const currentUserId = {{ current_user.user_id if current_user and current_user.user_id else 'null' }};
 const currentUsername = "{{ current_user.username if current_user and current_user.username else '' }}";
+
+function formatKip(amount) {
+  if (isNaN(amount)) return "0 ₭";
+  return new Intl.NumberFormat("lo-LA").format(amount) + " ₭";
+}
 
 async function fetchOrders() {
   try {
@@ -673,11 +678,11 @@ function updateCounters() {
 function filterOrders(status) {
   currentFilter = status;
   document.querySelectorAll(".order-filter-btn").forEach(btn => {
-    btn.classList.remove("ring-2", "ring-amber-500", "scale-102");
+    btn.classList.remove("ring-2", "ring-purple-500", "scale-102");
   });
   const activeBtn = document.getElementById("btn-filter-" + status);
   if (activeBtn) {
-    activeBtn.classList.add("ring-2", "ring-amber-500");
+    activeBtn.classList.add("ring-2", "ring-purple-500");
   }
   renderOrders();
 }
@@ -751,10 +756,10 @@ function renderOrders() {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div class="p-16 text-center text-slate-400 bg-white rounded-3xl border border-amber-100 shadow-card">
-        <i class="fa-regular fa-folder-open text-4xl mb-3 text-amber-300"></i>
-        <p class="text-sm font-bold text-slate-700">ບໍ່ມີລາຍການອໍເດີທີ່ກົງກັບເງື່ອນໄຂ</p>
-        ${adminSearchQuery ? `<button onclick="clearAdminSearch()" class="mt-3 px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-xl border border-amber-200 transition">ລຶບຄຳຄົ້ນຫາ</button>` : ''}
+      <div class="p-16 text-center text-purple-400/60 bg-[#140d24] rounded-3xl border border-purple-900/50 shadow-xl">
+        <i class="fa-regular fa-folder-open text-4xl mb-3 text-purple-400"></i>
+        <p class="text-sm font-bold text-white">ບໍ່ມີລາຍການອໍເດີທີ່ກົງກັບເງື່ອນໄຂ</p>
+        ${adminSearchQuery ? `<button onclick="clearAdminSearch()" class="mt-3 px-4 py-2 bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 text-xs font-bold rounded-xl border border-purple-800/60 transition">ລຶບຄຳຄົ້ນຫາ</button>` : ''}
       </div>
     `;
     return;
@@ -789,24 +794,24 @@ function renderOrders() {
 
     // Build the Stepper Pipeline HTML
     const stepperHtml = `
-      <div class="bg-slate-950 text-white p-3 sm:p-3.5 rounded-2xl border border-amber-500/25 shadow-sm space-y-2">
-        <div class="flex items-center justify-between text-[10px] font-bold text-slate-400">
+      <div class="bg-[#0e081c] text-white p-3 sm:p-3.5 rounded-2xl border border-purple-900/60 shadow-sm space-y-2">
+        <div class="flex items-center justify-between text-[10px] font-bold text-purple-400">
           <span class="flex items-center gap-1.5 text-amber-400">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
             </span>
             <span>ຂັ້ນຕອນການຈັດສົ່ງ (Pipeline)</span>
           </span>
-          <span class="font-mono text-amber-300 text-[10px]">${order.created_at_str || ''}</span>
+          <span class="font-mono text-purple-300 text-[10px]">${order.created_at_str || ''}</span>
         </div>
 
         <!-- Stepper Nodes & Dynamic Line -->
         <div class="relative flex items-center justify-between px-2 pt-1 pb-0.5">
           <!-- Background Line -->
-          <div class="absolute left-5 right-5 top-1/2 -translate-y-1/2 h-0.5 bg-slate-800 -z-0"></div>
+          <div class="absolute left-5 right-5 top-1/2 -translate-y-1/2 h-0.5 bg-purple-950 -z-0"></div>
           <!-- Active Gradient Line -->
-          <div class="absolute left-5 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500 -z-0" style="width: ${progressWidth}; max-width: calc(100% - 2.5rem);"></div>
+          <div class="absolute left-5 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-amber-400 transition-all duration-500 -z-0" style="width: ${progressWidth}; max-width: calc(100% - 2.5rem);"></div>
 
           ${statusSteps.map((stepKey, i) => {
             const isDone = (currentStepIdx > i);
@@ -814,7 +819,7 @@ function renderOrders() {
             let nodeClass = "";
             let iconHtml = "";
             let labelText = "";
-            let labelColor = "text-slate-500";
+            let labelColor = "text-purple-400/50";
 
             if (stepKey === 'pending') {
               labelText = "ລໍຖ້າກວດ";
@@ -831,14 +836,14 @@ function renderOrders() {
             }
 
             if (isDone) {
-              nodeClass = "bg-amber-500 border-amber-300 text-slate-950 shadow-xs";
-              labelColor = "text-amber-400";
+              nodeClass = "bg-gradient-to-tr from-purple-700 to-fuchsia-600 border-purple-400 text-white shadow-xs";
+              labelColor = "text-purple-300";
             } else if (isCurrent) {
-              nodeClass = "bg-amber-400 border-white text-slate-950 ring-4 ring-amber-500/30 scale-110 font-black shadow-md";
+              nodeClass = "bg-amber-400 border-white text-slate-950 ring-4 ring-purple-500/30 scale-110 font-black shadow-md";
               labelColor = "text-white font-black";
             } else {
-              nodeClass = "bg-slate-900 border-slate-700 text-slate-500";
-              labelColor = "text-slate-600";
+              nodeClass = "bg-[#140d24] border-purple-900 text-purple-500/50";
+              labelColor = "text-purple-400/50";
             }
 
             return `
@@ -858,7 +863,7 @@ function renderOrders() {
     let smartButtonHtml = '';
     if (order.status === 'pending') {
       smartButtonHtml = `
-        <button onclick="updateOrderStatus(${order.id}, 'approved')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center justify-between shadow-lg shadow-amber-500/20 transition-all active:scale-[0.98] group">
+        <button onclick="updateOrderStatus(${order.id}, 'approved')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black text-xs flex items-center justify-between shadow-lg shadow-purple-600/30 transition-all active:scale-[0.98] group">
           <div class="flex items-center gap-2.5 text-left">
             <div class="w-7 h-7 rounded-xl bg-slate-950/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
               <i class="fa-solid fa-circle-check"></i>
@@ -876,13 +881,13 @@ function renderOrders() {
       `;
     } else if (order.status === 'approved') {
       smartButtonHtml = `
-        <button onclick="updateOrderStatus(${order.id}, 'delivering')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-500 to-amber-500 hover:from-purple-500 hover:to-amber-400 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-purple-500/25 transition-all active:scale-[0.98] group">
+        <button onclick="updateOrderStatus(${order.id}, 'delivering')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-purple-600/30 transition-all active:scale-[0.98] group">
           <div class="flex items-center gap-2.5 text-left">
             <div class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
               <i class="fa-solid fa-truck-fast"></i>
             </div>
             <div>
-              <div class="text-[9px] uppercase tracking-wider text-purple-100 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
+              <div class="text-[9px] uppercase tracking-wider text-purple-200 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
               <div class="font-black text-xs sm:text-sm">ມອບເຄື່ອງໃຫ້ຄົນຂັບ • ອອກລົດຈັດສົ່ງ</div>
             </div>
           </div>
@@ -894,13 +899,13 @@ function renderOrders() {
       `;
     } else if (order.status === 'delivering') {
       smartButtonHtml = `
-        <button onclick="updateOrderStatus(${order.id}, 'completed')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-amber-500/20 transition-all active:scale-[0.98] group">
+        <button onclick="updateOrderStatus(${order.id}, 'completed')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs flex items-center justify-between shadow-lg shadow-emerald-500/25 transition-all active:scale-[0.98] group">
           <div class="flex items-center gap-2.5 text-left">
             <div class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-xs group-hover:scale-110 transition">
               <i class="fa-solid fa-flag-checkered"></i>
             </div>
             <div>
-              <div class="text-[9px] uppercase tracking-wider text-amber-100 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
+              <div class="text-[9px] uppercase tracking-wider text-emerald-100 font-bold">ຂັ້ນຕອນຕໍ່ໄປ (Next Action)</div>
               <div class="font-black text-xs sm:text-sm">ສົ່ງຮອດເຮືອນລູກຄ້າແລ້ວ • ຈົບງານຈັດສົ່ງ</div>
             </div>
           </div>
@@ -912,22 +917,22 @@ function renderOrders() {
       `;
     } else if (order.status === 'completed') {
       smartButtonHtml = `
-        <div class="w-full py-3.5 px-4 rounded-2xl bg-slate-950 border border-amber-500/30 text-amber-400 font-black text-xs flex items-center justify-between shadow-sm">
+        <div class="w-full py-3.5 px-4 rounded-2xl bg-[#0e081c] border border-emerald-500/40 text-emerald-400 font-black text-xs flex items-center justify-between shadow-sm">
           <div class="flex items-center gap-2.5">
-            <div class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">
+            <div class="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
               <i class="fa-solid fa-award"></i>
             </div>
             <div>
-              <div class="text-[9px] uppercase tracking-wider text-amber-400/80 font-bold">ສະຖານະປະຈຸບັນ</div>
+              <div class="text-[9px] uppercase tracking-wider text-emerald-300 font-bold">ສະຖານະປະຈຸບັນ</div>
               <div class="font-black text-xs text-white">🎉 ອໍເດີນີ້ຈັດສົ່ງສຳເລັດຮຽບຮ້ອຍແລ້ວ!</div>
             </div>
           </div>
-          <span class="text-[10px] bg-slate-900 px-2.5 py-1 rounded-xl border border-amber-500/30 text-amber-300">ຈົບງານ 🏆</span>
+          <span class="text-[10px] bg-emerald-950 px-2.5 py-1 rounded-xl border border-emerald-800/50 text-emerald-300">ຈົບງານ 🏆</span>
         </div>
       `;
     } else if (order.status === 'rejected') {
       smartButtonHtml = `
-        <div class="w-full py-3 px-3.5 rounded-2xl bg-rose-950/40 border border-rose-900/50 text-rose-300 font-black text-xs flex items-center justify-between shadow-sm">
+        <div class="w-full py-3 px-3.5 rounded-2xl bg-rose-950/50 border border-rose-900/60 text-rose-300 font-black text-xs flex items-center justify-between shadow-sm">
           <div class="flex items-center gap-2.5">
             <div class="w-7 h-7 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs">
               <i class="fa-solid fa-ban"></i>
@@ -945,84 +950,84 @@ function renderOrders() {
     }
 
     return `
-      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-amber-100 shadow-card hover:border-amber-300 transition-all flex flex-col lg:flex-row gap-6 justify-between">
+      <div class="bg-[#140d24] rounded-3xl p-5 sm:p-6 border border-purple-900/50 hover:border-purple-500/60 shadow-xl transition-all flex flex-col lg:flex-row gap-6 justify-between text-white">
         
         <!-- Left Side: Customer & Order Details -->
         <div class="flex-1 space-y-3.5">
           
           <!-- Top Row: Code, Status Badge, Sheet Badge, Timestamp -->
-          <div class="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-amber-50">
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-purple-900/40">
             <div class="flex items-center gap-2">
-              <span class="font-black text-slate-900 font-mono text-sm sm:text-base">${order.order_code}</span>
+              <span class="font-black text-white font-mono text-sm sm:text-base">${order.order_code}</span>
               <span class="badge-status ${statusBadgeClass}">${statusText}</span>
-              ${order.sheet_synced ? `<span class="text-[10px] text-amber-700 font-black bg-amber-50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-200" title="ບັນທຶກລົງ Google Sheet ແລ້ວ"><i class="fa-solid fa-circle-check"></i> Sheet</span>` : ''}
+              ${order.sheet_synced ? `<span class="text-[10px] text-purple-300 font-black bg-purple-950 px-2 py-0.5 rounded-full flex items-center gap-1 border border-purple-800/60" title="ບັນທຶກລົງ Google Sheet ແລ້ວ"><i class="fa-solid fa-circle-check text-amber-400"></i> Sheet</span>` : ''}
             </div>
-            <span class="text-xs text-slate-400 font-medium">${order.created_at_str || ''}</span>
+            <span class="text-xs text-purple-400 font-medium">${order.created_at_str || ''}</span>
           </div>
 
           <!-- Customer Info & Action Chips -->
           <div class="flex flex-wrap items-center gap-2.5 text-xs">
-            <div class="flex items-center gap-1.5 font-black text-slate-900 text-sm">
-              <i class="fa-solid fa-user text-amber-600 text-xs"></i>
+            <div class="flex items-center gap-1.5 font-black text-white text-sm">
+              <i class="fa-solid fa-user text-amber-400 text-xs"></i>
               <span>${order.customer_name}</span>
             </div>
 
             <!-- Call Button -->
-            <a href="tel:${order.customer_phone}" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold flex items-center gap-1.5 transition border border-amber-200 shadow-2xs">
-              <i class="fa-solid fa-phone text-amber-600"></i>
+            <a href="tel:${order.customer_phone}" class="px-3 py-1.5 rounded-xl bg-purple-950/70 hover:bg-purple-900/70 text-purple-200 font-bold flex items-center gap-1.5 transition border border-purple-800/60 shadow-2xs">
+              <i class="fa-solid fa-phone text-amber-400"></i>
               <span>${order.customer_phone}</span>
             </a>
 
             <!-- View Customer Order History Button -->
-            <button onclick="setAdminSearch('${order.customer_phone}')" title="ກັ່ນຕອງເບິ່ງປະຫວັດອໍເດີທັງໝົດຂອງເບີນີ້" class="px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 text-[11px] font-bold flex items-center gap-1 transition shadow-2xs active:scale-95">
-              <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>
+            <button onclick="setAdminSearch('${order.customer_phone}')" title="ກັ່ນຕອງເບິ່ງປະຫວັດອໍເດີທັງໝົດຂອງເບີນີ້" class="px-2.5 py-1.5 rounded-xl bg-[#0e081c] hover:bg-purple-950 text-amber-400 text-[11px] font-bold flex items-center gap-1 transition border border-purple-900/60 shadow-2xs active:scale-95">
+              <i class="fa-solid fa-clock-rotate-left"></i>
               <span>ປະຫວັດເບີນີ້</span>
             </button>
 
             <!-- Google Maps GPS Navigation Button -->
             ${hasLocation ? `
-              <a href="${mapsNavUrl}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-600 hover:from-amber-700 hover:to-amber-700 text-white font-black flex items-center gap-1.5 shadow-sm shadow-amber-500/20 transition active:scale-95">
-                <i class="fa-solid fa-location-arrow"></i>
+              <a href="${mapsNavUrl}" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black flex items-center gap-1.5 shadow-sm shadow-purple-600/30 transition active:scale-95">
+                <i class="fa-solid fa-location-arrow text-amber-300"></i>
                 <span>🧭 Google Maps GPS</span>
               </a>
             ` : `
-              <span class="text-slate-400 text-xs italic">ບໍ່ມີພິກັດແຜນທີ່</span>
+              <span class="text-purple-400/50 text-xs italic">ບໍ່ມີພິກັດແຜນທີ່</span>
             `}
           </div>
 
           <!-- Items Summary & Total Amount -->
-          <div class="bg-amber-50/40 p-3.5 rounded-2xl border border-amber-100/80 text-xs">
-            <div class="text-slate-400 font-bold uppercase tracking-wider text-[10px] mb-1">ສິນຄ້າທີ່ສັ່ງ:</div>
-            <div class="font-extrabold text-slate-900 text-sm mb-1">${order.items_summary}</div>
-            <div class="text-right font-black text-sm sm:text-base text-amber-800">
+          <div class="bg-[#19102c] p-3.5 rounded-2xl border border-purple-900/40 text-xs">
+            <div class="text-purple-400 font-bold uppercase tracking-wider text-[10px] mb-1">ສິນຄ້າທີ່ສັ່ງ:</div>
+            <div class="font-extrabold text-white text-sm mb-1">${order.items_summary}</div>
+            <div class="text-right font-black text-sm sm:text-base text-amber-400 font-mono">
               ຍອດລວມ: ${formatKip(order.total_amount)}
             </div>
           </div>
 
           <!-- Address Note -->
-          <div class="text-xs text-slate-600">
-            <span class="font-bold text-slate-700">ທີ່ຢູ່ / ຈຸດສັງເກດ:</span>
-            <p class="text-slate-600 mt-0.5 leading-relaxed">${order.address_note || 'ບໍ່ໄດ້ລະບຸ'}</p>
+          <div class="text-xs text-purple-300">
+            <span class="font-bold text-white">ທີ່ຢູ່ / ຈຸດສັງເກດ:</span>
+            <p class="text-purple-300/80 mt-0.5 leading-relaxed">${order.address_note || 'ບໍ່ໄດ້ລະບຸ'}</p>
           </div>
 
           <!-- Slip Inspection Box -->
-          <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-2xl border border-amber-100">
+          <div class="flex items-center gap-3 bg-[#0e081c] p-2.5 rounded-2xl border border-purple-900/60">
             ${order.slip_image ? `
-              <div onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="group relative cursor-pointer overflow-hidden rounded-xl border border-amber-200 bg-white w-16 h-16 shrink-0 flex items-center justify-center shadow-sm">
+              <div onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="group relative cursor-pointer overflow-hidden rounded-xl border border-purple-800/60 bg-[#140d24] w-16 h-16 shrink-0 flex items-center justify-center shadow-sm">
                 <img src="/static/uploads/${order.slip_image}" alt="Slip" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                <div class="absolute inset-0 bg-[#08050e]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                  <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i>
                 </div>
               </div>
               <div class="text-xs">
-                <div class="font-black text-slate-900">ໃບບິນໂອນເງິນ</div>
-                <button onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="text-[10px] text-amber-600 font-bold hover:underline">ກົດເບິ່ງຮູບເຕັມ</button>
+                <div class="font-black text-white">ໃບບິນໂອນເງິນ</div>
+                <button onclick="openSlipModal('/static/uploads/${order.slip_image}')" class="text-[10px] text-amber-400 font-bold hover:underline">ກົດເບິ່ງຮູບເຕັມ</button>
               </div>
             ` : `
-              <div class="w-16 h-16 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+              <div class="w-16 h-16 rounded-xl border border-purple-900/80 bg-purple-950/40 flex items-center justify-center text-purple-400/50 shrink-0">
                 <i class="fa-solid fa-image-slash"></i>
               </div>
-              <div class="text-xs text-slate-500 font-medium">ບໍ່ມີຮູບໃບບິນ</div>
+              <div class="text-xs text-purple-400/70 font-medium">ບໍ່ມີຮູບໃບບິນ</div>
             `}
           </div>
 
@@ -1117,8 +1122,8 @@ function switchTab(tab) {
   const secUsers = document.getElementById("section-users");
   const secProducts = document.getElementById("section-products");
 
-  const activeTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-slate-900 text-amber-400 shadow-md shadow-amber-500/20";
-  const inactiveTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-white text-slate-700 hover:bg-amber-50 border border-amber-100 shadow-2xs";
+  const activeTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30 whitespace-nowrap";
+  const inactiveTabClass = "admin-nav-tab flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all bg-[#140d24] text-purple-300 hover:bg-purple-950/60 hover:text-white border border-purple-900/50 shadow-2xs whitespace-nowrap";
 
   tabOrders.className = inactiveTabClass;
   tabUsers.className = inactiveTabClass;
@@ -1191,13 +1196,13 @@ function updateProductCounters() {
 function filterAdminProducts(cat) {
   currentProdFilter = cat;
   document.querySelectorAll(".prod-filter-btn").forEach(btn => {
-    btn.classList.remove("ring-2", "ring-amber-500", "bg-slate-950", "text-white");
-    btn.classList.add("bg-white", "text-slate-800");
+    btn.classList.remove("ring-2", "ring-purple-500", "bg-[#19102c]", "text-white");
+    btn.classList.add("bg-[#140d24]", "text-purple-200");
   });
   const activeBtn = document.getElementById("btn-prodfilter-" + cat);
   if (activeBtn) {
-    activeBtn.classList.remove("bg-white", "text-slate-800");
-    activeBtn.classList.add("bg-slate-950", "text-white", "ring-2", "ring-amber-500");
+    activeBtn.classList.remove("bg-[#140d24]", "text-purple-200");
+    activeBtn.classList.add("bg-[#19102c]", "text-white", "ring-2", "ring-purple-500");
   }
   renderAdminProducts();
 }
@@ -1213,10 +1218,10 @@ function renderAdminProducts() {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="p-12 text-center text-slate-400">
-          <i class="fa-solid fa-boxes-stacked text-3xl mb-2 text-amber-300"></i>
-          <p class="font-bold text-slate-600">ຍັງບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</p>
-          <button onclick="openProductModal('add')" class="mt-3 px-4 py-2 rounded-xl bg-amber-50 text-amber-800 font-bold text-xs border border-amber-200 hover:bg-amber-100 transition">
+        <td colspan="7" class="p-12 text-center text-purple-400/60">
+          <i class="fa-solid fa-boxes-stacked text-3xl mb-2 text-purple-400"></i>
+          <p class="font-bold text-white">ຍັງບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</p>
+          <button onclick="openProductModal('add')" class="mt-3 px-4 py-2 rounded-xl bg-purple-950/60 text-purple-200 font-bold text-xs border border-purple-800/60 hover:bg-purple-900/60 transition">
             + ເພີ່ມສິນຄ້າຕອນນີ້
           </button>
         </td>
@@ -1226,20 +1231,20 @@ function renderAdminProducts() {
   }
 
   tbody.innerHTML = filtered.map(p => {
-    let catBadge = '<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-black text-[10px] border border-amber-200">🍶 ເປັນຕຸກ</span>';
+    let catBadge = '<span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-black text-[10px] border border-amber-500/40">🍶 ເປັນຕຸກ</span>';
     if (p.category === 'leaves_syrup') {
-      catBadge = '<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-black text-[10px] border border-emerald-200">🍃 ໃບກັບນ້ຳຢາ</span>';
+      catBadge = '<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-black text-[10px] border border-emerald-500/40">🍃 ໃບກັບນ້ຳຢາ</span>';
     } else if (p.category === 'pilot') {
-      catBadge = '<span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 font-black text-[10px] border border-purple-200">🚀 Pilot</span>';
+      catBadge = '<span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-fuchsia-300 font-black text-[10px] border border-fuchsia-500/50">🚀 Pilot</span>';
     }
     
     const activeBadge = p.is_active 
-      ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-black text-[10px] border border-emerald-200 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ເປີດຂາຍ</span>' 
-      : '<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-bold text-[10px] border border-slate-300 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> ປິດຂາຍ</span>';
+      ? '<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-black text-[10px] border border-emerald-500/40 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ເປີດຂາຍ</span>' 
+      : '<span class="px-2 py-0.5 rounded-full bg-purple-950/60 text-purple-400 font-bold text-[10px] border border-purple-900 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> ປິດຂາຍ</span>';
 
     const popBadge = p.is_popular 
-      ? '<span class="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] shadow-xs">⭐ ຂາຍດີ</span>' 
-      : '<span class="text-slate-300 text-[10px]">-</span>';
+      ? '<span class="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black text-[10px] shadow-xs">⭐ ຂາຍດີ</span>' 
+      : '<span class="text-purple-400/40 text-[10px]">-</span>';
 
     let fallbackImg = '/static/img/tom_bottle.svg';
     if (p.category === 'leaves_syrup') fallbackImg = '/static/img/tom_leaves.svg';
@@ -1247,19 +1252,19 @@ function renderAdminProducts() {
     const imgUrl = p.image_url || fallbackImg;
 
     return `
-      <tr class="hover:bg-amber-50/30 transition">
+      <tr class="hover:bg-purple-950/30 transition">
         <!-- Thumbnail -->
         <td class="py-3 px-5">
-          <div class="w-12 h-12 rounded-xl bg-white border border-amber-200 p-1 flex items-center justify-center overflow-hidden shadow-2xs">
+          <div class="w-12 h-12 rounded-xl bg-[#0e081c] border border-purple-900/60 p-1 flex items-center justify-center overflow-hidden shadow-2xs">
             <img src="${imgUrl}" alt="${p.name}" class="w-full h-full object-contain" />
           </div>
         </td>
 
         <!-- Name & Code -->
         <td class="py-3 px-4">
-          <div class="font-black text-slate-900 text-xs sm:text-sm">${p.name}</div>
-          <div class="text-[10px] font-mono text-slate-400 mt-0.5">${p.code || '-'}</div>
-          ${p.description ? `<p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${p.description}</p>` : ''}
+          <div class="font-black text-white text-xs sm:text-sm">${p.name}</div>
+          <div class="text-[10px] font-mono text-purple-400/60 mt-0.5">${p.code || '-'}</div>
+          ${p.description ? `<p class="text-[10px] text-purple-300/70 line-clamp-1 mt-0.5">${p.description}</p>` : ''}
         </td>
 
         <!-- Category -->
@@ -1269,8 +1274,8 @@ function renderAdminProducts() {
 
         <!-- Price -->
         <td class="py-3 px-4 whitespace-nowrap">
-          <div class="font-black text-amber-800 text-xs sm:text-sm">${formatKip(p.price)}</div>
-          <div class="text-[10px] text-slate-400 font-medium">/ ${p.unit_label || 'ຕຸກ'}</div>
+          <div class="font-black text-amber-400 font-mono text-xs sm:text-sm">${formatKip(p.price)}</div>
+          <div class="text-[10px] text-purple-300/60 font-medium">/ ${p.unit_label || 'ຕຸກ'}</div>
         </td>
 
         <!-- Popular -->
@@ -1286,11 +1291,11 @@ function renderAdminProducts() {
         <!-- Actions -->
         <td class="py-3 px-5 text-right whitespace-nowrap">
           <div class="flex items-center justify-end gap-1.5">
-            <button onclick="openProductModal('edit', ${p.id})" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs flex items-center gap-1 border border-amber-200 transition active:scale-95" title="ແກ້ໄຂ">
+            <button onclick="openProductModal('edit', ${p.id})" class="px-2.5 py-1.5 rounded-xl bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 font-bold text-xs flex items-center gap-1 border border-purple-800/60 transition active:scale-95" title="ແກ້ໄຂ">
               <i class="fa-solid fa-pen-to-square"></i>
               <span>ແກ້ໄຂ</span>
             </button>
-            <button onclick="deleteProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs flex items-center gap-1 border border-rose-200 transition active:scale-95" title="ລຶບ">
+            <button onclick="deleteProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-300 font-bold text-xs flex items-center gap-1 border border-rose-900/60 transition active:scale-95" title="ລຶບ">
               <i class="fa-solid fa-trash-can"></i>
               <span>ລຶບ</span>
             </button>
@@ -1473,9 +1478,9 @@ function renderUsers(users) {
   if (!users || users.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" class="p-12 text-center text-slate-400">
-          <i class="fa-regular fa-user text-3xl mb-2 text-amber-300"></i>
-          <p class="font-bold text-slate-600">ບໍ່ພົບລາຍຊື່ຜູ້ໃຊ້ງານ</p>
+        <td colspan="6" class="p-12 text-center text-purple-400/60">
+          <i class="fa-regular fa-user text-3xl mb-2 text-purple-400"></i>
+          <p class="font-bold text-white">ບໍ່ພົບລາຍຊື່ຜູ້ໃຊ້ງານ</p>
         </td>
       </tr>
     `;
@@ -1485,54 +1490,54 @@ function renderUsers(users) {
   tbody.innerHTML = users.map(u => {
     const isCurrent = (currentUserId && u.id === currentUserId) || (currentUsername && u.username === currentUsername);
 
-    let roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-black text-[11px]">Staff</span>';
+    let roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-purple-950 text-purple-300 font-black text-[11px] border border-purple-800/60">Staff</span>';
     let roleIcon = 'fa-user';
     if (u.role === 'admin') {
-      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 font-black text-[11px] border border-amber-200">👑 Admin</span>';
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-purple-950 text-fuchsia-300 font-black text-[11px] border border-fuchsia-500/40">👑 Admin</span>';
       roleIcon = 'fa-user-shield';
     } else if (u.role === 'driver') {
-      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-purple-100 text-purple-800 font-black text-[11px] border border-purple-200">🚚 Driver</span>';
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-amber-950/60 text-amber-300 font-black text-[11px] border border-amber-500/40">🚚 Driver</span>';
       roleIcon = 'fa-truck';
     } else {
-      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-blue-100 text-blue-800 font-black text-[11px] border border-blue-200">📋 Staff</span>';
+      roleBadge = '<span class="px-2.5 py-1 rounded-xl bg-blue-950/60 text-blue-300 font-black text-[11px] border border-blue-500/40">📋 Staff</span>';
       roleIcon = 'fa-clipboard-user';
     }
 
     const statusBadge = u.is_active 
-      ? '<span class="inline-flex items-center gap-1 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ເປີດໃຊ້ງານ</span>'
-      : '<span class="inline-flex items-center gap-1 text-rose-700 bg-rose-50 px-2.5 py-1 rounded-xl border border-rose-200 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ປິດໃຊ້ງານ</span>';
+      ? '<span class="inline-flex items-center gap-1 text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded-xl border border-emerald-500/40 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ເປີດໃຊ້ງານ</span>'
+      : '<span class="inline-flex items-center gap-1 text-rose-300 bg-rose-950/40 px-2.5 py-1 rounded-xl border border-rose-500/40 font-bold text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ປິດໃຊ້ງານ</span>';
 
     return `
-      <tr class="hover:bg-amber-50/40 transition">
+      <tr class="hover:bg-purple-950/30 transition">
         <td class="py-3.5 px-5">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-500 flex items-center justify-center text-white text-xs font-black shadow-xs shrink-0">
+            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-purple-700 to-fuchsia-600 flex items-center justify-center text-white text-xs font-black shadow-xs shrink-0">
               <i class="fa-solid ${roleIcon}"></i>
             </div>
             <div>
-              <div class="font-black text-slate-900 font-mono text-xs flex items-center gap-1.5">
+              <div class="font-black text-white font-mono text-xs flex items-center gap-1.5">
                 ${u.username}
-                ${isCurrent ? '<span class="px-1.5 py-0.5 rounded-md bg-amber-200 text-amber-900 font-bold text-[9px]">ທ່ານເອງ (You)</span>' : ''}
+                ${isCurrent ? '<span class="px-1.5 py-0.5 rounded-md bg-purple-900 text-amber-300 font-bold text-[9px]">ທ່ານເອງ (You)</span>' : ''}
               </div>
-              <div class="text-[11px] text-slate-400">ID: #${u.id}</div>
+              <div class="text-[11px] text-purple-400/60">ID: #${u.id}</div>
             </div>
           </div>
         </td>
-        <td class="py-3.5 px-4 font-bold text-slate-800">${u.display_name}</td>
+        <td class="py-3.5 px-4 font-bold text-white">${u.display_name}</td>
         <td class="py-3.5 px-4">${roleBadge}</td>
         <td class="py-3.5 px-4">${statusBadge}</td>
-        <td class="py-3.5 px-4 text-slate-400 font-mono text-[11px]">${u.created_at_str || '-'}</td>
+        <td class="py-3.5 px-4 text-purple-400/70 font-mono text-[11px]">${u.created_at_str || '-'}</td>
         <td class="py-3.5 px-5 text-right">
           <div class="flex items-center justify-end gap-1.5">
-            <button onclick="openUserModal('edit', ${u.id})" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-amber-50 hover:text-amber-700 text-slate-700 text-xs font-black transition border border-slate-200 hover:border-amber-200 flex items-center gap-1 active:scale-95">
+            <button onclick="openUserModal('edit', ${u.id})" class="px-3 py-1.5 rounded-xl bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 text-xs font-black transition border border-purple-800/60 flex items-center gap-1 active:scale-95">
               <i class="fa-solid fa-pen-to-square"></i> ແກ້ໄຂ
             </button>
             ${!isCurrent ? `
-              <button onclick="deleteUser(${u.id}, '${u.username}')" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-black transition border border-rose-200 flex items-center gap-1 active:scale-95">
+              <button onclick="deleteUser(${u.id}, '${u.username}')" class="px-3 py-1.5 rounded-xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-300 text-xs font-black transition border border-rose-900/60 flex items-center gap-1 active:scale-95">
                 <i class="fa-solid fa-trash"></i> ລຶບ
               </button>
             ` : `
-              <span class="text-[10px] text-slate-400 italic px-2 py-1">ບັນຊີປັດຈຸບັນ</span>
+              <span class="text-[10px] text-purple-400/50 italic px-2 py-1">ບັນຊີປັດຈຸບັນ</span>
             `}
           </div>
         </td>
@@ -1567,13 +1572,13 @@ function openUserModal(mode, userId) {
     idInput.value = "";
     usernameInput.value = "";
     usernameInput.disabled = false;
-    usernameInput.classList.remove("bg-slate-100", "cursor-not-allowed");
+    usernameInput.classList.remove("bg-[#0e081c]/50", "cursor-not-allowed");
     usernameHelp.textContent = "ໃຊ້ສຳລັບ Login ເຂົ້າສູ່ລະບົບ (ພາສາອັງກິດ ຫຼື ຕົວເລກ)";
     displayNameInput.value = "";
     roleSelect.value = "staff";
     activeSelect.value = "true";
     passwordInput.required = true;
-    passwordLabel.innerHTML = 'ລະຫັດຜ່ານ (Password) <span class="text-rose-500">*</span>';
+    passwordLabel.innerHTML = 'ລະຫັດຜ່ານ (Password) <span class="text-rose-400">*</span>';
     passwordHelp.textContent = "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ";
   } else {
     const user = allUsers.find(u => u.id === userId);
@@ -1583,7 +1588,7 @@ function openUserModal(mode, userId) {
     idInput.value = user.id;
     usernameInput.value = user.username;
     usernameInput.disabled = true;
-    usernameInput.classList.add("bg-slate-100", "cursor-not-allowed");
+    usernameInput.classList.add("bg-[#0e081c]/50", "cursor-not-allowed");
     usernameHelp.textContent = "ບໍ່ສາມາດປ່ຽນຊື່ຜູ້ໃຊ້ (Username) ໄດ້";
     displayNameInput.value = user.display_name;
     roleSelect.value = user.role;

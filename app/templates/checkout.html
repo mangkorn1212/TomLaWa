@@ -13,29 +13,29 @@
   <!-- Step Header -->
   <div class="flex items-center justify-between">
     <div>
-      <a href="/" class="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-slate-900 transition mb-1">
+      <a href="/" class="inline-flex items-center gap-1.5 text-xs font-black text-purple-300 hover:text-white transition mb-1">
         <i class="fa-solid fa-arrow-left"></i>
         <span>ກັບໄປເລືອກສິນຄ້າເພີ່ມ</span>
       </a>
-      <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+      <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
         📦 ດຳເນີນການສັ່ງຊື້ & ປັກໝຸດບ່ອນຈັດສົ່ງ
       </h2>
     </div>
 
-    <!-- Stepper Indicator (Premium Midnight Gold Style) -->
-    <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-400">
-      <span class="text-amber-700 font-black flex items-center gap-1">
-        <span class="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px]">1</span>
+    <!-- Stepper Indicator (Pilot Cyber Neon Style) -->
+    <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-purple-400/60">
+      <span class="text-purple-300 font-black flex items-center gap-1">
+        <span class="w-5 h-5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white flex items-center justify-center text-[10px]">1</span>
         <span>ກະຕ່າ</span>
       </span>
       <span>&rarr;</span>
-      <span class="text-amber-700 font-black flex items-center gap-1">
-        <span class="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px]">2</span>
+      <span class="text-purple-300 font-black flex items-center gap-1">
+        <span class="w-5 h-5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white flex items-center justify-center text-[10px]">2</span>
         <span>ປັກໝຸດ & ໃບບິນ</span>
       </span>
       <span>&rarr;</span>
       <span class="flex items-center gap-1">
-        <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[10px]">3</span>
+        <span class="w-5 h-5 rounded-full bg-purple-950/60 text-purple-400 flex items-center justify-center text-[10px] border border-purple-900/80">3</span>
         <span>ຈັດສົ່ງ</span>
       </span>
     </div>
@@ -44,15 +44,15 @@
   <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" enctype="multipart/form-data" class="space-y-6">
 
     <!-- Section 1: Review Cart Items -->
-    <div class="bg-white rounded-3xl p-6 sm:p-7 border border-amber-100 shadow-card">
-      <div class="flex items-center justify-between pb-4 border-b border-amber-50 mb-4">
+    <div class="bg-[#140d24] rounded-3xl p-6 sm:p-7 border border-purple-900/50 shadow-xl">
+      <div class="flex items-center justify-between pb-4 border-b border-purple-900/40 mb-4">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-black">
+          <div class="w-8 h-8 rounded-xl bg-purple-950 text-amber-400 flex items-center justify-center text-sm font-black border border-purple-800/60">
             <i class="fa-solid fa-receipt"></i>
           </div>
-          <h3 class="font-black text-slate-900 text-base">ລາຍການສິນຄ້າໃນກະຕ່າ</h3>
+          <h3 class="font-black text-white text-base">ລາຍການສິນຄ້າໃນກະຕ່າ</h3>
         </div>
-        <a href="/" class="text-xs text-amber-700 font-bold hover:underline">+ ເພີ່ມສິນຄ້າ</a>
+        <a href="/" class="text-xs text-purple-300 font-bold hover:text-amber-400 transition">+ ເພີ່ມສິນຄ້າ</a>
       </div>
 
       <!-- Items List -->
@@ -61,45 +61,45 @@
       </div>
 
       <!-- Summary Row -->
-      <div class="flex items-center justify-between pt-4 border-t border-amber-100 bg-amber-50/50 -mx-6 sm:-mx-7 -mb-6 sm:-mb-7 p-6 sm:p-7 rounded-b-3xl">
+      <div class="flex items-center justify-between pt-4 border-t border-purple-900/40 bg-[#19102c] -mx-6 sm:-mx-7 -mb-6 sm:-mb-7 p-6 sm:p-7 rounded-b-3xl">
         <div>
-          <span class="text-xs text-slate-400 font-bold uppercase tracking-wider block">ຍອດເງິນລວມທັງໝົດ</span>
-          <span class="text-xs text-amber-800 font-medium">(ລວມພາສີ ແລະ ຄ່າຈັດສົ່ງແລ້ວ)</span>
+          <span class="text-xs text-purple-400 font-bold uppercase tracking-wider block">ຍອດເງິນລວມທັງໝົດ</span>
+          <span class="text-xs text-purple-300/70 font-medium">(ລວມພາສີ ແລະ ຄ່າຈັດສົ່ງແລ້ວ)</span>
         </div>
-        <span id="checkout-total-amount" class="text-2xl sm:text-3xl font-black text-slate-900">0 ₭</span>
+        <span id="checkout-total-amount" class="text-2xl sm:text-3xl font-black text-amber-400 font-mono">0 ₭</span>
       </div>
     </div>
 
     <!-- Section 2: Customer Info & Interactive Map -->
-    <div class="bg-white rounded-3xl p-6 sm:p-7 border border-amber-100 shadow-card space-y-5">
-      <div class="flex items-center gap-2.5 pb-4 border-b border-amber-50">
-        <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-black">
+    <div class="bg-[#140d24] rounded-3xl p-6 sm:p-7 border border-purple-900/50 shadow-xl space-y-5">
+      <div class="flex items-center gap-2.5 pb-4 border-b border-purple-900/40">
+        <div class="w-8 h-8 rounded-xl bg-purple-950 text-amber-400 flex items-center justify-center text-sm font-black border border-purple-800/60">
           <i class="fa-solid fa-map-location-dot"></i>
         </div>
         <div>
-          <h3 class="font-black text-slate-900 text-base">ຂໍ້ມູນຜູ້ຮັບ & ປັກໝຸດແຜນທີ່ຈັດສົ່ງ</h3>
-          <p class="text-xs text-slate-400">ປັກໝຸດບ້ານຂອງທ່ານໃຫ້ຊັດເຈນ ເພື່ອໃຫ້ຄົນສົ່ງນ້ຳນຳທາງໄປຖືກຕ້ອງ</p>
+          <h3 class="font-black text-white text-base">ຂໍ້ມູນຜູ້ຮັບ & ປັກໝຸດແຜນທີ່ຈັດສົ່ງ</h3>
+          <p class="text-xs text-purple-300/70">ປັກໝຸດບ້ານຂອງທ່ານໃຫ້ຊັດເຈນ ເພື່ອໃຫ້ຄົນສົ່ງນ້ຳນຳທາງໄປຖືກຕ້ອງ</p>
         </div>
       </div>
 
       <!-- Name & Phone Fields -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">
-            ຊື່ ແລະ ນາມສະກຸນ <span class="text-rose-500">*</span>
+          <label class="block text-xs font-bold text-purple-200 mb-1.5">
+            ຊື່ ແລະ ນາມສະກຸນ <span class="text-rose-400">*</span>
           </label>
           <div class="relative">
-            <i class="fa-regular fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-            <input type="text" id="customer_name" required placeholder="ຕົວຢ່າງ: ສົມສັກ ວົງສາ" class="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-medium transition" />
+            <i class="fa-regular fa-user absolute left-3.5 top-3.5 text-purple-400/60 text-xs"></i>
+            <input type="text" id="customer_name" required placeholder="ຕົວຢ່າງ: ສົມສັກ ວົງສາ" class="w-full pl-9 pr-4 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 text-white placeholder-purple-400/40 text-sm font-medium transition" />
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">
-            ເບີໂທລະສັບຕິດຕໍ່ <span class="text-rose-500">*</span> <span class="text-[11px] text-amber-700 font-medium">(ພິມພຽງ 8 ຕົວເລກ)</span>
+          <label class="block text-xs font-bold text-purple-200 mb-1.5">
+            ເບີໂທລະສັບຕິດຕໍ່ <span class="text-rose-400">*</span> <span class="text-[11px] text-purple-300 font-medium">(ພິມພຽງ 8 ຕົວເລກ)</span>
           </label>
           <div class="relative flex items-center">
-            <div class="absolute left-0 inset-y-0 pl-3.5 pr-2.5 flex items-center gap-1 border-r border-slate-200 text-slate-700 font-black text-xs select-none pointer-events-none bg-slate-50/90 rounded-l-2xl">
+            <div class="absolute left-0 inset-y-0 pl-3.5 pr-2.5 flex items-center gap-1 border-r border-purple-900/60 text-purple-300 font-black text-xs select-none pointer-events-none bg-[#19102c] rounded-l-2xl">
               <span>🇱🇦 020</span>
             </div>
             <input 
@@ -109,11 +109,11 @@
               maxlength="11"
               oninput="handlePhoneInput(this)"
               placeholder="5588 9911" 
-              class="w-full pl-22 sm:pl-24 pr-4 py-2.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-bold font-mono tracking-wider transition" 
+              class="w-full pl-22 sm:pl-24 pr-4 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 text-amber-400 font-bold font-mono tracking-wider transition" 
             />
           </div>
-          <p class="text-[10px] text-slate-400 mt-1">
-            <i class="fa-solid fa-circle-check text-amber-600 mr-0.5"></i> ບໍ່ຕ້ອງພິມ 020 (ພິມພຽງ 8 ຫຼັກ ເຊັ່ນ: 5588 9911)
+          <p class="text-[10px] text-purple-400/70 mt-1">
+            <i class="fa-solid fa-circle-check text-purple-400 mr-0.5"></i> ບໍ່ຕ້ອງພິມ 020 (ພິມພຽງ 8 ຫຼັກ ເຊັ່ນ: 5588 9911)
           </p>
         </div>
       </div>
@@ -121,17 +121,17 @@
       <!-- Interactive Leaflet Map with Modern Floating GPS Button -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="block text-xs font-bold text-slate-700">
+          <label class="block text-xs font-bold text-purple-200">
             📍 ປັກໝຸດຕຳແໜ່ງເຮືອນເທິງແຜນທີ່ (Google Maps Navigation)
           </label>
         </div>
 
         <!-- Relative Wrapper for Map + Floating Controls -->
-        <div class="relative rounded-2xl overflow-hidden border border-amber-200 shadow-sm">
+        <div class="relative rounded-2xl overflow-hidden border border-purple-900/50 shadow-sm">
           
-          <!-- Floating GPS Button (Premium Gold Style) -->
+          <!-- Floating GPS Button (Pilot Cyber Neon Style) -->
           <div class="absolute top-3 right-3 z-20">
-            <button type="button" onclick="locateUserGPS()" id="gps-btn" class="bg-slate-950/90 text-white hover:bg-slate-900 text-xs font-black px-4 py-2.5 rounded-2xl shadow-xl border border-amber-500/30 flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
+            <button type="button" onclick="locateUserGPS()" id="gps-btn" class="bg-[#140d24]/90 backdrop-blur-md text-white hover:bg-purple-950 text-xs font-black px-4 py-2.5 rounded-2xl shadow-xl border border-purple-500/40 flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
               <i class="fa-solid fa-location-crosshairs text-amber-400 text-sm"></i>
               <span>📍 ໃຊ້ຕຳແໜ່ງ GPS ປະຈຸບັນ</span>
@@ -142,12 +142,12 @@
           <div id="map"></div>
 
           <!-- Bottom Floating Coordinates Banner -->
-          <div class="absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between bg-slate-950/90 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl text-xs border border-amber-500/25 shadow-xl">
+          <div class="absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between bg-[#0e081c]/90 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl text-xs border border-purple-900/60 shadow-xl">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-              <span class="font-medium text-amber-200">ພິກັດ: <strong id="coords-text" class="text-white font-mono">17.975700, 102.633100</strong></span>
+              <span class="font-medium text-purple-200">ພິກັດ: <strong id="coords-text" class="text-amber-400 font-mono">17.975700, 102.633100</strong></span>
             </div>
-            <a id="preview-maps-link" href="https://www.google.com/maps?q=17.9757,102.6331" target="_blank" class="text-amber-300 font-bold hover:underline flex items-center gap-1.5">
+            <a id="preview-maps-link" href="https://www.google.com/maps?q=17.9757,102.6331" target="_blank" class="text-amber-400 font-bold hover:underline flex items-center gap-1.5">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> ເປີດໃນ Maps
             </a>
           </div>
@@ -161,44 +161,44 @@
 
       <!-- Address Note / Landmark -->
       <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1.5">
+        <label class="block text-xs font-bold text-purple-200 mb-1.5">
           ລາຍລະອຽດທີ່ຢູ່ເພີ່ມເຕີມ / ຈຸດສັງເກດ
         </label>
-        <textarea id="address_note" rows="2" placeholder="ຕົວຢ່າງ: ເຮືອນເລກທີ 123, ບ້ານໜອງທາເໜືອ, ຮ່ອມ 4, ເຮືອນສີຂາວປະຕູຮົ້ວສີຟ້າ ໃກ້ກັບຮ້ານຂາຍເຄື່ອງຍ່ອຍ" class="w-full px-4 py-2.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-medium transition"></textarea>
+        <textarea id="address_note" rows="2" placeholder="ຕົວຢ່າງ: ເຮືອນເລກທີ 123, ບ້ານໜອງທາເໜືອ, ຮ່ອມ 4, ເຮືອນສີຂາວປະຕູຮົ້ວສີຟ້າ ໃກ້ກັບຮ້ານຂາຍເຄື່ອງຍ່ອຍ" class="w-full px-4 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 text-white placeholder-purple-400/40 text-sm font-medium transition"></textarea>
       </div>
     </div>
 
     <!-- Section 3: Modern Payment & Slip Upload -->
-    <div class="bg-white rounded-3xl p-6 sm:p-7 border border-amber-100 shadow-card space-y-5">
-      <div class="flex items-center gap-2.5 pb-4 border-b border-amber-50">
-        <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm font-black">
+    <div class="bg-[#140d24] rounded-3xl p-6 sm:p-7 border border-purple-900/50 shadow-xl space-y-5">
+      <div class="flex items-center gap-2.5 pb-4 border-b border-purple-900/40">
+        <div class="w-8 h-8 rounded-xl bg-purple-950 text-amber-400 flex items-center justify-center text-sm font-black border border-purple-800/60">
           <i class="fa-solid fa-qrcode"></i>
         </div>
         <div>
-          <h3 class="font-black text-slate-900 text-base">ຊຳລະເງິນຜ່ານ BCEL One / ບັນຊີທະນາຄານ</h3>
-          <p class="text-xs text-slate-400">ສະແກນ QR ໂອນເງິນ ແລ້ວແນບຮູບໃບບິນເພື່ອຢືນຢັນອໍເດີ</p>
+          <h3 class="font-black text-white text-base">ຊຳລະເງິນຜ່ານ BCEL One / ບັນຊີທະນາຄານ</h3>
+          <p class="text-xs text-purple-300/70">ສະແກນ QR ໂອນເງິນ ແລ້ວແນບຮູບໃບບິນເພື່ອຢືນຢັນອໍເດີ</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         
         <!-- Modern BCEL QR Card -->
-        <div class="bg-gradient-to-b from-amber-50/50 to-yellow-50/20 p-5 rounded-3xl border border-amber-200/80 text-center flex flex-col items-center shadow-xs">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">ສະແກນ QR ໂອນເງິນ</span>
-          <div class="text-xl font-black text-rose-600 mb-3" id="qr-total-amount">0 ₭</div>
+        <div class="bg-gradient-to-b from-[#1c1233] to-[#120a22] p-5 rounded-3xl border border-purple-900/60 text-center flex flex-col items-center shadow-md">
+          <span class="text-xs font-bold text-purple-300 uppercase tracking-wider mb-1">ສະແກນ QR ໂອນເງິນ</span>
+          <div class="text-xl font-black text-amber-400 font-mono mb-3" id="qr-total-amount">0 ₭</div>
 
-          <div class="w-48 h-48 bg-white p-2 rounded-2xl border border-amber-100 shadow-sm flex items-center justify-center">
+          <div class="w-48 h-48 bg-white p-2 rounded-2xl border border-purple-900/50 shadow-sm flex items-center justify-center">
             <img src="{{ settings.qr_image_url }}" alt="BCEL One QR" class="w-full h-full object-contain" />
           </div>
 
           <!-- Bank Account Info -->
-          <div class="mt-4 text-xs text-slate-600 space-y-1 w-full max-w-xs">
-            <div class="font-extrabold text-slate-900">{{ settings.bank_name }}</div>
-            <div>ຊື່ບັນຊີ: <strong class="text-slate-800">{{ settings.account_name }}</strong></div>
+          <div class="mt-4 text-xs text-purple-200/80 space-y-1 w-full max-w-xs">
+            <div class="font-extrabold text-white">{{ settings.bank_name }}</div>
+            <div>ຊື່ບັນຊີ: <strong class="text-purple-200">{{ settings.account_name }}</strong></div>
             
-            <div class="inline-flex items-center justify-between w-full bg-white px-3 py-1.5 rounded-xl border border-amber-200 font-mono text-xs font-black text-amber-800 shadow-2xs mt-1">
+            <div class="inline-flex items-center justify-between w-full bg-[#0e081c] px-3 py-1.5 rounded-xl border border-purple-900/50 font-mono text-xs font-black text-amber-400 shadow-2xs mt-1">
               <span id="bank-acc-no">{{ settings.account_number }}</span>
-              <button type="button" onclick="copyAccNumber()" class="text-amber-600 hover:text-amber-800 active:scale-95 flex items-center gap-1 font-sans text-[11px] font-bold transition" title="ຄັດລອກເລກບັນຊີ">
+              <button type="button" onclick="copyAccNumber()" class="text-purple-300 hover:text-white active:scale-95 flex items-center gap-1 font-sans text-[11px] font-bold transition" title="ຄັດລອກເລກບັນຊີ">
                 <i class="fa-regular fa-copy"></i> ຄັດລອກ
               </button>
             </div>
@@ -208,31 +208,31 @@
         <!-- Modern Slip Upload Dropzone -->
         <div class="flex flex-col justify-center space-y-3">
           <div>
-            <label class="block text-xs font-bold text-slate-800 mb-1">
-              ແນບຮູບໃບບິນໂອນເງິນ (ສະລິບການໂອນ) <span class="text-rose-500">*</span>
+            <label class="block text-xs font-bold text-purple-200 mb-1">
+              ແນບຮູບໃບບິນໂອນເງິນ (ສະລິບການໂອນ) <span class="text-rose-400">*</span>
             </label>
-            <p class="text-xs text-slate-500">
+            <p class="text-xs text-purple-300/70">
               ຖ່າຍຮູບ ຫຼື ເລືອກຮູບໃບບິນໂອນເງິນຈາກມືຖື ເພື່ອໃຫ້ Admin ກວດສອບ ແລະ ອະນຸມັດອໍເດີ
             </p>
           </div>
 
-          <!-- Dropzone Container (Premium Gold Dashed Border) -->
-          <div class="border-2 border-dashed border-amber-300 hover:border-amber-500 rounded-3xl p-6 text-center bg-amber-50/30 hover:bg-amber-50/50 transition-all cursor-pointer relative" onclick="document.getElementById('slip_file').click()">
+          <!-- Dropzone Container (Cyber Neon Dashed Border) -->
+          <div class="border-2 border-dashed border-purple-700/60 hover:border-purple-400 rounded-3xl p-6 text-center bg-purple-950/30 hover:bg-purple-950/50 transition-all cursor-pointer relative" onclick="document.getElementById('slip_file').click()">
             <input type="file" id="slip_file" accept="image/*" required class="hidden" onchange="previewSlip(event)" />
             
             <div id="slip-placeholder" class="py-3">
-              <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl mb-2 shadow-xs">
+              <div class="w-14 h-14 mx-auto rounded-2xl bg-purple-900/50 text-purple-300 flex items-center justify-center text-2xl mb-2 shadow-xs">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
               </div>
-              <div class="text-sm font-bold text-slate-900">ກົດເພື່ອເລືອກຮູບໃບບິນ / ຖ່າຍຮູບ</div>
-              <div class="text-[11px] text-slate-400 mt-1">ຮອງຮັບໄຟລ໌ JPG, PNG, WEBP (ສູງສຸດ 10MB)</div>
+              <div class="text-sm font-bold text-white">ກົດເພື່ອເລືອກຮູບໃບບິນ / ຖ່າຍຮູບ</div>
+              <div class="text-[11px] text-purple-300/60 mt-1">ຮອງຮັບໄຟລ໌ JPG, PNG, WEBP (ສູງສຸດ 10MB)</div>
             </div>
 
             <!-- Preview Container -->
             <div id="slip-preview-container" class="hidden">
-              <img id="slip-preview-img" src="" class="max-h-52 mx-auto rounded-2xl shadow-md border border-slate-200 object-contain mb-3" />
-              <div class="text-xs font-bold text-amber-600 flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-circle-check text-sm"></i>
+              <img id="slip-preview-img" src="" class="max-h-52 mx-auto rounded-2xl shadow-md border border-purple-800/60 object-contain mb-3" />
+              <div class="text-xs font-bold text-purple-300 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
                 <span>ເລືອກຮູບໃບບິນແລ້ວ (ກົດເພື່ອປ່ຽນຮູບ)</span>
               </div>
             </div>
@@ -243,14 +243,14 @@
       </div>
     </div>
 
-    <!-- Submit CTA Area (Premium Gold Glow) -->
+    <!-- Submit CTA Area (Cyber Neon Glow) -->
     <div class="pt-2">
-      <button type="submit" id="submit-order-btn" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:scale-98 text-slate-950 font-black text-base shadow-xl shadow-amber-500/25 hover:shadow-2xl transition-all flex items-center justify-center gap-2">
-        <i class="fa-solid fa-paper-plane"></i>
+      <button type="submit" id="submit-order-btn" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 active:scale-98 text-slate-950 font-black text-base shadow-xl shadow-purple-600/30 hover:shadow-2xl transition-all flex items-center justify-center gap-2">
+        <i class="fa-solid fa-paper-plane text-slate-950"></i>
         <span>ຢືນຢັນການສັ່ງຊື້ & ສົ່ງອໍເດີ</span>
       </button>
-      <p class="text-center text-xs text-slate-400 mt-2.5">
-        <i class="fa-solid fa-shield-check text-amber-500 mr-1"></i> ຂໍ້ມູນອໍເດີຈະຖືກບັນທຶກລົງ Google Sheet ແລະ ແຈ້ງເຕືອນຫາ Admin ທັນທີ
+      <p class="text-center text-xs text-purple-400/70 mt-2.5">
+        <i class="fa-solid fa-shield-check text-amber-400 mr-1"></i> ຂໍ້ມູນອໍເດີຈະຖືກບັນທຶກລົງ Google Sheet ແລະ ແຈ້ງເຕືອນຫາ Admin ທັນທີ
       </p>
     </div>
 

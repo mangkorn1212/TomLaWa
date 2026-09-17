@@ -7,30 +7,30 @@
 
   <!-- Back Link & My Phone Orders Link -->
   <div class="flex items-center justify-between flex-wrap gap-2">
-    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-black text-amber-700 hover:text-slate-900 transition">
+    <a href="/" class="inline-flex items-center gap-1.5 text-xs font-black text-purple-300 hover:text-white transition">
       <i class="fa-solid fa-arrow-left"></i>
       <span>ກັບໄປໜ້າຫຼັກ</span>
     </a>
 
-    <a href="/track?phone={{ order.customer_phone }}" class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 shadow-2xs transition active:scale-95">
-      <i class="fa-solid fa-clock-rotate-left text-amber-600"></i>
+    <a href="/track?phone={{ order.customer_phone }}" class="inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-1.5 rounded-xl bg-purple-950/60 text-purple-200 hover:bg-purple-900/60 border border-purple-800/60 shadow-2xs transition active:scale-95">
+      <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>
       <span>ເບິ່ງອໍເດີທັງໝົດຂອງເບີ {{ order.customer_phone }}</span>
     </a>
   </div>
 
   <!-- Main Status Card -->
-  <div class="bg-white rounded-3xl p-6 sm:p-8 border border-amber-100 shadow-card">
+  <div class="bg-[#140d24] rounded-3xl p-6 sm:p-8 border border-purple-900/50 shadow-xl">
     
     <!-- Order ID & Status Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-amber-50 gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-purple-900/40 gap-4">
       <div>
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ລະຫັດຕິດຕາມອໍເດີ (Order Code)</span>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-tight mt-0.5">{{ order.order_code }}</h2>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-purple-400">ລະຫັດຕິດຕາມອໍເດີ (Order Code)</span>
+        <h2 class="text-xl sm:text-2xl font-black text-white font-mono tracking-tight mt-0.5">{{ order.order_code }}</h2>
       </div>
 
       <div class="text-left sm:text-right">
-        <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">ວັນທີ-ເວລາສັ່ງຊື້</span>
-        <div class="text-xs font-bold text-slate-700 mt-0.5">{{ order.created_at.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+        <span class="text-[11px] text-purple-400 font-bold uppercase tracking-wider">ວັນທີ-ເວລາສັ່ງຊື້</span>
+        <div class="text-xs font-bold text-purple-200 mt-0.5">{{ order.created_at.strftime("%d/%m/%Y %H:%M:%S") }}</div>
         
         <div class="mt-1.5">
           <span class="badge-status
@@ -40,16 +40,16 @@
             {% elif order.status == 'completed' %}badge-completed
             {% else %}badge-rejected{% endif %}">
             <span class="w-1.5 h-1.5 rounded-full 
-              {% if order.status == 'pending' %}bg-amber-500 animate-pulse
-              {% elif order.status == 'approved' %}bg-emerald-500
-              {% elif order.status == 'delivering' %}bg-purple-500 animate-pulse
-              {% elif order.status == 'completed' %}bg-teal-500
+              {% if order.status == 'pending' %}bg-amber-400 animate-pulse
+              {% elif order.status == 'approved' %}bg-emerald-400
+              {% elif order.status == 'delivering' %}bg-purple-400 animate-pulse
+              {% elif order.status == 'completed' %}bg-emerald-400
               {% else %}bg-rose-500{% endif %}"></span>
             
             {% if order.status == 'pending' %}ລໍຖ້າ Admin ກວດສອບໃບບິນ
             {% elif order.status == 'approved' %}ອະນຸມັດແລ້ວ (ກຽມຈັດສົ່ງ)
             {% elif order.status == 'delivering' %}ຄົນສົ່ງກຳລັງອອກໄປຈັດສົ່ງ
-            {% elif order.status == 'completed' %}ຈັດສົ່ງສຳເລັດຮຽບຮ້ອຍ 💧
+            {% elif order.status == 'completed' %}ຈັດສົ່ງສຳເລັດຮຽບຮ້ອຍ 🚀
             {% else %}ຖືກປະຕິເສດ{% endif %}
           </span>
         </div>
@@ -60,7 +60,7 @@
     <div class="py-8 sm:py-10">
       <div class="relative">
         <!-- Connecting Line Background -->
-        <div class="absolute top-5 left-6 right-6 h-1.5 bg-amber-50 rounded-full -z-0"></div>
+        <div class="absolute top-5 left-6 right-6 h-1.5 bg-purple-950/80 rounded-full -z-0"></div>
         
         <!-- Active Progress Line -->
         {% set progress_width = '12%' %}
@@ -69,48 +69,48 @@
         {% elif order.status == 'delivering' %}{% set progress_width = '80%' %}
         {% elif order.status == 'completed' %}{% set progress_width = '100%' %}{% endif %}
         
-        <div class="absolute top-5 left-6 h-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full transition-all duration-700 -z-0 shadow-xs" style="width: {{ progress_width }};"></div>
+        <div class="absolute top-5 left-6 h-1.5 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-amber-400 rounded-full transition-all duration-700 -z-0 shadow-xs" style="width: {{ progress_width }};"></div>
 
         <div class="grid grid-cols-4 relative z-10 text-center">
           
           <!-- Step 1: Pending -->
           <div class="flex flex-col items-center">
             <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-sm font-black shadow-md transition-all 
-              {% if order.status in ['pending', 'approved', 'delivering', 'completed'] %}bg-amber-500 text-slate-950 shadow-amber-500/25{% else %}bg-slate-100 text-slate-400{% endif %}">
+              {% if order.status in ['pending', 'approved', 'delivering', 'completed'] %}bg-gradient-to-tr from-purple-700 to-fuchsia-600 text-white shadow-purple-600/30{% else %}bg-[#0e081c] text-purple-400/40 border border-purple-900/60{% endif %}">
               <i class="fa-solid fa-receipt"></i>
             </div>
-            <div class="mt-2.5 text-xs font-black text-slate-800">ສັ່ງຊື້ແລ້ວ</div>
-            <div class="text-[10px] text-slate-400 font-medium">ລໍຖ້າກວດສອບ</div>
+            <div class="mt-2.5 text-xs font-black text-white">ສັ່ງຊື້ແລ້ວ</div>
+            <div class="text-[10px] text-purple-400/70 font-medium">ລໍຖ້າກວດສອບ</div>
           </div>
 
           <!-- Step 2: Approved -->
           <div class="flex flex-col items-center">
             <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-sm font-black shadow-md transition-all 
-              {% if order.status in ['approved', 'delivering', 'completed'] %}bg-amber-500 text-slate-950 shadow-amber-500/25{% else %}bg-slate-100 text-slate-400 border border-slate-200{% endif %}">
+              {% if order.status in ['approved', 'delivering', 'completed'] %}bg-gradient-to-tr from-purple-700 to-fuchsia-600 text-white shadow-purple-600/30{% else %}bg-[#0e081c] text-purple-400/40 border border-purple-900/60{% endif %}">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <div class="mt-2.5 text-xs font-black {% if order.status in ['approved', 'delivering', 'completed'] %}text-slate-900{% else %}text-slate-400{% endif %}">ອະນຸມັດແລ້ວ</div>
-            <div class="text-[10px] text-slate-400 font-medium">ໃບບິນຖືກຕ້ອງ</div>
+            <div class="mt-2.5 text-xs font-black {% if order.status in ['approved', 'delivering', 'completed'] %}text-white{% else %}text-purple-400/40{% endif %}">ອະນຸມັດແລ້ວ</div>
+            <div class="text-[10px] text-purple-400/70 font-medium">ໃບບິນຖືກຕ້ອງ</div>
           </div>
 
           <!-- Step 3: Delivering -->
           <div class="flex flex-col items-center">
             <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-sm font-black shadow-md transition-all 
-              {% if order.status in ['delivering', 'completed'] %}bg-amber-500 text-slate-950 shadow-amber-500/25 animate-pulse{% else %}bg-slate-100 text-slate-400 border border-slate-200{% endif %}">
+              {% if order.status in ['delivering', 'completed'] %}bg-gradient-to-tr from-purple-700 to-fuchsia-600 text-white shadow-purple-600/30 animate-pulse{% else %}bg-[#0e081c] text-purple-400/40 border border-purple-900/60{% endif %}">
               <i class="fa-solid fa-truck-fast"></i>
             </div>
-            <div class="mt-2.5 text-xs font-black {% if order.status in ['delivering', 'completed'] %}text-slate-900{% else %}text-slate-400{% endif %}">ກຳລັງຈັດສົ່ງ</div>
-            <div class="text-[10px] text-slate-400 font-medium">ກຳລັງເດີນທາງ</div>
+            <div class="mt-2.5 text-xs font-black {% if order.status in ['delivering', 'completed'] %}text-white{% else %}text-purple-400/40{% endif %}">ກຳລັງຈັດສົ່ງ</div>
+            <div class="text-[10px] text-purple-400/70 font-medium">ກຳລັງເດີນທາງ</div>
           </div>
 
           <!-- Step 4: Completed -->
           <div class="flex flex-col items-center">
             <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-sm font-black shadow-md transition-all 
-              {% if order.status == 'completed' %}bg-amber-500 text-slate-950 shadow-amber-500/25{% else %}bg-slate-100 text-slate-400 border border-slate-200{% endif %}">
+              {% if order.status == 'completed' %}bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-emerald-500/30{% else %}bg-[#0e081c] text-purple-400/40 border border-purple-900/60{% endif %}">
               <i class="fa-solid fa-house-chimney-check"></i>
             </div>
-            <div class="mt-2.5 text-xs font-black {% if order.status == 'completed' %}text-amber-700{% else %}text-slate-400{% endif %}">ສຳເລັດ</div>
-            <div class="text-[10px] text-slate-400 font-medium">ສົ່ງຮອດເຮືອນແລ້ວ</div>
+            <div class="mt-2.5 text-xs font-black {% if order.status == 'completed' %}text-emerald-400{% else %}text-purple-400/40{% endif %}">ສຳເລັດ</div>
+            <div class="text-[10px] text-purple-400/70 font-medium">ສົ່ງຮອດເຮືອນແລ້ວ</div>
           </div>
 
         </div>
@@ -118,33 +118,27 @@
     </div>
 
     <!-- Status Message Banner -->
-    <div class="rounded-2xl p-4 sm:p-5 text-xs sm:text-sm 
-      {% if order.status == 'pending' %}bg-amber-50/80 text-amber-900 border border-amber-200
-      {% elif order.status == 'approved' %}bg-emerald-50/80 text-emerald-900 border border-emerald-200
-      {% elif order.status == 'delivering' %}bg-purple-50/80 text-purple-900 border border-purple-200
-      {% elif order.status == 'completed' %}bg-teal-50/80 text-teal-900 border border-teal-200
-      {% else %}bg-rose-50/80 text-rose-900 border border-rose-200{% endif %} flex items-center gap-3.5 shadow-2xs">
-      
+    <div class="rounded-2xl p-4 sm:p-5 text-xs sm:text-sm bg-[#19102c] border border-purple-900/50 text-purple-200 flex items-center gap-3.5 shadow-2xs">
       <div class="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0
-        {% if order.status == 'completed' %}bg-teal-100 text-teal-800
-        {% elif order.status == 'delivering' %}bg-purple-100 text-purple-700
-        {% elif order.status == 'approved' %}bg-emerald-100 text-emerald-800
-        {% elif order.status == 'pending' %}bg-amber-100 text-amber-700
-        {% else %}bg-rose-100 text-rose-700{% endif %}">
+        {% if order.status == 'completed' %}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30
+        {% elif order.status == 'delivering' %}bg-purple-500/20 text-purple-300 border border-purple-500/30
+        {% elif order.status == 'approved' %}bg-purple-500/20 text-fuchsia-300 border border-fuchsia-500/30
+        {% elif order.status == 'pending' %}bg-amber-500/20 text-amber-400 border border-amber-500/30
+        {% else %}bg-rose-500/20 text-rose-400 border border-rose-500/30{% endif %}">
         <i class="fa-solid {% if order.status == 'completed' %}fa-circle-check{% elif order.status == 'delivering' %}fa-truck-fast{% elif order.status == 'approved' %}fa-thumbs-up{% elif order.status == 'pending' %}fa-clock{% else %}fa-circle-xmark{% endif %}"></i>
       </div>
       
       <div class="leading-relaxed">
         {% if order.status == 'pending' %}
-          <strong>ໄດ້ຮັບຄຳສັ່ງຊື້ແລ້ວ:</strong> ທາງຮ້ານກຳລັງກວດສອບໃບບິນໂອນເງິນ ແລະ ຈະອະນຸມັດຈັດສົ່ງໂດຍໄວທີ່ສຸດ.
+          <strong class="text-white">ໄດ້ຮັບຄຳສັ່ງຊື້ແລ້ວ:</strong> ທາງຮ້ານກຳລັງກວດສອບໃບບິນໂອນເງິນ ແລະ ຈະອະນຸມັດຈັດສົ່ງໂດຍໄວທີ່ສຸດ.
         {% elif order.status == 'approved' %}
-          <strong>ອະນຸມັດຮຽບຮ້ອຍ:</strong> ໃບບິນໂອນເງິນຖືກຕ້ອງ ທີມງານກຳລັງຈັດກຽມນ້ຳດື່ມເພື່ອຂຶ້ນລົດຈັດສົ່ງ.
+          <strong class="text-white">ອະນຸມັດຮຽບຮ້ອຍ:</strong> ໃບບິນໂອນເງິນຖືກຕ້ອງ ທີມງານກຳລັງຈັດກຽມນ້ຳດື່ມເພື່ອຂຶ້ນລົດຈັດສົ່ງ.
         {% elif order.status == 'delivering' %}
-          <strong>ກຳລັງຈັດສົ່ງ:</strong> ຄົນສົ່ງນ້ຳກຳລັງນຳທາງໄປຫາບ້ານຂອງທ່ານຕາມພິກັດ GPS ທີ່ປັກໝຸດໄວ້ ກະລຸນາເປີດສາຍລໍຖ້າ.
+          <strong class="text-white">ກຳລັງຈັດສົ່ງ:</strong> ຄົນສົ່ງນ້ຳກຳລັງນຳທາງໄປຫາບ້ານຂອງທ່ານຕາມພິກັດ GPS ທີ່ປັກໝຸດໄວ້ ກະລຸນາເປີດສາຍລໍຖ້າ.
         {% elif order.status == 'completed' %}
-          <strong>ຈັດສົ່ງສຳເລັດແລ້ວ:</strong> ຂອບໃຈທີ່ໄວ້ວາງໃຈໃຊ້ບໍລິການນ້ຳດື່ມຂອງພວກເຮົາ!
+          <strong class="text-white">ຈັດສົ່ງສຳເລັດແລ້ວ:</strong> ຂອບໃຈທີ່ໄວ້ວາງໃຈໃຊ້ບໍລິການ TomLaWa ຂອງພວກເຮົາ!
         {% else %}
-          <strong>ອໍເດີຖືກປະຕິເສດ:</strong> ໃບບິນໂອນເງິນບໍ່ຖືກຕ້ອງ ຫຼື ມີບັນຫາ ກະລຸນາຕິດຕໍ່ທາງຮ້ານ.
+          <strong class="text-rose-400">ອໍເດີຖືກປະຕິເສດ:</strong> ໃບບິນໂອນເງິນບໍ່ຖືກຕ້ອງ ຫຼື ມີບັນຫາ ກະລຸນາຕິດຕໍ່ທາງຮ້ານ.
         {% endif %}
       </div>
     </div>
@@ -155,60 +149,60 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     
     <!-- Items & Payment Breakdown -->
-    <div class="bg-white rounded-3xl p-6 border border-amber-100 shadow-card flex flex-col justify-between">
+    <div class="bg-[#140d24] rounded-3xl p-6 border border-purple-900/50 shadow-xl flex flex-col justify-between">
       <div>
-        <div class="flex items-center gap-2 pb-3.5 border-b border-amber-50 mb-3">
-          <i class="fa-solid fa-list-check text-amber-600"></i>
-          <h3 class="font-black text-slate-900 text-sm">ລາຍການສິນຄ້າທີ່ສັ່ງ</h3>
+        <div class="flex items-center gap-2 pb-3.5 border-b border-purple-900/40 mb-3">
+          <i class="fa-solid fa-list-check text-purple-400"></i>
+          <h3 class="font-black text-white text-sm">ລາຍການສິນຄ້າທີ່ສັ່ງ</h3>
         </div>
 
         <div class="space-y-2.5 mb-4 text-xs">
           {% for item in order.items %}
-          <div class="flex items-center justify-between py-1.5 border-b border-amber-50/50">
+          <div class="flex items-center justify-between py-1.5 border-b border-purple-900/30">
             <div>
-              <span class="font-bold text-slate-800 text-sm">{{ item.product_name }}</span>
-              <span class="text-slate-400 block text-[11px] mt-0.5">{{ "{:,.0f}".format(item.price) }} ₭ x {{ item.quantity }}</span>
+              <span class="font-bold text-white text-sm">{{ item.product_name }}</span>
+              <span class="text-purple-400/60 block text-[11px] mt-0.5">{{ "{:,.0f}".format(item.price) }} ₭ x {{ item.quantity }}</span>
             </div>
-            <span class="font-black text-slate-900 text-sm">{{ "{:,.0f}".format(item.subtotal) }} ₭</span>
+            <span class="font-black text-amber-400 font-mono text-sm">{{ "{:,.0f}".format(item.subtotal) }} ₭</span>
           </div>
           {% endfor %}
         </div>
       </div>
 
-      <div class="pt-4 border-t border-amber-50 flex items-center justify-between">
-        <span class="font-bold text-slate-500 text-xs uppercase tracking-wider">ຍອດລວມທີ່ຊຳລະ:</span>
-        <span class="font-black text-2xl text-amber-800">{{ "{:,.0f}".format(order.total_amount) }} ₭</span>
+      <div class="pt-4 border-t border-purple-900/40 flex items-center justify-between">
+        <span class="font-bold text-purple-300 text-xs uppercase tracking-wider">ຍອດລວມທີ່ຊຳລະ:</span>
+        <span class="font-black text-2xl text-amber-400 font-mono">{{ "{:,.0f}".format(order.total_amount) }} ₭</span>
       </div>
     </div>
 
     <!-- Delivery Details & Pinned Map Link -->
-    <div class="bg-white rounded-3xl p-6 border border-amber-100 shadow-card space-y-3">
-      <div class="flex items-center gap-2 pb-3.5 border-b border-amber-50">
-        <i class="fa-solid fa-location-dot text-amber-600"></i>
-        <h3 class="font-black text-slate-900 text-sm">ຂໍ້ມູນຈັດສົ່ງ & ພິກັດແຜນທີ່</h3>
+    <div class="bg-[#140d24] rounded-3xl p-6 border border-purple-900/50 shadow-xl space-y-3">
+      <div class="flex items-center gap-2 pb-3.5 border-b border-purple-900/40">
+        <i class="fa-solid fa-location-dot text-amber-400"></i>
+        <h3 class="font-black text-white text-sm">ຂໍ້ມູນຈັດສົ່ງ & ພິກັດແຜນທີ່</h3>
       </div>
 
       <div class="space-y-2.5 text-xs">
         <div>
-          <span class="text-slate-400 block text-[11px]">ຜູ້ຮັບ:</span>
-          <strong class="text-slate-900 text-sm">{{ order.customer_name }}</strong>
+          <span class="text-purple-400/70 block text-[11px]">ຜູ້ຮັບ:</span>
+          <strong class="text-white text-sm">{{ order.customer_name }}</strong>
         </div>
         
         <div>
-          <span class="text-slate-400 block text-[11px]">ເບີໂທລະສັບ:</span>
-          <strong class="text-slate-900 text-sm">{{ order.customer_phone }}</strong>
+          <span class="text-purple-400/70 block text-[11px]">ເບີໂທລະສັບ:</span>
+          <strong class="text-amber-400 font-mono text-sm">{{ order.customer_phone }}</strong>
         </div>
 
         <div>
-          <span class="text-slate-400 block text-[11px]">ລາຍລະອຽດທີ່ຢູ່ / ຈຸດສັງເກດ:</span>
-          <p class="text-slate-700 mt-1 bg-amber-50/40 p-3 rounded-2xl border border-amber-100 leading-relaxed font-medium">
+          <span class="text-purple-400/70 block text-[11px]">ລາຍລະອຽດທີ່ຢູ່ / ຈຸດສັງເກດ:</span>
+          <p class="text-purple-200 mt-1 bg-[#19102c] p-3 rounded-2xl border border-purple-900/50 leading-relaxed font-medium">
             {{ order.address_note or "ບໍ່ໄດ້ລະບຸຈຸດສັງເກດເພີ່ມເຕີມ" }}
           </p>
         </div>
 
         {% if order.latitude and order.longitude %}
         <div class="pt-2">
-          <a href="https://www.google.com/maps/dir/?api=1&destination={{ order.latitude }},{{ order.longitude }}" target="_blank" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-500 text-slate-950 font-black flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition active:scale-95">
+          <a href="https://www.google.com/maps/dir/?api=1&destination={{ order.latitude }},{{ order.longitude }}" target="_blank" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black flex items-center justify-center gap-2 shadow-md shadow-purple-600/25 transition active:scale-95">
             <i class="fa-solid fa-map-location-dot"></i>
             <span>ເບິ່ງຕຳແໜ່ງທີ່ປັກໝຸດໃນ Google Maps</span>
           </a>
@@ -219,14 +213,14 @@
 
   </div>
 
-  <!-- Contact Store Card (Premium Midnight Gold Card) -->
-  <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white rounded-3xl p-6 flex items-center justify-between flex-wrap gap-4 shadow-xl border border-amber-500/20">
+  <!-- Contact Store Card (Pilot Cyber Neon Card) -->
+  <div class="bg-gradient-to-r from-[#140a25] via-[#22103a] to-[#140a25] text-white rounded-3xl p-6 flex items-center justify-between flex-wrap gap-4 shadow-xl border border-purple-500/30">
     <div>
-      <h4 class="font-black text-sm sm:text-base text-amber-300">ຕ້ອງການຄວາມຊ່ວຍເຫຼືອ ຫຼື ສອບຖາມດ່ວນ?</h4>
-      <p class="text-xs text-amber-100/70 mt-0.5">ຕິດຕໍ່ຮ້ານໄດ້ຕະຫຼອດເວລາຈັດສົ່ງ ຫຼື ໂທສອບຖາມສະຖານະ</p>
+      <h4 class="font-black text-sm sm:text-base text-white">ຕ້ອງການຄວາມຊ່ວຍເຫຼືອ ຫຼື ສອບຖາມດ່ວນ?</h4>
+      <p class="text-xs text-purple-300/80 mt-0.5">ຕິດຕໍ່ຮ້ານໄດ້ຕະຫຼອດເວລາຈັດສົ່ງ ຫຼື ໂທສອບຖາມສະຖານະ</p>
     </div>
-    <a href="tel:{{ settings.store_phone }}" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/25 transition active:scale-95">
-      <i class="fa-solid fa-phone"></i>
+    <a href="tel:{{ settings.store_phone }}" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-purple-600/30 transition active:scale-95">
+      <i class="fa-solid fa-phone text-slate-950"></i>
       <span>ໂທຫາຮ້ານ: {{ settings.store_phone }}</span>
     </a>
   </div>

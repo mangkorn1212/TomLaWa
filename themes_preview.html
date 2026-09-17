@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TomLaWa Modern Premium Themes Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+Lao:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans Lao', sans-serif; }
+    .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 sm:p-8 selection:bg-amber-500 selection:text-black">
+
+  <div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Header -->
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> TomLaWa Brand Identity Design System
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
+        4 Modern Premium Themes
+      </h1>
+      <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+        คลิกเลือกธีมด้านล่างเพื่อพรีวิวหน้าจอจริงแบบ Interactive พร้อมดูโทนสีและสไตล์ที่เหมาะกับแบรนด์ <strong>TomLaWa</strong>
+      </p>
+    </div>
+
+    <!-- Theme Selector Tabs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <!-- Theme 1 -->
+      <button onclick="switchTheme(1)" id="tab-1" class="theme-tab active text-left p-4 rounded-2xl border-2 transition-all relative overflow-hidden bg-slate-900 border-amber-500 shadow-lg shadow-amber-500/20">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> ธีมที่ 1 (ปัจจุบัน)
+          </span>
+          <i class="fa-solid fa-crown text-amber-400 text-sm"></i>
+        </div>
+        <h3 class="font-extrabold text-white text-base">Midnight Gold</h3>
+        <p class="text-xs text-slate-400 mt-1">ดำสนิท ตัดทองอำพัน สไตล์ Speakeasy บาร์หรูหรา</p>
+        <div class="flex gap-1.5 mt-3">
+          <span class="w-5 h-5 rounded-full bg-slate-950 border border-slate-700"></span>
+          <span class="w-5 h-5 rounded-full bg-amber-500"></span>
+          <span class="w-5 h-5 rounded-full bg-yellow-300"></span>
+          <span class="w-5 h-5 rounded-full bg-emerald-900"></span>
+        </div>
+      </button>
+
+      <!-- Theme 2 -->
+      <button onclick="switchTheme(2)" id="tab-2" class="theme-tab text-left p-4 rounded-2xl border-2 transition-all relative overflow-hidden bg-slate-900/60 border-slate-800 hover:border-emerald-500/50">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> ธีมที่ 2
+          </span>
+          <i class="fa-solid fa-leaf text-emerald-400 text-sm"></i>
+        </div>
+        <h3 class="font-extrabold text-white text-base">Neo-Botanical Clean</h3>
+        <p class="text-xs text-slate-400 mt-1">ขาวคลีน ตัดเขียวใบไม้สดใส สไตล์ Apple / มินิมอล</p>
+        <div class="flex gap-1.5 mt-3">
+          <span class="w-5 h-5 rounded-full bg-white border border-slate-300"></span>
+          <span class="w-5 h-5 rounded-full bg-emerald-500"></span>
+          <span class="w-5 h-5 rounded-full bg-teal-400"></span>
+          <span class="w-5 h-5 rounded-full bg-slate-900"></span>
+        </div>
+      </button>
+
+      <!-- Theme 3 -->
+      <button onclick="switchTheme(3)" id="tab-3" class="theme-tab text-left p-4 rounded-2xl border-2 transition-all relative overflow-hidden bg-slate-900/60 border-slate-800 hover:border-purple-500/50">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span> ธีมที่ 3
+          </span>
+          <i class="fa-solid fa-rocket text-purple-400 text-sm"></i>
+        </div>
+        <h3 class="font-extrabold text-white text-base">Pilot Cyber Neon</h3>
+        <p class="text-xs text-slate-400 mt-1">ม่วงนีออน ตัดเหลืองไซเบอร์ สไตล์ Streetwear เฟี้ยวๆ</p>
+        <div class="flex gap-1.5 mt-3">
+          <span class="w-5 h-5 rounded-full bg-purple-950 border border-purple-800"></span>
+          <span class="w-5 h-5 rounded-full bg-purple-500"></span>
+          <span class="w-5 h-5 rounded-full bg-amber-400"></span>
+          <span class="w-5 h-5 rounded-full bg-fuchsia-500"></span>
+        </div>
+      </button>
+
+      <!-- Theme 4 -->
+      <button onclick="switchTheme(4)" id="tab-4" class="theme-tab text-left p-4 rounded-2xl border-2 transition-all relative overflow-hidden bg-slate-900/60 border-slate-800 hover:border-stone-500/50">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-300"></span> ธีมที่ 4
+          </span>
+          <i class="fa-solid fa-mug-hot text-amber-300 text-sm"></i>
+        </div>
+        <h3 class="font-extrabold text-white text-base">Nordic Earth Craft</h3>
+        <p class="text-xs text-slate-400 mt-1">น้ำตาลมัทฉะ เอิร์ธโทน คาเฟ่อบอุ่น งานคราฟต์ต้มสด</p>
+        <div class="flex gap-1.5 mt-3">
+          <span class="w-5 h-5 rounded-full bg-[#fdfbf7] border border-[#d6cebf]"></span>
+          <span class="w-5 h-5 rounded-full bg-[#2d3a27]"></span>
+          <span class="w-5 h-5 rounded-full bg-[#c07d3b]"></span>
+          <span class="w-5 h-5 rounded-full bg-[#596d48]"></span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Live Interactive Mockup Canvas -->
+    <div class="relative rounded-3xl p-1 bg-gradient-to-b from-slate-700/50 to-slate-800/30 shadow-2xl">
+      <div id="mockup-frame" class="rounded-[22px] overflow-hidden transition-all duration-500">
+        
+        <!-- Mockup Top Bar -->
+        <div id="mock-nav" class="px-6 py-4 flex items-center justify-between transition-colors duration-500 border-b">
+          <div class="flex items-center gap-3">
+            <div id="mock-logo-box" class="w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-sm transition-all duration-500">
+              <i class="fa-solid fa-cannabis"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="mock-store-name" class="font-black text-lg tracking-tight">TomLaWa</span>
+                <span id="mock-badge-live" class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Live</span>
+              </div>
+              <p id="mock-subtitle" class="text-xs font-semibold">TomLaWa ນ້ຳກະທ່ອມແທ້ ຕົ້ມສົດ ສົ່ງໄວຮອດບ້ານ</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <button id="mock-btn-track" class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all">
+              <i class="fa-solid fa-magnifying-glass"></i> <span>ຕິດຕາມອໍເດີ</span>
+            </button>
+            <button id="mock-btn-cart" class="px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all">
+              <i class="fa-solid fa-cart-shopping"></i> <span>ກະຕ່າ (2)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mockup Body Content -->
+        <div id="mock-body" class="p-6 sm:p-10 space-y-8 transition-colors duration-500">
+
+          <!-- Hero Banner Section -->
+          <div id="mock-hero" class="p-8 rounded-3xl relative overflow-hidden transition-all duration-500">
+            <div class="relative z-10 max-w-xl space-y-3">
+              <span id="mock-hero-tag" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide">
+                <i class="fa-solid fa-fire"></i> ຕົ້ມສົດໃໝ່ທຸກວັນ ໃບແທ້ 100%
+              </span>
+              <h2 id="mock-hero-title" class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                TomLaWa ເຂັ້ມຂຸ້ນ ສົ່ງຮອດບ້ານ
+              </h2>
+              <p id="mock-hero-desc" class="text-xs sm:text-sm leading-relaxed">
+                ເລືອກຊື້ໄດ້ທັງແບບ <strong>ເປັນຕຸກ</strong>, <strong>ໃບກັບນ້ຳຢາ</strong> ແລະ <strong>Pilot</strong>. ປັກໝຸດ GPS ເທິງແຜນທີ່ ແລ້ວສະແກນຈ່າຍຜ່ານ BCEL One ທັນທີ!
+              </p>
+              <div class="pt-2 flex items-center gap-3">
+                <button id="mock-hero-cta" class="px-5 py-2.5 rounded-xl font-black text-xs shadow-lg transition-all flex items-center gap-2">
+                  <i class="fa-solid fa-basket-shopping"></i> ເລືອກສິນຄ້າຕອນນີ້
+                </button>
+                <button id="mock-hero-sec" class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5">
+                  <i class="fa-solid fa-phone"></i> 020 9988 7766
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Pills Filter -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            <button id="mock-cat-all" class="px-4 py-2 rounded-xl text-xs font-black transition-all shadow-xs">
+              ທັງໝົດ (10)
+            </button>
+            <button id="mock-cat-bottle" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">
+              🍶 ຂາຍເປັນຕຸກ (3)
+            </button>
+            <button id="mock-cat-leaves" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">
+              🍃 ໃບກັບນ້ຳຢາ (5)
+            </button>
+            <button id="mock-cat-pilot" class="px-4 py-2 rounded-xl text-xs font-bold transition-all">
+              🚀 Pilot (2)
+            </button>
+          </div>
+
+          <!-- 3 Sample Product Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Card 1 (Bottle) -->
+            <div id="mock-card-1" class="rounded-3xl p-5 border flex flex-col justify-between transition-all duration-500 shadow-sm">
+              <div class="space-y-3">
+                <div id="mock-thumb-1" class="h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden transition-all">
+                  <span class="absolute top-2.5 left-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-pop-1">
+                    <i class="fa-solid fa-fire text-rose-500"></i> ຂາຍດີ
+                  </span>
+                  <span class="absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-cat-1">
+                    🍶 ເປັນຕຸກ
+                  </span>
+                  <span>🍵</span>
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm sm:text-base" id="mock-card-title-1">ນ້ຳກະທ່ອມຕຸກ 1.5L (ສູດຕົ້ມສົດ)</h4>
+                  <p class="text-xs mt-1 line-clamp-2" id="mock-card-desc-1">ຕົ້ມສົດໃໝ່ທຸກວັນ ໃບແທ້ 100% ເຂັ້ມຂຸ້ນ ກົມກ່ອມ ສະອາດ</p>
+                </div>
+              </div>
+              <div class="pt-4 flex items-center justify-between border-t mt-3" id="mock-card-foot-1">
+                <div>
+                  <span class="text-xs font-medium" id="mock-unit-1">ລາຄາ</span>
+                  <div class="font-black text-base sm:text-lg" id="mock-price-1">30,000 ₭</div>
+                </div>
+                <button class="px-3.5 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm" id="mock-add-1">
+                  <i class="fa-solid fa-plus"></i> ສັ່ງຊື້
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2 (Leaves & Syrup) -->
+            <div id="mock-card-2" class="rounded-3xl p-5 border flex flex-col justify-between transition-all duration-500 shadow-sm">
+              <div class="space-y-3">
+                <div id="mock-thumb-2" class="h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden transition-all">
+                  <span class="absolute top-2.5 left-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-pop-2">
+                    ⭐ ແນະນຳ
+                  </span>
+                  <span class="absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-cat-2">
+                    🍃 ໃບກັບນ້ຳຢາ
+                  </span>
+                  <span>🌿</span>
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm sm:text-base" id="mock-card-title-2">ໃບກະທ່ອມສົດ 500g + ນ້ຳຢາຫວານ 1 ຂວດ</h4>
+                  <p class="text-xs mt-1 line-clamp-2" id="mock-card-desc-2">ຈັບຄູ່ສຸດຄຸ້ມ ໄດ້ທັງໃບສົດຄັດເກຣດ A ແລະ ນ້ຳຢາຫວານຫົວເຊື້ອ</p>
+                </div>
+              </div>
+              <div class="pt-4 flex items-center justify-between border-t mt-3" id="mock-card-foot-2">
+                <div>
+                  <span class="text-xs font-medium" id="mock-unit-2">ລາຄາ</span>
+                  <div class="font-black text-base sm:text-lg" id="mock-price-2">100,000 ₭</div>
+                </div>
+                <button class="px-3.5 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm" id="mock-add-2">
+                  <i class="fa-solid fa-plus"></i> ສັ່ງຊື້
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3 (Pilot) -->
+            <div id="mock-card-3" class="rounded-3xl p-5 border flex flex-col justify-between transition-all duration-500 shadow-sm">
+              <div class="space-y-3">
+                <div id="mock-thumb-3" class="h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden transition-all">
+                  <span class="absolute top-2.5 left-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-pop-3">
+                    🚀 ສູດພິເສດ
+                  </span>
+                  <span class="absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full" id="mock-badge-cat-3">
+                    🚀 Pilot
+                  </span>
+                  <span>🧪</span>
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-sm sm:text-base" id="mock-card-title-3">ນ້ຳຢາ Pilot ສູດເຂັ້ມຂຸ້ນ (300ml)</h4>
+                  <p class="text-xs mt-1 line-clamp-2" id="mock-card-desc-3">ຫົວເຊື້ອ Pilot ສູດເຂັ້ມຂຸ້ນ ຫອມຊື່ນໃຈ ສາຍ Pilot ຕ້ອງລອງ</p>
+                </div>
+              </div>
+              <div class="pt-4 flex items-center justify-between border-t mt-3" id="mock-card-foot-3">
+                <div>
+                  <span class="text-xs font-medium" id="mock-unit-3">ລາຄາ</span>
+                  <div class="font-black text-base sm:text-lg" id="mock-price-3">35,000 ₭</div>
+                </div>
+                <button class="px-3.5 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-1.5 shadow-sm" id="mock-add-3">
+                  <i class="fa-solid fa-plus"></i> ສັ່ງຊື້
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Theme Details & Palette Comparison -->
+    <div id="theme-details-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+      <!-- Dynamic details rendered via JS -->
+    </div>
+
+  </div>
+
+  <script>
+    const themes = {
+      1: {
+        id: 1,
+        name: "Theme 1: Midnight Gold (ปัจจุบัน / Luxury Dark)",
+        concept: "สไตล์ Speakeasy บาร์หรูหรา ดำสนิทตัดทองคำอำพัน เหมาะสำหรับร้านที่ต้องการความลึกลับ พรีเมียมขั้นสุด",
+        colors: {
+          bg: "#090d16",
+          bodyBg: "#0f172a",
+          cardBg: "#1e293b",
+          border: "#334155",
+          primary: "#f59e0b",
+          accent: "#fbbf24",
+          text: "#ffffff",
+          mutedText: "#94a3b8",
+          catPill: "#0f172a",
+          catPillText: "#fbbf24"
+        },
+        apply: () => {
+          document.getElementById("mockup-frame").className = "rounded-[22px] overflow-hidden transition-all duration-500 bg-[#090d16] text-white border border-slate-800";
+          document.getElementById("mock-nav").className = "px-6 py-4 flex items-center justify-between bg-slate-950/80 border-b border-amber-500/20";
+          document.getElementById("mock-logo-box").className = "w-10 h-10 rounded-2xl flex items-center justify-center text-lg bg-gradient-to-tr from-amber-500 to-yellow-400 text-slate-950 shadow-md shadow-amber-500/25";
+          document.getElementById("mock-store-name").className = "font-black text-lg tracking-tight text-white";
+          document.getElementById("mock-badge-live").className = "text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+          document.getElementById("mock-subtitle").className = "text-xs font-semibold text-amber-400/90";
+          document.getElementById("mock-btn-track").className = "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-slate-900 text-amber-400 border border-slate-700 hover:bg-slate-800";
+          document.getElementById("mock-btn-cart").className = "px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/25";
+
+          document.getElementById("mock-body").className = "p-6 sm:p-10 space-y-8 bg-slate-950 text-slate-100";
+          document.getElementById("mock-hero").className = "p-8 rounded-3xl relative overflow-hidden bg-gradient-to-br from-slate-900 via-stone-900 to-slate-950 border border-amber-500/30 shadow-xl";
+          document.getElementById("mock-hero-tag").className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide bg-amber-500/20 text-amber-300 border border-amber-500/40";
+          document.getElementById("mock-hero-title").className = "text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white";
+          document.getElementById("mock-hero-desc").className = "text-xs sm:text-sm leading-relaxed text-amber-100/80";
+          document.getElementById("mock-hero-cta").className = "px-5 py-2.5 rounded-xl font-black text-xs bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/30";
+          document.getElementById("mock-hero-sec").className = "px-4 py-2.5 rounded-xl font-bold text-xs bg-slate-900/80 text-amber-300 border border-amber-500/30";
+
+          // Filter pills
+          document.getElementById("mock-cat-all").className = "px-4 py-2 rounded-xl text-xs font-black bg-slate-900 text-amber-400 border border-amber-500/40 shadow-md shadow-amber-500/20";
+          document.getElementById("mock-cat-bottle").className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/60 text-slate-300 border border-slate-800 hover:text-amber-400";
+          document.getElementById("mock-cat-leaves").className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/60 text-slate-300 border border-slate-800 hover:text-amber-400";
+          document.getElementById("mock-cat-pilot").className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/60 text-slate-300 border border-slate-800 hover:text-amber-400";
+
+          // Cards
+          [1,2,3].forEach(i => {
+            document.getElementById(`mock-card-${i}`).className = "rounded-3xl p-5 border border-amber-500/20 bg-slate-900/80 flex flex-col justify-between shadow-lg";
+            document.getElementById(`mock-thumb-${i}`).className = "h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden bg-slate-950/70 border border-slate-800";
+            document.getElementById(`mock-card-title-${i}`).className = "font-extrabold text-sm sm:text-base text-white";
+            document.getElementById(`mock-card-desc-${i}`).className = "text-xs mt-1 text-slate-400 line-clamp-2";
+            document.getElementById(`mock-card-foot-${i}`).className = "pt-4 flex items-center justify-between border-t border-slate-800 mt-3";
+            document.getElementById(`mock-unit-${i}`).className = "text-xs font-medium text-slate-400";
+            document.getElementById(`mock-price-${i}`).className = "font-black text-base sm:text-lg text-amber-400";
+            document.getElementById(`mock-add-${i}`).className = "px-3.5 py-2 rounded-xl font-black text-xs bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow-md shadow-amber-500/20";
+          });
+
+          document.getElementById("mock-badge-cat-1").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+          document.getElementById("mock-badge-cat-2").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+          document.getElementById("mock-badge-cat-3").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40";
+        }
+      },
+
+      2: {
+        id: 2,
+        name: "Theme 2: Neo-Botanical Clean (Apple / Organic Minimal)",
+        concept: "สไตล์ขาวคลีน สดใส น่าเชื่อถือ ให้ความรู้สึกสดชื่นจากธรรมชาติ 100% ตัวหนังสือคมชัด อ่านง่ายสบายตาที่สุด",
+        colors: {
+          bg: "#ffffff",
+          bodyBg: "#f8fafc",
+          cardBg: "#ffffff",
+          border: "#e2e8f0",
+          primary: "#10b981",
+          accent: "#059669",
+          text: "#0f172a",
+          mutedText: "#64748b",
+          catPill: "#10b981",
+          catPillText: "#ffffff"
+        },
+        apply: () => {
+          document.getElementById("mockup-frame").className = "rounded-[22px] overflow-hidden transition-all duration-500 bg-white text-slate-900 border border-slate-200 shadow-xl";
+          document.getElementById("mock-nav").className = "px-6 py-4 flex items-center justify-between bg-white/90 border-b border-slate-100";
+          document.getElementById("mock-logo-box").className = "w-10 h-10 rounded-2xl flex items-center justify-center text-lg bg-emerald-600 text-white shadow-md shadow-emerald-500/20";
+          document.getElementById("mock-store-name").className = "font-black text-lg tracking-tight text-slate-900";
+          document.getElementById("mock-badge-live").className = "text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800";
+          document.getElementById("mock-subtitle").className = "text-xs font-semibold text-emerald-700";
+          document.getElementById("mock-btn-track").className = "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200";
+          document.getElementById("mock-btn-cart").className = "px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-500/30";
+
+          document.getElementById("mock-body").className = "p-6 sm:p-10 space-y-8 bg-[#f8fafc] text-slate-900";
+          document.getElementById("mock-hero").className = "p-8 rounded-3xl relative overflow-hidden bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl";
+          document.getElementById("mock-hero-tag").className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide bg-white/20 text-white backdrop-blur-sm";
+          document.getElementById("mock-hero-title").className = "text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white";
+          document.getElementById("mock-hero-desc").className = "text-xs sm:text-sm leading-relaxed text-emerald-100";
+          document.getElementById("mock-hero-cta").className = "px-5 py-2.5 rounded-xl font-black text-xs bg-white text-emerald-950 shadow-lg hover:bg-emerald-50";
+          document.getElementById("mock-hero-sec").className = "px-4 py-2.5 rounded-xl font-bold text-xs bg-white/10 text-white border border-white/20";
+
+          // Filter pills
+          document.getElementById("mock-cat-all").className = "px-4 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-md shadow-emerald-500/20";
+          document.getElementById("mock-cat-bottle").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-emerald-50";
+          document.getElementById("mock-cat-leaves").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-emerald-50";
+          document.getElementById("mock-cat-pilot").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-emerald-50";
+
+          // Cards
+          [1,2,3].forEach(i => {
+            document.getElementById(`mock-card-${i}`).className = "rounded-3xl p-5 border border-slate-200 bg-white flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow";
+            document.getElementById(`mock-thumb-${i}`).className = "h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden bg-slate-50 border border-slate-100";
+            document.getElementById(`mock-card-title-${i}`).className = "font-extrabold text-sm sm:text-base text-slate-900";
+            document.getElementById(`mock-card-desc-${i}`).className = "text-xs mt-1 text-slate-500 line-clamp-2";
+            document.getElementById(`mock-card-foot-${i}`).className = "pt-4 flex items-center justify-between border-t border-slate-100 mt-3";
+            document.getElementById(`mock-unit-${i}`).className = "text-xs font-medium text-slate-400";
+            document.getElementById(`mock-price-${i}`).className = "font-black text-base sm:text-lg text-emerald-600";
+            document.getElementById(`mock-add-${i}`).className = "px-3.5 py-2 rounded-xl font-black text-xs bg-slate-900 text-white hover:bg-emerald-600 shadow-sm";
+          });
+
+          document.getElementById("mock-badge-cat-1").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200";
+          document.getElementById("mock-badge-cat-2").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200";
+          document.getElementById("mock-badge-cat-3").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200";
+        }
+      },
+
+      3: {
+        id: 3,
+        name: "Theme 3: Pilot Cyber Neon (Electric Purple & Laser Yellow)",
+        concept: "สไตล์ Streetwear / แฟชั่นนีออนล้ำสมัย ดุดัน มีพลัง เหมาะมากกับกลุ่มวัยรุ่น และเอกลักษณ์สาย Pilot",
+        colors: {
+          bg: "#0b0813",
+          bodyBg: "#120d20",
+          cardBg: "#1c1433",
+          border: "#3b2d66",
+          primary: "#a855f7",
+          accent: "#facc15",
+          text: "#ffffff",
+          mutedText: "#c084fc",
+          catPill: "#a855f7",
+          catPillText: "#ffffff"
+        },
+        apply: () => {
+          document.getElementById("mockup-frame").className = "rounded-[22px] overflow-hidden transition-all duration-500 bg-[#0b0813] text-white border border-purple-900/50 shadow-2xl";
+          document.getElementById("mock-nav").className = "px-6 py-4 flex items-center justify-between bg-[#120d20] border-b border-purple-900/40";
+          document.getElementById("mock-logo-box").className = "w-10 h-10 rounded-2xl flex items-center justify-center text-lg bg-gradient-to-tr from-purple-600 to-fuchsia-500 text-white shadow-lg shadow-purple-500/30";
+          document.getElementById("mock-store-name").className = "font-black text-lg tracking-tight text-white";
+          document.getElementById("mock-badge-live").className = "text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40";
+          document.getElementById("mock-subtitle").className = "text-xs font-semibold text-purple-400";
+          document.getElementById("mock-btn-track").className = "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-purple-950/60 text-purple-300 border border-purple-800/60";
+          document.getElementById("mock-btn-cart").className = "px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-amber-400 text-slate-950 shadow-lg shadow-purple-500/30";
+
+          document.getElementById("mock-body").className = "p-6 sm:p-10 space-y-8 bg-[#0b0813] text-white";
+          document.getElementById("mock-hero").className = "p-8 rounded-3xl relative overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-slate-950 border border-purple-500/30 shadow-xl";
+          document.getElementById("mock-hero-tag").className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide bg-purple-500/20 text-purple-300 border border-purple-500/40";
+          document.getElementById("mock-hero-title").className = "text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white";
+          document.getElementById("mock-hero-desc").className = "text-xs sm:text-sm leading-relaxed text-purple-200/80";
+          document.getElementById("mock-hero-cta").className = "px-5 py-2.5 rounded-xl font-black text-xs bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-lg shadow-amber-400/30";
+          document.getElementById("mock-hero-sec").className = "px-4 py-2.5 rounded-xl font-bold text-xs bg-purple-900/40 text-purple-200 border border-purple-700/50";
+
+          // Filter pills
+          document.getElementById("mock-cat-all").className = "px-4 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-md shadow-purple-600/30";
+          document.getElementById("mock-cat-bottle").className = "px-4 py-2 rounded-xl text-xs font-bold bg-purple-950/40 text-purple-300 border border-purple-900/60";
+          document.getElementById("mock-cat-leaves").className = "px-4 py-2 rounded-xl text-xs font-bold bg-purple-950/40 text-purple-300 border border-purple-900/60";
+          document.getElementById("mock-cat-pilot").className = "px-4 py-2 rounded-xl text-xs font-bold bg-purple-950/40 text-purple-300 border border-purple-900/60";
+
+          // Cards
+          [1,2,3].forEach(i => {
+            document.getElementById(`mock-card-${i}`).className = "rounded-3xl p-5 border border-purple-900/50 bg-[#161026] flex flex-col justify-between shadow-lg";
+            document.getElementById(`mock-thumb-${i}`).className = "h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden bg-[#0d0917] border border-purple-950";
+            document.getElementById(`mock-card-title-${i}`).className = "font-extrabold text-sm sm:text-base text-white";
+            document.getElementById(`mock-card-desc-${i}`).className = "text-xs mt-1 text-purple-300/70 line-clamp-2";
+            document.getElementById(`mock-card-foot-${i}`).className = "pt-4 flex items-center justify-between border-t border-purple-900/50 mt-3";
+            document.getElementById(`mock-unit-${i}`).className = "text-xs font-medium text-purple-400";
+            document.getElementById(`mock-price-${i}`).className = "font-black text-base sm:text-lg text-amber-400";
+            document.getElementById(`mock-add-${i}`).className = "px-3.5 py-2 rounded-xl font-black text-xs bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white shadow-md shadow-purple-500/30";
+          });
+
+          document.getElementById("mock-badge-cat-1").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+          document.getElementById("mock-badge-cat-2").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+          document.getElementById("mock-badge-cat-3").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40";
+        }
+      },
+
+      4: {
+        id: 4,
+        name: "Theme 4: Nordic Earth Craft (Warm Sand & Matcha Olive)",
+        concept: "สไตล์คาเฟ่ Specialty งานคราฟต์ต้มสด อบอุ่น มีสเน่ห์ ให้ความรู้สึกพรีเมียมแบบงานทำมือคัดใบพิเศษ",
+        colors: {
+          bg: "#faf8f5",
+          bodyBg: "#f4eee5",
+          cardBg: "#ffffff",
+          border: "#e5ded4",
+          primary: "#3f4f34",
+          accent: "#b45309",
+          text: "#1c1917",
+          mutedText: "#78716c",
+          catPill: "#3f4f34",
+          catPillText: "#ffffff"
+        },
+        apply: () => {
+          document.getElementById("mockup-frame").className = "rounded-[22px] overflow-hidden transition-all duration-500 bg-[#faf8f5] text-[#1c1917] border border-[#e5ded4] shadow-xl";
+          document.getElementById("mock-nav").className = "px-6 py-4 flex items-center justify-between bg-[#ffffff]/90 border-b border-[#e5ded4]";
+          document.getElementById("mock-logo-box").className = "w-10 h-10 rounded-2xl flex items-center justify-center text-lg bg-[#3f4f34] text-amber-200 shadow-md shadow-[#3f4f34]/20";
+          document.getElementById("mock-store-name").className = "font-black text-lg tracking-tight text-[#1c1917]";
+          document.getElementById("mock-badge-live").className = "text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-[#3f4f34]/10 text-[#3f4f34] border border-[#3f4f34]/20";
+          document.getElementById("mock-subtitle").className = "text-xs font-semibold text-[#854d0e]";
+          document.getElementById("mock-btn-track").className = "px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-[#f4eee5] text-[#1c1917] hover:bg-[#e9dfd1]";
+          document.getElementById("mock-btn-cart").className = "px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 bg-[#b45309] text-white shadow-md shadow-[#b45309]/20";
+
+          document.getElementById("mock-body").className = "p-6 sm:p-10 space-y-8 bg-[#faf8f5] text-[#1c1917]";
+          document.getElementById("mock-hero").className = "p-8 rounded-3xl relative overflow-hidden bg-gradient-to-r from-[#2f3b27] to-[#47573b] text-white shadow-xl";
+          document.getElementById("mock-hero-tag").className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide bg-amber-400/20 text-amber-200 border border-amber-400/30";
+          document.getElementById("mock-hero-title").className = "text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white";
+          document.getElementById("mock-hero-desc").className = "text-xs sm:text-sm leading-relaxed text-stone-200";
+          document.getElementById("mock-hero-cta").className = "px-5 py-2.5 rounded-xl font-black text-xs bg-amber-400 text-stone-950 shadow-lg hover:bg-amber-300";
+          document.getElementById("mock-hero-sec").className = "px-4 py-2.5 rounded-xl font-bold text-xs bg-white/10 text-white border border-white/20";
+
+          // Filter pills
+          document.getElementById("mock-cat-all").className = "px-4 py-2 rounded-xl text-xs font-black bg-[#3f4f34] text-white shadow-md";
+          document.getElementById("mock-cat-bottle").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-[#1c1917] border border-[#e5ded4] hover:bg-[#f4eee5]";
+          document.getElementById("mock-cat-leaves").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-[#1c1917] border border-[#e5ded4] hover:bg-[#f4eee5]";
+          document.getElementById("mock-cat-pilot").className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-[#1c1917] border border-[#e5ded4] hover:bg-[#f4eee5]";
+
+          // Cards
+          [1,2,3].forEach(i => {
+            document.getElementById(`mock-card-${i}`).className = "rounded-3xl p-5 border border-[#e5ded4] bg-white flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow";
+            document.getElementById(`mock-thumb-${i}`).className = "h-36 rounded-2xl flex items-center justify-center text-4xl relative overflow-hidden bg-[#faf8f5] border border-[#f0eae1]";
+            document.getElementById(`mock-card-title-${i}`).className = "font-extrabold text-sm sm:text-base text-[#1c1917]";
+            document.getElementById(`mock-card-desc-${i}`).className = "text-xs mt-1 text-[#78716c] line-clamp-2";
+            document.getElementById(`mock-card-foot-${i}`).className = "pt-4 flex items-center justify-between border-t border-[#f0eae1] mt-3";
+            document.getElementById(`mock-unit-${i}`).className = "text-xs font-medium text-[#a8a29e]";
+            document.getElementById(`mock-price-${i}`).className = "font-black text-base sm:text-lg text-[#b45309]";
+            document.getElementById(`mock-add-${i}`).className = "px-3.5 py-2 rounded-xl font-black text-xs bg-[#3f4f34] text-white hover:bg-[#2f3b27] shadow-sm";
+          });
+
+          document.getElementById("mock-badge-cat-1").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200";
+          document.getElementById("mock-badge-cat-2").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-[#3f4f34]/15 text-[#3f4f34] border border-[#3f4f34]/30";
+          document.getElementById("mock-badge-cat-3").className = "absolute top-2.5 right-2.5 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 border border-purple-200";
+        }
+      }
+    };
+
+    function switchTheme(num) {
+      document.querySelectorAll(".theme-tab").forEach(t => {
+        t.classList.remove("border-amber-500", "shadow-lg", "shadow-amber-500/20", "border-emerald-500", "shadow-emerald-500/20", "border-purple-500", "shadow-purple-500/20", "border-amber-300");
+        t.classList.add("border-slate-800");
+      });
+
+      const activeTab = document.getElementById("tab-" + num);
+      if (num === 1) activeTab.classList.add("border-amber-500", "shadow-lg", "shadow-amber-500/20");
+      if (num === 2) activeTab.classList.add("border-emerald-500", "shadow-lg", "shadow-emerald-500/20");
+      if (num === 3) activeTab.classList.add("border-purple-500", "shadow-lg", "shadow-purple-500/20");
+      if (num === 4) activeTab.classList.add("border-amber-300", "shadow-lg", "shadow-amber-300/20");
+
+      themes[num].apply();
+      renderDetails(num);
+    }
+
+    function renderDetails(num) {
+      const t = themes[num];
+      const box = document.getElementById("theme-details-card");
+      box.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Theme Details & Style Guide</span>
+            <h3 class="text-xl sm:text-2xl font-black text-white mt-0.5">${t.name}</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">${t.concept}</p>
+          </div>
+          <button onclick="alert('คุณเลือก ' + themes[${num}].name + ' ! แจ้งในแชทได้เลยครับว่าต้องการใช้ธีมนี้')" class="px-5 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all active:scale-95 flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-check"></i> ฉันต้องการใช้ธีมนี้
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+          <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <div class="w-full h-8 rounded-xl mb-2" style="background-color: ${t.colors.bg}"></div>
+            <span class="text-[11px] text-slate-400 font-bold block">Background</span>
+            <span class="text-xs font-mono font-black text-white">${t.colors.bg}</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <div class="w-full h-8 rounded-xl mb-2" style="background-color: ${t.colors.primary}"></div>
+            <span class="text-[11px] text-slate-400 font-bold block">Primary Accent</span>
+            <span class="text-xs font-mono font-black text-white">${t.colors.primary}</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <div class="w-full h-8 rounded-xl mb-2" style="background-color: ${t.colors.accent}"></div>
+            <span class="text-[11px] text-slate-400 font-bold block">Secondary Accent</span>
+            <span class="text-xs font-mono font-black text-white">${t.colors.accent}</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <div class="w-full h-8 rounded-xl mb-2" style="background-color: ${t.colors.cardBg}"></div>
+            <span class="text-[11px] text-slate-400 font-bold block">Card Surface</span>
+            <span class="text-xs font-mono font-black text-white">${t.colors.cardBg}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize with Theme 1
+    switchTheme(1);
+  </script>
+</body>
+</html>
