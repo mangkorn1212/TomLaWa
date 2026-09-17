@@ -785,6 +785,22 @@
         <input type="text" id="setting_acc_name" value="{{ settings.account_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
       </div>
 
+      <div class="space-y-1.5 pt-1">
+        <label class="block font-bold text-purple-200">
+          <i class="fa-solid fa-qrcode text-amber-400 mr-1"></i>
+          <span>ຮູບ QR Code ຮັບເງິນ / ບັນຊີທະນາຄານ</span>
+        </label>
+        <div class="flex items-center gap-3 bg-[#0e081c] p-3 rounded-2xl border border-purple-900/60">
+          <div class="relative group w-20 h-20 rounded-xl bg-white p-1.5 border border-purple-800/60 shrink-0 flex items-center justify-center overflow-hidden shadow-sm">
+            <img id="setting_qr_preview" src="{{ settings.qr_image_url }}" alt="QR Code Preview" class="w-full h-full object-contain" />
+          </div>
+          <div class="flex-1 space-y-1.5">
+            <input type="file" id="setting_qr_file" accept="image/*" onchange="previewStoreQRImage(this)" class="w-full text-xs text-purple-300 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-gradient-to-r file:from-purple-600 file:to-fuchsia-600 file:text-white hover:file:opacity-90 cursor-pointer" />
+            <p class="text-[10px] text-purple-400/80">ຮອງຮັບໄຟລ໌: .jpg, .png, .webp (ຮູບ QR Code ບັນຊີທະນາຄານຂອງທ່ານ ສຳລັບໃຫ້ລູກຄ້າສະແກນຈ່າຍໃນໜ້າ Checkout)</p>
+          </div>
+        </div>
+      </div>
+
       <div class="pt-2 flex justify-end gap-2">
         <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 rounded-2xl bg-purple-950/60 text-purple-300 font-bold hover:bg-purple-900/60 transition border border-purple-800/60">ຍົກເລີກ</button>
         <button type="submit" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 font-black shadow-md shadow-purple-600/30 transition">ບັນທຶກການຕັ້ງຄ່າ</button>
@@ -1449,30 +1465,80 @@ function closeSettingsModal() {
   document.getElementById("settings-modal").classList.add("hidden");
 }
 
+function previewStoreQRImage(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (!file.type.startsWith("image/")) {
+      showToast("ກະລຸນາເລືອກໄຟລ໌ຮູບພາບເທົ່ານັ້ນ", "error");
+      input.value = "";
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById("setting_qr_preview");
+      if (preview) {
+        preview.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
 async function saveStoreSettings(e) {
   e.preventDefault();
-  const payload = {
-    google_sheet_webhook_url: document.getElementById("setting_sheet_url").value.trim(),
-    store_name: document.getElementById("setting_store_name").value.trim(),
-    store_phone: document.getElementById("setting_store_phone").value.trim(),
-    bank_name: document.getElementById("setting_bank_name").value.trim(),
-    account_number: document.getElementById("setting_acc_no").value.trim(),
-    account_name: document.getElementById("setting_acc_name").value.trim()
-  };
+  const btn = e.target.querySelector('button[type="submit"]');
+  const originalText = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> ກຳລັງບັນທຶກ...';
+  }
 
   try {
+    // 1. ອັບໂຫຼດຮູບ QR Code ຖ້າມີການເລືອກໄຟລ໌ໃໝ່
+    const qrFileInput = document.getElementById("setting_qr_file");
+    if (qrFileInput && qrFileInput.files && qrFileInput.files[0]) {
+      const formData = new FormData();
+      formData.append("qr_file", qrFileInput.files[0]);
+      const qrRes = await fetch("/api/admin/settings/upload-qr", {
+        method: "POST",
+        body: formData
+      });
+      if (!qrRes.ok) {
+        const qrErr = await qrRes.json().catch(() => ({ detail: "ອັບໂຫຼດຮູບ QR Code ບໍ່ສຳເລັດ" }));
+        throw new Error(qrErr.detail || "ອັບໂຫຼດຮູບ QR Code ບໍ່ສຳເລັດ");
+      }
+    }
+
+    // 2. ບັນທຶກຂໍ້ມູນການຕັ້ງຄ່າທົ່ວໄປ
+    const payload = {
+      google_sheet_webhook_url: document.getElementById("setting_sheet_url").value.trim(),
+      store_name: document.getElementById("setting_store_name").value.trim(),
+      store_phone: document.getElementById("setting_store_phone").value.trim(),
+      bank_name: document.getElementById("setting_bank_name").value.trim(),
+      account_number: document.getElementById("setting_acc_no").value.trim(),
+      account_name: document.getElementById("setting_acc_name").value.trim()
+    };
+
     const res = await fetch("/api/admin/settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
     if (res.ok) {
-      showToast("ບັນທຶກການຕັ້ງຄ່າຮຽບຮ້ອຍແລ້ວ!", "success");
+      showToast("ບັນທຶກການຕັ້ງຄ່າ ແລະ QR Code ຮຽບຮ້ອຍແລ້ວ!", "success");
       closeSettingsModal();
       setTimeout(() => window.location.reload(), 1000);
+    } else {
+      const errData = await res.json().catch(() => ({ detail: "ບັນທຶກບໍ່ສຳເລັດ" }));
+      throw new Error(errData.detail || "ບັນທຶກບໍ່ສຳເລັດ");
     }
   } catch (err) {
     showToast("ເກີດຂໍ້ຜິດພາດ: " + err.message, "error");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
   }
 }
 

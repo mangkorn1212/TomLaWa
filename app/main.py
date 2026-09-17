@@ -926,6 +926,27 @@ def update_settings(payload: dict, request: Request, db: Session = Depends(get_d
     save_settings(payload)
     return {"success": True, "message": "ບັນທຶກການຕັ້ງຄ່າແລ້ວ"}
 
+@app.post("/api/admin/settings/upload-qr")
+async def upload_qr_code(request: Request, qr_file: UploadFile = File(...)):
+    if not is_admin_logged_in(request):
+        raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    if not qr_file or not qr_file.filename:
+        raise HTTPException(status_code=400, detail="ກະລຸນາເລືອກໄຟລ໌ຮູບພາບ QR Code")
+
+    file_ext = Path(qr_file.filename).suffix.lower()
+    if file_ext not in [".jpg", ".jpeg", ".png", ".webp", ".svg"]:
+        raise HTTPException(status_code=400, detail="ຮອງຮັບສະເພາະໄຟລ໌ຮູບພາບ .jpg, .png, .webp, .svg ເທົ່ານັ້ນ")
+
+    unique_filename = f"qr_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}{file_ext}"
+    file_dest = UPLOAD_DIR / unique_filename
+    with open(file_dest, "wb") as buffer:
+        shutil.copyfileobj(qr_file.file, buffer)
+
+    qr_url = f"/static/uploads/{unique_filename}"
+    save_settings({"qr_image_url": qr_url})
+
+    return {"success": True, "qr_image_url": qr_url, "message": "ອັບໂຫຼດຮູບ QR Code ສຳເລັດແລ້ວ!"}
+
 @app.post("/api/admin/test-sheet")
 async def test_google_sheet(payload: dict, request: Request):
     if not is_admin_logged_in(request):

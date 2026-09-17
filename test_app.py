@@ -364,6 +364,30 @@ def run_tests():
     assert "BCEL One" not in r_admin.text
     print("Test 13.4 Passed: Verified 'BCEL One' is completely removed from Home, Checkout, and Admin pages")
 
+    # 14. Test QR Code Upload API & Display in Settings / Checkout
+    qr_dummy = io.BytesIO(b"fake bank qr code image content")
+    r14_upload = client.post(
+        '/api/admin/settings/upload-qr',
+        files={"qr_file": ("my_bank_qr.png", qr_dummy, "image/png")}
+    )
+    assert r14_upload.status_code == 200, f"QR upload failed: {r14_upload.text}"
+    r14_data = r14_upload.json()
+    assert r14_data["success"] is True
+    assert "qr_" in r14_data["qr_image_url"]
+    uploaded_qr_url = r14_data["qr_image_url"]
+    print(f"Test 14.1 Passed: POST /api/admin/settings/upload-qr uploaded to {uploaded_qr_url}")
+
+    # Verify checkout page now displays this new QR image url
+    r14_checkout = client.get('/checkout')
+    assert uploaded_qr_url in r14_checkout.text, "New QR Code image URL must appear on checkout page"
+    print("Test 14.2 Passed: Checkout page serves newly uploaded QR Code image")
+
+    # Verify admin page contains QR upload UI
+    r14_admin = client.get('/admin')
+    assert "setting_qr_file" in r14_admin.text, "Admin must contain QR file input"
+    assert "setting_qr_preview" in r14_admin.text, "Admin must contain QR image preview"
+    print("Test 14.3 Passed: Admin Store Settings modal has QR file input and preview elements")
+
     print("\nALL AUTOMATED VERIFICATION TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == "__main__":
