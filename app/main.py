@@ -400,13 +400,13 @@ async def api_admin_login(body: dict, db: Session = Depends(get_db)):
         )
         return res
 
-    # 2. Fallback check for settings default admin
-    settings = load_settings()
-    expected_user = settings.get("admin_username", "admin")
-    expected_pass = settings.get("admin_password", "admin123")
-    if username == expected_user and password == expected_pass:
-        existing = db.query(User).filter(User.username == username).first()
-        if not existing:
+    # 2. Fallback check for settings default admin (ONLY if user does NOT exist in DB)
+    existing_in_db = db.query(User).filter(User.username == username).first()
+    if not existing_in_db:
+        settings = load_settings()
+        expected_user = settings.get("admin_username", "admin")
+        expected_pass = settings.get("admin_password", "admin123")
+        if username == expected_user and password == expected_pass:
             new_u = User(
                 username=username,
                 password_hash=hash_password(password),
@@ -417,34 +417,29 @@ async def api_admin_login(body: dict, db: Session = Depends(get_db)):
             db.add(new_u)
             db.commit()
             db.refresh(new_u)
-            u_id = new_u.id
-            u_name = new_u.display_name
-        else:
-            u_id = existing.id
-            u_name = existing.display_name
 
-        token = create_session_token(
-            user_id=u_id,
-            username=username,
-            role="admin",
-            display_name=u_name,
-            max_age_days=max_age_days
-        )
-        ACTIVE_SESSIONS[token] = {
-            "user_id": u_id,
-            "username": username,
-            "display_name": u_name,
-            "role": "admin"
-        }
-        res = JSONResponse(content={"success": True, "message": "ເຂົ້າສູ່ລະບົບສຳເລັດ"})
-        res.set_cookie(
-            key="admin_session",
-            value=token,
-            httponly=True,
-            samesite="lax",
-            max_age=max_age_seconds
-        )
-        return res
+            token = create_session_token(
+                user_id=new_u.id,
+                username=username,
+                role="admin",
+                display_name=new_u.display_name,
+                max_age_days=max_age_days
+            )
+            ACTIVE_SESSIONS[token] = {
+                "user_id": new_u.id,
+                "username": username,
+                "display_name": new_u.display_name,
+                "role": "admin"
+            }
+            res = JSONResponse(content={"success": True, "message": "ເຂົ້າສູ່ລະບົບສຳເລັດ"})
+            res.set_cookie(
+                key="admin_session",
+                value=token,
+                httponly=True,
+                samesite="lax",
+                max_age=max_age_seconds
+            )
+            return res
 
     return JSONResponse(status_code=401, content={"success": False, "message": "ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"})
 
@@ -698,6 +693,11 @@ def update_admin_user(user_id: int, request: Request, body: dict, db: Session = 
         if len(pwd) < 4:
             return JSONResponse(status_code=400, content={"success": False, "message": "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 4 ຕົວອັກສອນ"})
         user.password_hash = hash_password(pwd)
+        if user.role == "admin" or user.username == "suzu":
+            save_settings({"admin_password": pwd})
+
+    if (user.role == "admin" or user.username == "suzu") and "username" in body and body["username"].strip():
+        save_settings({"admin_username": user.username})
 
     db.commit()
     return {"success": True, "message": "ອັບເດດຂໍ້ມູນຜູ້ໃຊ້ງານສຳເລັດແລ້ວ"}
@@ -798,9 +798,33 @@ async def update_order_status(
     return {"success": True, "status": new_status}
 
 @app.post("/api/admin/settings")
-def update_settings(payload: dict, request: Request):
+def update_settings(payload: dict, request: Request, db: Session = Depends(get_db)):
     if not is_admin_logged_in(request):
         raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    
+    current_admin = get_current_user(request)
+
+    # If admin changed username/password in Store Settings, also sync to DB User table
+    new_user = payload.get("admin_username", "").strip()
+    new_pass = payload.get("admin_password", "").strip()
+
+    if new_user or new_pass:
+        # Find the logged in user or admin user
+        user = None
+        if current_admin and current_admin.get("user_id"):
+            user = db.query(User).filter(User.id == current_admin["user_id"]).first()
+        if not user:
+            user = db.query(User).filter(User.role == "admin").first()
+
+        if user:
+            if new_user and new_user != user.username:
+                existing = db.query(User).filter(User.username == new_user, User.id != user.id).first()
+                if not existing:
+                    user.username = new_user
+            if new_pass and len(new_pass) >= 4:
+                user.password_hash = hash_password(new_pass)
+            db.commit()
+
     save_settings(payload)
     return {"success": True, "message": "ບັນທຶກການຕັ້ງຄ່າແລ້ວ"}
 
