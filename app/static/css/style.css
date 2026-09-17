@@ -1,3 +1,6 @@
+/* Fallback External Google Fonts (loaded first as per CSS spec) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
 /* ==========================================================================
    Modern Lao Typography (Self-Hosted for 100% Instant Load & Crisp Display)
    ========================================================================== */
@@ -74,9 +77,6 @@
   src: url('/static/fonts/PlusJakartaSans-ExtraBold.ttf') format('truetype');
 }
 
-/* Fallback External Import (if online) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-
 :root {
   --font-main: 'Noto Sans Lao', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   
@@ -108,9 +108,16 @@ html, body, button, input, select, textarea, optgroup {
   text-rendering: optimizeLegibility;
 }
 
+html {
+  background-color: #08050e !important;
+  background: #08050e !important;
+  color-scheme: dark;
+}
+
 body {
-  background: #08050e;
-  color: #f8fafc;
+  background-color: #08050e !important;
+  background: #08050e !important;
+  color: #f8fafc !important;
   -webkit-tap-highlight-color: transparent;
   min-height: 100vh;
 }

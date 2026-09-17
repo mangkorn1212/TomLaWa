@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="lo" class="scroll-smooth">
+<html lang="lo" class="scroll-smooth dark bg-[#08050e]" style="background-color: #08050e !important; color-scheme: dark;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -44,11 +45,11 @@
   <!-- Font Awesome 6.5 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Modern Style with Lao typography -->
-  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Modern Style with Lao typography (versioned for instant cache bust) -->
+  <link rel="stylesheet" href="/static/css/style.css?v=2.2.0">
   {% block head_extra %}{% endblock %}
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-[#08050e] text-slate-100 selection:bg-purple-600 selection:text-white pb-28 md:pb-16">
+<body class="min-h-screen flex flex-col antialiased bg-[#08050e] text-slate-100 selection:bg-purple-600 selection:text-white pb-28 md:pb-16" style="background-color: #08050e !important;">
 
   <!-- Top Announcement Bar (Pilot Cyber Neon) -->
   <div class="bg-gradient-to-r from-[#0b0714] via-[#160c29] to-[#0b0714] text-purple-200 text-[11px] font-medium py-2 px-4 text-center border-b border-purple-900/40 hidden sm:block">
