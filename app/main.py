@@ -50,6 +50,16 @@ def is_admin_logged_in(request: Request) -> bool:
 
 
 # --------------------------------------------------------------------------
+# Health Check Route (for UptimeRobot / Keep-Alive)
+# --------------------------------------------------------------------------
+
+@app.get("/health")
+@app.head("/health")
+async def health_check():
+    return {"status": "ok", "service": "TomLaWa", "timestamp": datetime.now().isoformat()}
+
+
+# --------------------------------------------------------------------------
 # Page Routes (Frontend UI)
 # --------------------------------------------------------------------------
 
