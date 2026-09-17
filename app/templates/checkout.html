@@ -307,16 +307,18 @@ function updateCoordinates(lat, lng) {
   if (previewLink) previewLink.href = navUrl;
 }
 
-function locateUserGPS() {
+function locateUserGPS(silent = false) {
   const btn = document.getElementById('gps-btn');
   if (!navigator.geolocation) {
-    showToast("ອຸປະກອນຂອງທ່ານບໍ່ຮອງຮັບລະບົບ GPS", "error");
+    if (!silent) showToast("ອຸປະກອນຂອງທ່ານບໍ່ຮອງຮັບລະບົບ GPS", "error");
     return;
   }
 
-  const originalHtml = btn.innerHTML;
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-400"></i> <span>ກຳລັງຄົ້ນຫາຕຳແໜ່ງ...</span>`;
-  btn.disabled = true;
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-400"></i> <span>ກຳລັງຄົ້ນຫາຕຳແໜ່ງ...</span>`;
+    btn.disabled = true;
+  }
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
@@ -329,16 +331,22 @@ function locateUserGPS() {
         marker.bindPopup("<b>📍 ພົບຕຳແໜ່ງຂອງທ່ານແລ້ວ!</b>").openPopup();
         updateCoordinates(lat, lng);
       }
-      btn.innerHTML = originalHtml;
-      btn.disabled = false;
-      showToast("ດຶງຕຳແໜ່ງ GPS ສຳເລັດແລ້ວ!", "success");
+      if (btn) {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }
+      showToast("ດຶງຕຳແໜ່ງ GPS ປະຈຸບັນສຳເລັດແລ້ວ!", "success");
     },
     (err) => {
-      btn.innerHTML = originalHtml;
-      btn.disabled = false;
-      let msg = "ບໍ່ສາມາດດຶງຕຳແໜ່ງ GPS ໄດ້ (ກະລຸນາອະນຸຍາດການເຂົ້າເຖິງຕຳແໜ່ງ)";
-      if (err.code === 1) msg = "ກະລຸນາເປີດສິດ Location/GPS ເທິງໂທລະສັບຂອງທ່ານ";
-      showToast(msg, "error");
+      if (btn) {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }
+      if (!silent) {
+        let msg = "ບໍ່ສາມາດດຶງຕຳແໜ່ງ GPS ໄດ້ (ກະລຸນາອະນຸຍາດການເຂົ້າເຖິງຕຳແໜ່ງ)";
+        if (err.code === 1) msg = "ກະລຸນາເປີດສິດ Location/GPS ເທິງໂທລະສັບຂອງທ່ານ";
+        showToast(msg, "error");
+      }
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
@@ -456,6 +464,10 @@ async function handleCheckoutSubmit(event) {
 document.addEventListener("DOMContentLoaded", () => {
   renderCheckoutSummary();
   initMap();
+  // ດຶງຕຳແໜ່ງ GPS ປະຈຸບັນຂອງລູກຄ້າອັດຕະໂນມັດທັນທີທີ່ເປີດໜ້າ Checkout
+  if (navigator.geolocation) {
+    locateUserGPS(true);
+  }
 });
 </script>
 {% endblock %}
