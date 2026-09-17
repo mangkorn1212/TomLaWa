@@ -637,8 +637,9 @@ def get_admin_users(request: Request, db: Session = Depends(get_db)):
 
 @app.post("/api/admin/users")
 def create_admin_user(request: Request, body: dict, db: Session = Depends(get_db)):
-    if not is_admin_logged_in(request):
-        raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    current = get_current_user(request)
+    if not current or current.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden - ສະເພາະ Admin ເທົ່ານັ້ນທີ່ຈັດການຜູ້ໃຊ້ງານໄດ້")
     username = body.get("username", "").strip()
     password = body.get("password", "").strip()
     display_name = body.get("display_name", "").strip()
@@ -668,11 +669,22 @@ def create_admin_user(request: Request, body: dict, db: Session = Depends(get_db
 
 @app.put("/api/admin/users/{user_id}")
 def update_admin_user(user_id: int, request: Request, body: dict, db: Session = Depends(get_db)):
-    if not is_admin_logged_in(request):
+    current = get_current_user(request)
+    if not current:
         raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    if current.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden - ສະເພາະ Admin ເທົ່ານັ້ນທີ່ຈັດການຜູ້ໃຊ້ງານໄດ້")
+
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="ບໍ່ພົບຜູ້ໃຊ້ງານ")
+
+    # Security Lock: If target user is Super Admin 'suzu', only 'suzu' themselves can modify it!
+    if user.username == "suzu" and current.get("username") != "suzu":
+        return JSONResponse(
+            status_code=403, 
+            content={"success": False, "message": "ທ່ານບໍ່ມີສິດແກ້ໄຂບັນຊີ Super Admin (suzu) ໄດ້ ສະເພາະເຈົ້າຂອງບັນຊີເທົ່ານັ້ນ"}
+        )
 
     if "username" in body and body["username"].strip():
         new_username = body["username"].strip().lower()
@@ -685,9 +697,12 @@ def update_admin_user(user_id: int, request: Request, body: dict, db: Session = 
     if "display_name" in body and body["display_name"].strip():
         user.display_name = body["display_name"].strip()
     if "role" in body and body["role"].strip():
-        user.role = body["role"].strip()
+        # Prevent non-suzu from demoting suzu
+        if user.username != "suzu":
+            user.role = body["role"].strip()
     if "is_active" in body:
-        user.is_active = bool(body["is_active"])
+        if user.username != "suzu":
+            user.is_active = bool(body["is_active"])
     if "password" in body and body["password"].strip():
         pwd = body["password"].strip()
         if len(pwd) < 4:
@@ -707,6 +722,8 @@ def delete_admin_user(user_id: int, request: Request, db: Session = Depends(get_
     current = get_current_user(request)
     if not current:
         raise HTTPException(status_code=401, detail="Unauthorized - Please login first")
+    if current.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Forbidden - ສະເພາະ Admin ເທົ່ານັ້ນທີ່ຈັດການຜູ້ໃຊ້ງານໄດ້")
 
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -714,6 +731,10 @@ def delete_admin_user(user_id: int, request: Request, db: Session = Depends(get_
 
     if current.get("user_id") == user_id or current.get("username") == user.username:
         return JSONResponse(status_code=400, content={"success": False, "message": "ບໍ່ສາມາດລຶບບັນຊີທີ່ທ່ານກຳລັງເຂົ້າສູ່ລະບົບຢູ່ໄດ້"})
+
+    # Security Lock: Super Admin 'suzu' can NEVER be deleted by anyone!
+    if user.username == "suzu":
+        return JSONResponse(status_code=400, content={"success": False, "message": "ບໍ່ສາມາດລຶບບັນຊີ Super Admin (suzu) ໄດ້"})
 
     admin_count = db.query(User).filter(User.role == "admin", User.is_active == True).count()
     if user.role == "admin" and admin_count <= 1:

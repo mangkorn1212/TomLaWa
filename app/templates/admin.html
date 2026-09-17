@@ -37,6 +37,7 @@
 
     <!-- Action Toolbar -->
     <div class="flex flex-wrap items-center gap-2.5">
+      {% if current_user and current_user.role == 'admin' %}
       <a href="/google-sheet-setup" class="px-4 py-2.5 rounded-2xl bg-purple-950/80 hover:bg-purple-900/80 text-purple-200 border border-purple-800/60 text-xs font-black flex items-center gap-2 transition shadow-2xs">
         <i class="fa-solid fa-table-cells text-amber-400"></i>
         <span>ຕັ້ງຄ່າ Google Sheet</span>
@@ -46,6 +47,7 @@
         <i class="fa-solid fa-gear text-purple-400"></i>
         <span>ຕັ້ງຄ່າຮ້ານ</span>
       </button>
+      {% endif %}
 
       <button onclick="fetchOrders()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-amber-400 hover:from-purple-500 hover:to-amber-300 text-slate-950 text-xs font-black flex items-center gap-2 shadow-md shadow-purple-600/30 transition active:scale-95">
         <i class="fa-solid fa-arrows-rotate"></i>
@@ -429,23 +431,6 @@
       <div>
         <label class="block font-bold text-purple-200 mb-1">ຊື່ບັນຊີ</label>
         <input type="text" id="setting_acc_name" value="{{ settings.account_name }}" class="w-full px-3.5 py-2.5 rounded-2xl bg-[#0e081c] border border-purple-900/60 text-white text-xs" />
-      </div>
-
-      <div class="pt-3 border-t border-purple-900/40">
-        <label class="block font-black text-white mb-2 flex items-center gap-1.5 text-xs">
-          <i class="fa-solid fa-lock text-amber-400"></i>
-          <span>ປ່ຽນຊື່ຜູ້ໃຊ້ & ລະຫັດຜ່ານ Admin</span>
-        </label>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-purple-300 mb-1">Username ໃໝ່</label>
-            <input type="text" id="setting_admin_user" value="{{ settings.admin_username or 'admin' }}" class="w-full px-3.5 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-white text-xs font-semibold" />
-          </div>
-          <div>
-            <label class="block font-bold text-purple-300 mb-1">Password ໃໝ່</label>
-            <input type="text" id="setting_admin_pass" value="{{ settings.admin_password or 'admin123' }}" class="w-full px-3.5 py-2 rounded-xl bg-[#0e081c] border border-purple-900/60 text-white text-xs font-semibold font-mono" />
-          </div>
-        </div>
       </div>
 
       <div class="pt-2 flex justify-end gap-2">
@@ -1089,9 +1074,7 @@ async function saveStoreSettings(e) {
     store_phone: document.getElementById("setting_store_phone").value.trim(),
     bank_name: document.getElementById("setting_bank_name").value.trim(),
     account_number: document.getElementById("setting_acc_no").value.trim(),
-    account_name: document.getElementById("setting_acc_name").value.trim(),
-    admin_username: document.getElementById("setting_admin_user").value.trim(),
-    admin_password: document.getElementById("setting_admin_pass").value.trim()
+    account_name: document.getElementById("setting_acc_name").value.trim()
   };
 
   try {
@@ -1529,16 +1512,22 @@ function renderUsers(users) {
         <td class="py-3.5 px-4 text-purple-400/70 font-mono text-[11px]">${u.created_at_str || '-'}</td>
         <td class="py-3.5 px-5 text-right">
           <div class="flex items-center justify-end gap-1.5">
-            <button onclick="openUserModal('edit', ${u.id})" class="px-3 py-1.5 rounded-xl bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 text-xs font-black transition border border-purple-800/60 flex items-center gap-1 active:scale-95">
-              <i class="fa-solid fa-pen-to-square"></i> ແກ້ໄຂ
-            </button>
-            ${!isCurrent ? `
+            ${u.username === 'suzu' && !isCurrent ? `
+              <span class="px-2.5 py-1 rounded-xl bg-purple-950/60 text-purple-400 text-[11px] font-bold border border-purple-900/60 flex items-center gap-1 cursor-default" title="Super Admin ປອດໄພສູງສຸດ ແກ້ໄຂໄດ້ສະເພາະເຈົ້າຂອງບັນຊີ">
+                <i class="fa-solid fa-lock text-amber-400"></i> ລັອກສິດ
+              </span>
+            ` : `
+              <button onclick="openUserModal('edit', ${u.id})" class="px-3 py-1.5 rounded-xl bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 text-xs font-black transition border border-purple-800/60 flex items-center gap-1 active:scale-95">
+                <i class="fa-solid fa-pen-to-square"></i> ແກ້ໄຂ
+              </button>
+            `}
+            ${!isCurrent && u.username !== 'suzu' ? `
               <button onclick="deleteUser(${u.id}, '${u.username}')" class="px-3 py-1.5 rounded-xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-300 text-xs font-black transition border border-rose-900/60 flex items-center gap-1 active:scale-95">
                 <i class="fa-solid fa-trash"></i> ລຶບ
               </button>
-            ` : `
+            ` : isCurrent ? `
               <span class="text-[10px] text-purple-400/50 italic px-2 py-1">ບັນຊີປັດຈຸບັນ</span>
-            `}
+            ` : ''}
           </div>
         </td>
       </tr>
