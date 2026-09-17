@@ -82,7 +82,7 @@
       🍶 ເປັນຕຸກ
     </button>
     <button onclick="filterCategory('leaves_syrup')" id="tab-leaves_syrup" class="category-tab px-4 py-2 rounded-xl text-xs font-bold text-purple-300 hover:text-white hover:bg-purple-900/40 transition-all duration-200 whitespace-nowrap">
-      🍃 ໃບສົດ
+      🍃 ເປັນຊຸດ
     </button>
     <button onclick="filterCategory('pilot')" id="tab-pilot" class="category-tab px-4 py-2 rounded-xl text-xs font-bold text-purple-300 hover:text-white hover:bg-purple-900/40 transition-all duration-200 whitespace-nowrap">
       🚀 Pilot
@@ -114,7 +114,7 @@
         {% endif %}
 
         <span class="text-[11px] font-black px-3 py-1 rounded-full backdrop-blur-md {% if product.category == 'pilot' %}bg-purple-500/20 text-fuchsia-300 border border-fuchsia-500/50{% elif product.category == 'leaves_syrup' %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% else %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% endif %}">
-          {% if product.category == 'pilot' %}🚀 Pilot{% elif product.category == 'leaves_syrup' %}🍃 ໃບສົດ{% else %}🍶 ເປັນຕຸກ{% endif %}
+          {% if product.category == 'pilot' %}🚀 Pilot{% elif product.category == 'leaves_syrup' %}🍃 ເປັນຊຸດ{% else %}🍶 ເປັນຕຸກ{% endif %}
         </span>
       </div>
 
